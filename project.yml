@@ -1,0 +1,40 @@
+name: loadcli
+options:
+  bundleIdPrefix: com.kamedatec
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: "$(LOADCLI_TEAM_ID)"
+    ENABLE_HARDENED_RUNTIME: YES
+    DEAD_CODE_STRIPPING: YES
+    GCC_WARN_UNINITIALIZED_AUTOS: YES
+    CLANG_WARN_DOCUMENTATION_COMMENTS: NO
+
+targets:
+  loadcli:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/loadcli
+    settings:
+      base:
+        PRODUCT_NAME: loadcli
+        PRODUCT_BUNDLE_IDENTIFIER: com.kamedatec.loadcli
+        INFOPLIST_FILE: Sources/loadcli/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Sources/loadcli/Resources/loadcli.entitlements
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ENABLE_HARDENED_RUNTIME: YES
+        COMBINE_HIDPI_IMAGES: YES
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/../Frameworks"
