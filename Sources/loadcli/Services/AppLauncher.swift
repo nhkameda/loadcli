@@ -98,6 +98,15 @@ enum AppLauncher {
         return run("tell application \(appLit) to do script \(cmdLit)")
     }
 
+    /// Press ⌘+ once, delivered to the frontmost app via System Events — used
+    /// to bump the terminal font after it's been focused. Emulating the "+"
+    /// character (not a raw keycode) lets macOS handle the keyboard layout, so
+    /// it triggers "Bigger" in Terminal, iTerm and Warp alike.
+    @discardableResult
+    static func pressCommandPlus() -> (ok: Bool, error: String?) {
+        run("tell application \"System Events\" to keystroke \"+\" using command down")
+    }
+
     /// Open a NEW Finder window at `path`, without activating Finder (so the
     /// window joins the freshly created mesa, like the browser). A fresh window
     /// — rather than `open`, which may reuse an existing one — is what the

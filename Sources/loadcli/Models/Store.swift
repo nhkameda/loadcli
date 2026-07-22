@@ -113,11 +113,5 @@ final class Store: ObservableObject {
         save()
     }
 
-    func toggleCollapsed(_ folder: ProjectFolder) {
-        guard let i = folders.firstIndex(where: { $0.id == folder.id }) else { return }
-        folders[i].collapsed.toggle()
-        save()
-    }
-
     var configFolder: URL { dir }
 }

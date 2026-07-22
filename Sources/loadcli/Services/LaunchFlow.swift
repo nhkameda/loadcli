@@ -22,9 +22,10 @@ enum LaunchFlow {
 
         // 1. New desktop (mesa) on the chosen monitor. `targetSpaceID` is only
         //    set when we both created AND switched to it — window placement is
-        //    verified against that Space id later.
+        //    verified against that Space id later. Skipped for native full
+        //    screen, which makes its own Space.
         var targetSpaceID: UInt64? = nil
-        if project.workspaceMode == .newDesktop {
+        if project.createsNewDesktop {
             progress("Criando nova mesa em \(display.name)…")
             switch await SpaceManager.createAndEnterDesktop(on: display) {
             case .created(let id):
@@ -79,6 +80,27 @@ enum LaunchFlow {
         //    terminal takes the whole mesa; otherwise they split.
         progress("Posicionando janelas…")
         try? await Task.sleep(nanoseconds: UInt64(max(0.3, settings.launchDelaySeconds) * 1_000_000_000))
+
+        // 4a. Terminal-only + native full screen: move the window onto the
+        //     chosen monitor, then toggle full screen — which gives it its own
+        //     Space there, so no mesa was created above.
+        if project.wantsSoloFullscreen {
+            progress("Deixando o terminal em tela cheia…")
+            if let tw = await WindowPositioner.newWindow(bundleID: terminalBundle, excluding: termBefore) {
+                outcome.terminalWindow = tw
+                WindowPositioner.place(tw.element, in: DisplayManager.cocoaToCG(display.visibleFrame))
+                try? await Task.sleep(nanoseconds: 350_000_000)
+                if !WindowPositioner.enterFullscreen(tw) {
+                    outcome.notice = "Abri o terminal, mas não consegui ativar a tela cheia."
+                }
+            } else {
+                outcome.notice = "Não encontrei a nova janela do terminal para posicionar."
+            }
+            progress("Pronto!")
+            return outcome
+        }
+
+        // 4b. Split (with a pane) or maximize (terminal-only).
         let rects = WindowPositioner.halfRects(for: display, leftRatio: project.splitRatio)
         let terminalRect: CGRect
         let paneRect: CGRect

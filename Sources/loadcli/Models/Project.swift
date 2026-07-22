@@ -57,6 +57,26 @@ enum SecondaryPane: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+/// How a terminal-only project fills the chosen monitor.
+enum SoloTerminalLayout: String, Codable, CaseIterable, Identifiable {
+    case maximized   // fills the monitor's visible frame (a normal window)
+    case fullscreen  // native macOS full screen — its own Space on that monitor
+
+    var id: String { rawValue }
+    var label: String {
+        switch self {
+        case .maximized:  return "Maximizado (preenche o monitor)"
+        case .fullscreen: return "Tela cheia (fullscreen nativo)"
+        }
+    }
+    var shortLabel: String {
+        switch self {
+        case .maximized:  return "Maximizado"
+        case .fullscreen: return "Tela cheia"
+        }
+    }
+}
+
 /// Which CLI the terminal runs inside the workspace.
 enum CLITool: String, Codable, CaseIterable, Identifiable {
     case claude, codex, custom
@@ -123,6 +143,10 @@ struct Project: Identifiable, Codable, Hashable {
     var secondaryPaneRaw: String? = nil
     var finderPath: String = ""           // folder to reveal when pane == .finder
 
+    // For terminal-only projects: maximize vs native full screen. Optional for
+    // backward compat; nil = maximized (the original behaviour).
+    var soloTerminalLayoutRaw: String? = nil
+
     // CLI tool + per-tool model/effort. Optionals so projects saved by older
     // versions (without these keys) still decode; nil/"" model/effort = padrão.
     var cliToolRaw: String? = nil
@@ -179,6 +203,24 @@ struct Project: Identifiable, Codable, Hashable {
     var effectiveFinderPath: String {
         let p = finderPath.trimmingCharacters(in: .whitespaces)
         return p.isEmpty ? folderPath : p
+    }
+
+    /// How a terminal-only project fills the monitor (defaults to maximized).
+    var soloTerminalLayout: SoloTerminalLayout {
+        get { soloTerminalLayoutRaw.flatMap(SoloTerminalLayout.init) ?? .maximized }
+        set { soloTerminalLayoutRaw = newValue.rawValue }
+    }
+
+    /// True when this project should go native full screen instead of tiling
+    /// or maximizing (terminal-only + full-screen style).
+    var wantsSoloFullscreen: Bool {
+        secondaryPane == .none && soloTerminalLayout == .fullscreen
+    }
+
+    /// Whether launching actually creates a new Mission Control mesa. Native
+    /// full screen makes its own Space, so no mesa is created in that case.
+    var createsNewDesktop: Bool {
+        !wantsSoloFullscreen && workspaceMode == .newDesktop
     }
 
     /// Short descriptor of the CLI for the card tag (tool-aware, not just the

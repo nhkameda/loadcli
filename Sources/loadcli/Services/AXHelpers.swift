@@ -74,6 +74,20 @@ enum AX {
         return AXUIElementSetAttributeValue(el, kAXSizeAttribute as CFString, v) == .success
     }
 
+    /// Toggle a window's native full-screen state (`AXFullScreen` — not in the
+    /// public headers but honoured by Terminal, iTerm, Warp…). Works without
+    /// the window being frontmost. Native full screen makes its own Space on
+    /// the display the window currently sits on.
+    @discardableResult
+    static func setFullscreen(_ el: AXUIElement, _ on: Bool) -> Bool {
+        AXUIElementSetAttributeValue(el, "AXFullScreen" as CFString,
+                                     on ? kCFBooleanTrue : kCFBooleanFalse) == .success
+    }
+
+    static func isFullscreen(_ el: AXUIElement) -> Bool {
+        (attribute(el, "AXFullScreen") as? NSNumber)?.boolValue ?? false
+    }
+
     static func windows(_ appEl: AXUIElement) -> [AXUIElement] {
         guard let raw = attribute(appEl, kAXWindowsAttribute as String) else { return [] }
         return (raw as? [AXUIElement]) ?? []

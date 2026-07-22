@@ -16,6 +16,17 @@ struct SettingsView: View {
                 }
             }
 
+            Section("Fonte do terminal") {
+                Toggle("Aumentar a fonte ao abrir o terminal", isOn: $store.settings.increaseTerminalFont)
+                if store.settings.increaseTerminalFont {
+                    Stepper(value: $store.settings.terminalFontZoomSteps, in: 1...20) {
+                        Text("Aumentos (⌘+): **\(store.settings.terminalFontZoomSteps)×**")
+                    }
+                    Text("Depois de focar o terminal, o loadcli pressiona ⌘+ essa quantidade de vezes — como você faria à mão. Funciona no Terminal, iTerm e Warp.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+            }
+
             Section("Permissões") {
                 HStack {
                     Image(systemName: accessibility ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")

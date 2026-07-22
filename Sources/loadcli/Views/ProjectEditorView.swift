@@ -57,7 +57,13 @@ struct ProjectEditorView: View {
 
                     switch draft.secondaryPane {
                     case .none:
-                        Text("Só o terminal abre — ocupando a mesa inteira.")
+                        Picker("Estilo", selection: soloLayoutBinding) {
+                            ForEach(SoloTerminalLayout.allCases) { Text($0.shortLabel).tag($0) }
+                        }
+                        .pickerStyle(.segmented)
+                        Text(draft.soloTerminalLayout == .fullscreen
+                             ? "Tela cheia nativa no monitor escolhido — cria a própria mesa (não abre uma mesa extra)."
+                             : "O terminal preenche o monitor escolhido.")
                             .font(.caption).foregroundStyle(.secondary)
                     case .browser:
                         TextField("URL", text: $draft.url, prompt: Text("https://app.exemplo.com"))
@@ -80,8 +86,12 @@ struct ProjectEditorView: View {
                 }
 
                 Section("Mesa e janelas") {
-                    Picker("Modo", selection: $draft.workspaceMode) {
-                        ForEach(WorkspaceMode.allCases) { Text($0.label).tag($0) }
+                    if !draft.wantsSoloFullscreen {
+                        Picker("Modo", selection: $draft.workspaceMode) {
+                            ForEach(WorkspaceMode.allCases) { Text($0.label).tag($0) }
+                        }
+                    } else {
+                        LabeledContent("Modo", value: "Tela cheia (mesa própria)")
                     }
                     if draft.secondaryPane != .none {
                         Picker("Layout", selection: $draft.splitSide) {
@@ -161,6 +171,10 @@ struct ProjectEditorView: View {
 
     private var secondaryPaneBinding: Binding<SecondaryPane> {
         Binding(get: { draft.secondaryPane }, set: { draft.secondaryPane = $0 })
+    }
+
+    private var soloLayoutBinding: Binding<SoloTerminalLayout> {
+        Binding(get: { draft.soloTerminalLayout }, set: { draft.soloTerminalLayout = $0 })
     }
 
     /// Percentage of the split the terminal gets, honouring which side it's on.

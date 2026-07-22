@@ -65,6 +65,20 @@ enum WindowPositioner {
         AX.setSize(window, rect.size)
     }
 
+    /// Put a window into native macOS full screen (its own Space on whatever
+    /// display it currently sits on). Position the window on the target display
+    /// first, then call this. Retries because some apps ignore the first set
+    /// while a move/resize is still settling.
+    @discardableResult
+    static func enterFullscreen(_ window: TrackedWindow) -> Bool {
+        if AX.isFullscreen(window.element) { return true }
+        for _ in 0..<3 {
+            if AX.setFullscreen(window.element, true) { return true }
+            usleep(120_000)
+        }
+        return AX.isFullscreen(window.element)
+    }
+
     /// Raise a window and make it its app's main window (no app activation).
     static func raise(_ window: TrackedWindow) {
         AX.perform(window.element, action: kAXRaiseAction as String)

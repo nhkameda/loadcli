@@ -7,7 +7,8 @@ struct ProjectFolder: Identifiable, Codable, Hashable {
     var name: String = ""
     var iconSymbol: String = "folder.fill"
     var colorHex: String = "#64748B"
-    var collapsed: Bool = false
+    // Note: expand/collapse is intentionally NOT persisted — every launch starts
+    // with all folders collapsed (tracked in-memory by AppModel.expandedFolders).
 }
 
 /// SF Symbols offered when creating a folder.

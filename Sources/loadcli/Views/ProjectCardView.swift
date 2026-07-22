@@ -27,7 +27,11 @@ struct ProjectCardView: View {
                             .foregroundStyle(.white)
                     }
                     Spacer()
-                    if project.workspaceMode == .newDesktop {
+                    if project.wantsSoloFullscreen {
+                        Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            .foregroundStyle(.secondary)
+                            .help("Abre em tela cheia")
+                    } else if project.createsNewDesktop {
                         Image(systemName: "plus.rectangle.on.rectangle")
                             .foregroundStyle(.secondary)
                             .help("Cria uma nova mesa")
@@ -108,7 +112,9 @@ struct ProjectCardView: View {
                   systemImage: "folder.badge.gearshape")
                 .font(.caption).foregroundStyle(.secondary).lineLimit(1)
         case .none:
-            Label("Só terminal", systemImage: "terminal")
+            Label(project.soloTerminalLayout == .fullscreen ? "Terminal · tela cheia" : "Só terminal",
+                  systemImage: project.soloTerminalLayout == .fullscreen
+                    ? "arrow.up.left.and.arrow.down.right" : "terminal")
                 .font(.caption).foregroundStyle(.secondary).lineLimit(1)
         }
     }

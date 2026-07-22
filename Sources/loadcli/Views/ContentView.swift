@@ -184,10 +184,12 @@ struct FolderSectionView: View {
 
     private var accent: Color { Color(hex: folder.colorHex) }
 
+    private var expanded: Bool { model.isFolderExpanded(folder.id) }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             header
-            if !folder.collapsed {
+            if expanded {
                 if projects.isEmpty {
                     emptyHint
                 } else {
@@ -199,8 +201,8 @@ struct FolderSectionView: View {
 
     private var header: some View {
         HStack(spacing: 8) {
-            Button { store.toggleCollapsed(folder) } label: {
-                Image(systemName: folder.collapsed ? "chevron.right" : "chevron.down")
+            Button { model.toggleFolder(folder.id) } label: {
+                Image(systemName: expanded ? "chevron.down" : "chevron.right")
                     .font(.caption.weight(.bold))
                     .foregroundStyle(.secondary)
                     .frame(width: 14)
@@ -235,7 +237,7 @@ struct FolderSectionView: View {
             .fixedSize()
         }
         .contentShape(Rectangle())
-        .onTapGesture { store.toggleCollapsed(folder) }
+        .onTapGesture { model.toggleFolder(folder.id) }
     }
 
     private var emptyHint: some View {

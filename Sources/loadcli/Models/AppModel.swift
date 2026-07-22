@@ -19,6 +19,10 @@ final class AppModel: ObservableObject {
     @Published var showFolderEditor = false
     @Published var editingFolder: ProjectFolder?  // nil = new
 
+    /// Folders currently expanded — session-only, so every launch starts with
+    /// all folders collapsed (easier to scan the list).
+    @Published var expandedFolders: Set<UUID> = []
+
     unowned let store: Store
     init(store: Store) { self.store = store }
 
@@ -28,12 +32,21 @@ final class AppModel: ObservableObject {
     func newProject(in folderID: UUID? = nil) {
         editingProject = nil
         newProjectFolderID = folderID
+        // Expand the target folder so the new card is visible once saved.
+        if let id = folderID { expandedFolders.insert(id) }
         showEditor = true
     }
     func edit(_ p: Project) { editingProject = p; newProjectFolderID = nil; showEditor = true }
 
     func newFolder() { editingFolder = nil; showFolderEditor = true }
     func editFolder(_ f: ProjectFolder) { editingFolder = f; showFolderEditor = true }
+
+    // MARK: Folder expansion (session-only)
+    func isFolderExpanded(_ id: UUID) -> Bool { expandedFolders.contains(id) }
+    func toggleFolder(_ id: UUID) {
+        if expandedFolders.contains(id) { expandedFolders.remove(id) }
+        else { expandedFolders.insert(id) }
+    }
 
     // MARK: Launch
     /// Show the pre-launch confirmation (monitor + CLI/model/effort), or launch
@@ -69,10 +82,28 @@ final class AppModel: ObservableObject {
             // nothing in our own UI re-takes activation.
             if let tw = outcome.terminalWindow {
                 try? await Task.sleep(nanoseconds: 600_000_000)
-                _ = await WindowPositioner.focusVerified(
-                    tw, appBundleID: AppCatalog.terminalBundleID(forName: updated.terminalApp),
-                    appName: updated.terminalApp)
+                let terminalBundle = AppCatalog.terminalBundleID(forName: updated.terminalApp)
+                let focused = await WindowPositioner.focusVerified(
+                    tw, appBundleID: terminalBundle, appName: updated.terminalApp)
+                // Only bump the font if the terminal really came to the front —
+                // otherwise the ⌘+ keystrokes would hit the wrong app.
+                if focused, store.settings.increaseTerminalFont {
+                    await bumpTerminalFont(steps: store.settings.terminalFontZoomSteps,
+                                           terminalBundle: terminalBundle)
+                }
             }
+        }
+    }
+
+    /// Mimic the user's ⌘+ presses to enlarge the terminal font, re-checking
+    /// before each press that the terminal is still frontmost.
+    private func bumpTerminalFont(steps: Int, terminalBundle: String) async {
+        let n = max(1, min(20, steps))
+        try? await Task.sleep(nanoseconds: 200_000_000)   // let focus settle
+        for _ in 0..<n {
+            guard NSWorkspace.shared.frontmostApplication?.bundleIdentifier == terminalBundle else { return }
+            AppLauncher.pressCommandPlus()
+            try? await Task.sleep(nanoseconds: 45_000_000)
         }
     }
 
