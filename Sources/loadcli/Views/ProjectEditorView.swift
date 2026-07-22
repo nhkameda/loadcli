@@ -35,8 +35,7 @@ struct ProjectEditorView: View {
                                   prompt: Text("/Users/você/DEV/erp-kameda"))
                         Button("Escolher…") { chooseFolder() }
                     }
-                    TextField("Comando CLI", text: $draft.cliCommand, prompt: Text("claude"))
-                        .font(.system(.body, design: .monospaced))
+                    CLIConfigSection(project: $draft)
                     Picker("Terminal", selection: $draft.terminalApp) {
                         ForEach(AppCatalog.terminals) { Text($0.name).tag($0.name) }
                     }

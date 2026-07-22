@@ -7,6 +7,7 @@ enum LaunchFlow {
         var notice: String? = nil
         var error: String? = nil
         var spaceID: UInt64? = nil   // the desktop that was created (if any)
+        var terminalWindow: WindowPositioner.TrackedWindow? = nil   // for late focus
     }
 
     static func run(_ project: Project, on display: DisplayInfo, settings: AppSettings,
@@ -45,7 +46,7 @@ enum LaunchFlow {
         progress("Abrindo \(project.terminalApp) em \(project.folderName)…")
         let termBefore = WindowPositioner.windowIDs(bundleID: terminalBundle)
         let t = await AppLauncher.openTerminal(folder: project.folderPath,
-                                               command: project.cliCommand,
+                                               command: project.effectiveCLICommand,
                                                appName: project.terminalApp,
                                                bundleID: terminalBundle)
         if !t.ok { outcome.notice = "Terminal: \(t.error ?? "falha")" }
@@ -68,9 +69,8 @@ enum LaunchFlow {
         let terminalRect = project.splitSide == .terminalRight ? rects.right : rects.left
         let browserRect  = project.splitSide == .terminalRight ? rects.left : rects.right
 
-        var terminalWindow: WindowPositioner.TrackedWindow? = nil
         if let tw = await WindowPositioner.newWindow(bundleID: terminalBundle, excluding: termBefore) {
-            terminalWindow = tw
+            outcome.terminalWindow = tw
             let onSpace = await WindowPositioner.placeVerified(tw, in: terminalRect,
                                                                expectedSpace: targetSpaceID)
             if !onSpace { outcome.notice = "A janela do terminal pode não ter ficado na nova mesa." }
@@ -88,9 +88,11 @@ enum LaunchFlow {
             }
         }
 
-        // 5. Leave the keyboard focus in the new terminal.
-        if let tw = terminalWindow {
-            WindowPositioner.focus(tw, appBundleID: terminalBundle)
+        // 5. Bring the terminal window to its app's front. App ACTIVATION
+        //    happens later (AppModel), after our overlay closed — activating
+        //    here gets undone when the launcher UI wraps up.
+        if let tw = outcome.terminalWindow {
+            WindowPositioner.raise(tw)
         }
 
         progress("Pronto!")

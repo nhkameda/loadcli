@@ -41,12 +41,12 @@ struct ContentView: View {
             ProjectEditorView(project: model.editingProject)
                 .environmentObject(store)
         }
-        .sheet(isPresented: $model.showMonitorPicker) {
+        .sheet(isPresented: $model.showLaunchConfirm) {
             if let p = model.pendingProject {
-                MonitorPickerView(project: p) { display in
-                    model.launch(p, on: display)
+                LaunchConfirmView(project: p) { project, display in
+                    model.launch(project, on: display)
                 } onCancel: {
-                    model.showMonitorPicker = false
+                    model.showLaunchConfirm = false
                     model.pendingProject = nil
                 }
             }

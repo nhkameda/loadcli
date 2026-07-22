@@ -12,7 +12,7 @@ final class AppModel: ObservableObject {
 
     // Sheets / pickers.
     @Published var pendingProject: Project?
-    @Published var showMonitorPicker = false
+    @Published var showLaunchConfirm = false
     @Published var showEditor = false
     @Published var editingProject: Project?   // nil = new
 
@@ -26,34 +26,47 @@ final class AppModel: ObservableObject {
     func edit(_ p: Project) { editingProject = p; showEditor = true }
 
     // MARK: Launch
-    /// Decide whether to ask which monitor, then launch.
+    /// Show the pre-launch confirmation (monitor + CLI/model/effort), or launch
+    /// straight away with the saved preferences when the user turned it off.
     func requestLaunch(_ project: Project) {
         guard !isRunning else { return }
-        let displays = DisplayManager.displays()
-
-        if let prefID = project.monitorPreference,
-           let pref = DisplayManager.display(withUUID: prefID) {
-            launch(project, on: pref); return
-        }
-        if displays.count <= 1 {
-            if let only = displays.first ?? DisplayManager.main() { launch(project, on: only) }
-            return
-        }
         if store.settings.alwaysAskMonitor {
             pendingProject = project
-            showMonitorPicker = true
-        } else if let main = DisplayManager.main() {
-            launch(project, on: main)
+            showLaunchConfirm = true
+            return
+        }
+        let display = project.monitorPreference.flatMap { DisplayManager.display(withUUID: $0) }
+            ?? DisplayManager.main()
+        if let display { launch(project, on: display) }
+    }
+
+    /// Launch `project` on `display`, persisting whatever was changed in the
+    /// confirmation dialog (including the chosen monitor) so the next launch
+    /// opens pre-configured the same way.
+    func launch(_ project: Project, on display: DisplayInfo) {
+        showLaunchConfirm = false
+        pendingProject = nil
+
+        var updated = project
+        updated.monitorPreference = display.id
+        if store.projects.first(where: { $0.id == updated.id }) != updated {
+            store.upsert(updated)
+        }
+
+        Task {
+            let outcome = await run(updated, on: display)
+            // Focus the new terminal only AFTER the overlay is gone, so
+            // nothing in our own UI re-takes activation.
+            if let tw = outcome.terminalWindow {
+                try? await Task.sleep(nanoseconds: 400_000_000)
+                WindowPositioner.focus(
+                    tw, appBundleID: AppCatalog.terminalBundleID(forName: updated.terminalApp))
+            }
         }
     }
 
-    func launch(_ project: Project, on display: DisplayInfo) {
-        showMonitorPicker = false
-        pendingProject = nil
-        Task { await run(project, on: display) }
-    }
-
-    private func run(_ project: Project, on display: DisplayInfo) async {
+    @discardableResult
+    private func run(_ project: Project, on display: DisplayInfo) async -> LaunchFlow.Outcome {
         isRunning = true
         errorText = nil
         noticeText = nil
@@ -65,5 +78,6 @@ final class AppModel: ObservableObject {
         }
         errorText = outcome.error
         noticeText = outcome.notice
+        return outcome
     }
 }

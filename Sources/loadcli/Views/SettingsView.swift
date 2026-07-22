@@ -8,7 +8,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section("Comportamento") {
-                Toggle("Perguntar em qual monitor (com 2+ telas)", isOn: $store.settings.alwaysAskMonitor)
+                Toggle("Confirmar ao iniciar (monitor, CLI e modelo)", isOn: $store.settings.alwaysAskMonitor)
                 VStack(alignment: .leading) {
                     Text("Espera antes de posicionar as janelas: \(String(format: "%.1f", store.settings.launchDelaySeconds))s")
                         .font(.caption).foregroundStyle(.secondary)
