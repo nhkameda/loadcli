@@ -1,6 +1,6 @@
 name: loadcli
 options:
-  bundleIdPrefix: com.kamedatec
+  bundleIdPrefix: com.example
   deploymentTarget:
     macOS: "14.0"
   createIntermediateGroups: true
@@ -26,7 +26,7 @@ targets:
     settings:
       base:
         PRODUCT_NAME: loadcli
-        PRODUCT_BUNDLE_IDENTIFIER: com.kamedatec.loadcli
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.loadcli
         INFOPLIST_FILE: Sources/loadcli/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: Sources/loadcli/Resources/loadcli.entitlements
         CODE_SIGN_STYLE: Manual

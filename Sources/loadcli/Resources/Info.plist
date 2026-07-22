@@ -29,7 +29,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>© 2026 Kameda Tec. Todos os direitos reservados.</string>
+	<string>© 2026 HISAYOSHI, N. KAMEDA · Licença MIT</string>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>O loadcli controla o Terminal, o navegador e o Mission Control para abrir o seu projeto, criar a mesa e posicionar as janelas automaticamente.</string>
 	<key>NSSystemAdministrationUsageDescription</key>

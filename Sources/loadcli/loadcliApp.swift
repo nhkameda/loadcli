@@ -57,7 +57,7 @@ struct LoadCLIApp: App {
 
         Escolha um projeto e tenha, com um clique: uma nova mesa no monitor que você quiser, o Terminal já com seu CLI rodando na pasta certa e o navegador aberto na página de deploy — lado a lado.
 
-        KamedaTec · github.com/nhkameda/loadcli
+        HISAYOSHI, N. KAMEDA · kameda.app
         """
         let credits = NSAttributedString(
             string: body,
@@ -69,7 +69,7 @@ struct LoadCLIApp: App {
         NSApp.orderFrontStandardAboutPanel(options: [
             .applicationName: "loadcli",
             .credits: credits,
-            NSApplication.AboutPanelOptionKey(rawValue: "Copyright"): "© 2026 KamedaTec. Todos os direitos reservados.",
+            NSApplication.AboutPanelOptionKey(rawValue: "Copyright"): "© 2026 HISAYOSHI, N. KAMEDA · Licença MIT",
         ])
     }
 }
