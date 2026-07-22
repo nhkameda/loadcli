@@ -42,19 +42,11 @@ O `loadcli` transforma esse ritual em **um clique num card**.
 
 ## 🎬 O que acontece no clique
 
-```mermaid
-flowchart LR
-    A([🖱️ clique no card]) --> B[🖥️ nova mesa<br/>no monitor escolhido]
-    B --> C[⌨️ Terminal + CLI<br/>na pasta do projeto]
-    B --> D{painel ao lado?}
-    D -->|Navegador| E[🌐 URL de deploy]
-    D -->|Finder| F[🗂️ pasta escolhida]
-    D -->|Nenhum| G[▫️ terminal em tela cheia]
-    C --> H([↔️ split lado a lado<br/>foco no terminal])
-    E --> H
-    F --> H
-    G --> H
-```
+<div align="center">
+
+<img src="docs/flow-pt.png" width="760" alt="O que um clique faz: clique no card → nova mesa → Terminal + CLI e um painel ao lado (navegador, Finder ou nenhum) → split lado a lado, foco no terminal">
+
+</div>
 
 Cada janela é **verificada** — o `loadcli` confere que ela realmente caiu na mesa nova e corrige se não caiu — e o **foco termina no terminal**, pronto pra você digitar.
 

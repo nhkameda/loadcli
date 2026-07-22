@@ -42,19 +42,11 @@ Every time you sit down with a project it's the same ritual: open the Terminal, 
 
 ## 🎬 What one click does
 
-```mermaid
-flowchart LR
-    A([🖱️ click a card]) --> B[🖥️ new desktop<br/>on the chosen monitor]
-    B --> C[⌨️ Terminal + CLI<br/>in the project folder]
-    B --> D{side pane?}
-    D -->|Browser| E[🌐 deploy URL]
-    D -->|Finder| F[🗂️ chosen folder]
-    D -->|None| G[▫️ terminal full-screen]
-    C --> H([↔️ tiled side by side<br/>focus on the terminal])
-    E --> H
-    F --> H
-    G --> H
-```
+<div align="center">
+
+<img src="docs/flow-en.png" width="760" alt="What one click does: click a card → new desktop → Terminal + CLI and a side pane (browser, Finder or none) → tiled side by side, focus on the terminal">
+
+</div>
 
 Every window is **verified** — `loadcli` checks it actually landed on the new desktop and fixes it if it didn't — and the **focus ends on the terminal**, ready for you to type.
 
