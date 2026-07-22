@@ -2,6 +2,15 @@ import SwiftUI
 import AppKit
 
 @main
+enum LoadCLIMain {
+    static func main() {
+        if CommandLine.arguments.contains("--doctor") {
+            exit(Doctor.runBlocking())
+        }
+        LoadCLIApp.main()
+    }
+}
+
 struct LoadCLIApp: App {
     @StateObject private var store: Store
     @StateObject private var model: AppModel

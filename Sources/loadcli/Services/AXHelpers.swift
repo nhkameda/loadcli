@@ -28,6 +28,13 @@ enum AX {
     static func role(_ el: AXUIElement) -> String? { string(el, kAXRoleAttribute as String) }
     static func title(_ el: AXUIElement) -> String? { string(el, kAXTitleAttribute as String) }
     static func desc(_ el: AXUIElement) -> String? { string(el, kAXDescriptionAttribute as String) }
+    static func identifier(_ el: AXUIElement) -> String? { string(el, "AXIdentifier") }
+
+    /// Dock-private attribute on Mission Control's `mc.display` groups: the
+    /// CGDirectDisplayID of the monitor the group belongs to.
+    static func displayID(_ el: AXUIElement) -> CGDirectDisplayID? {
+        (attribute(el, "AXDisplayID") as? NSNumber)?.uint32Value
+    }
 
     static func position(_ el: AXUIElement) -> CGPoint? {
         guard let v = attribute(el, kAXPositionAttribute as String) else { return nil }
@@ -49,6 +56,11 @@ enum AX {
     }
 
     @discardableResult
+    static func perform(_ el: AXUIElement, action: String) -> Bool {
+        AXUIElementPerformAction(el, action as CFString) == .success
+    }
+
+    @discardableResult
     static func setPosition(_ el: AXUIElement, _ p: CGPoint) -> Bool {
         var point = p
         guard let v = AXValueCreate(.cgPoint, &point) else { return false }
@@ -65,6 +77,18 @@ enum AX {
     static func windows(_ appEl: AXUIElement) -> [AXUIElement] {
         guard let raw = attribute(appEl, kAXWindowsAttribute as String) else { return [] }
         return (raw as? [AXUIElement]) ?? []
+    }
+
+    /// Private `_AXUIElementGetWindow` → the stable CGWindowID for an AX window.
+    private static let getWindowFn: (@convention(c) (AXUIElement, UnsafeMutablePointer<CGWindowID>) -> AXError)? = {
+        guard let h = dlopen(nil, RTLD_NOW), let s = dlsym(h, "_AXUIElementGetWindow") else { return nil }
+        return unsafeBitCast(s, to: (@convention(c) (AXUIElement, UnsafeMutablePointer<CGWindowID>) -> AXError).self)
+    }()
+
+    static func windowID(_ window: AXUIElement) -> CGWindowID? {
+        guard let fn = getWindowFn else { return nil }
+        var id: CGWindowID = 0
+        return fn(window, &id) == .success ? id : nil
     }
 
     static func focusedWindow(_ appEl: AXUIElement) -> AXUIElement? {

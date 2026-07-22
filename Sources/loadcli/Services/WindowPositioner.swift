@@ -1,20 +1,48 @@
 import AppKit
 import ApplicationServices
 
-/// Positions an app's front window into a target rectangle (left/right half).
+/// Finds the windows a launch created and places them in the split layout —
+/// verifying they actually live on the desktop we created.
 @MainActor
 enum WindowPositioner {
-    /// Wait for a freshly launched app's front window and return its AX element.
-    static func frontWindow(bundleID: String, timeout: TimeInterval = 5) async -> AXUIElement? {
+    /// An AX window plus its stable CGWindowID (when resolvable).
+    struct TrackedWindow {
+        let element: AXUIElement
+        let windowID: CGWindowID?
+    }
+
+    /// Current CGWindowIDs of an app's windows (used to detect a newly opened one).
+    static func windowIDs(bundleID: String) -> Set<CGWindowID> {
+        guard let running = NSRunningApplication
+            .runningApplications(withBundleIdentifier: bundleID).first else { return [] }
+        let appEl = AX.app(pid: running.processIdentifier)
+        return Set(AX.windows(appEl).compactMap { AX.windowID($0) })
+    }
+
+    /// Wait for and return the window the app opened that is NOT in `excluding`.
+    /// We can't rely on the focused window because we launch without activating
+    /// (to avoid auto-swoosh), so the new window may not be frontmost.
+    static func newWindow(bundleID: String, excluding: Set<CGWindowID>,
+                          timeout: TimeInterval = 8) async -> TrackedWindow? {
         let deadline = Date().addingTimeInterval(timeout)
         while Date() < deadline {
             if let running = NSRunningApplication
                 .runningApplications(withBundleIdentifier: bundleID).first {
                 let appEl = AX.app(pid: running.processIdentifier)
-                if let focused = AX.focusedWindow(appEl) { return focused }
-                if let first = AX.windows(appEl).first { return first }
+                for w in AX.windows(appEl) {
+                    if let id = AX.windowID(w), !excluding.contains(id) {
+                        return TrackedWindow(element: w, windowID: id)
+                    }
+                }
             }
             try? await Task.sleep(nanoseconds: 200_000_000)
+        }
+        // Fallback: focused or first window.
+        if let running = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID).first {
+            let appEl = AX.app(pid: running.processIdentifier)
+            if let w = AX.focusedWindow(appEl) ?? AX.windows(appEl).first {
+                return TrackedWindow(element: w, windowID: AX.windowID(w))
+            }
         }
         return nil
     }
@@ -35,5 +63,24 @@ enum WindowPositioner {
         AX.setSize(window, rect.size)
         AX.setPosition(window, rect.origin)
         AX.setSize(window, rect.size)
+    }
+
+    /// Place the window and confirm it ended up on `expectedSpace`.
+    ///
+    /// Apps open windows wherever their last window frame was — possibly on
+    /// ANOTHER display, whose current Space is not the new desktop. Moving the
+    /// window into the target display's rect re-assigns it to that display's
+    /// current Space, so placing and verifying (with retries) is what
+    /// guarantees the window lands on the mesa we created.
+    static func placeVerified(_ window: TrackedWindow, in rect: CGRect,
+                              expectedSpace: UInt64?) async -> Bool {
+        place(window.element, in: rect)
+        guard let expectedSpace, let id = window.windowID else { return true }
+        for _ in 0..<4 {
+            try? await Task.sleep(nanoseconds: 350_000_000)
+            if SkyLight.space(ofWindow: id) == expectedSpace { return true }
+            place(window.element, in: rect)
+        }
+        return SkyLight.space(ofWindow: id) == expectedSpace
     }
 }

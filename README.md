@@ -30,13 +30,19 @@ monitor — e você pode ter **dezenas de projetos**, cada um a um clique.
 
 ## Como funciona (e por que assim)
 
-Criar uma mesa **usável** via API privada (SkyLight) **não é confiável** num app normal no
-macOS moderno — é por isso que ferramentas como o *yabai* exigem **desligar o SIP**. Para um
-produto vendável e estável, o loadcli usa o caminho **suportado e sem SIP**: dirige o botão
-“+” do **Mission Control** pela **API de Acessibilidade** para criar a mesa, identificando o
-botão de forma independente de idioma (botão da barra de Spaces sem título) e mirando o
-monitor certo pela posição do botão. A API privada do SkyLight é usada **somente para leitura**,
-para *confirmar* que a mesa foi criada na tela certa.
+**Criar** uma mesa via API privada (SkyLight) **não funciona** num app normal no macOS
+moderno — é por isso que ferramentas como o *yabai* exigem **desligar o SIP**. O loadcli cria
+a mesa pelo caminho **sem SIP**: dirige o botão “+” do **Mission Control** pela **API de
+Acessibilidade**, usando os identificadores estáveis do Dock (`mc.spaces.add`) e mirando o
+monitor pelo `AXDisplayID` — o mesmo caminho do `hs.spaces` do Hammerspoon. A criação é
+confirmada por **diff de IDs de space** (SkyLight, leitura).
+
+Para **entrar** na mesa nova, o clique de Acessibilidade no thumbnail é ignorado no macOS 26
+(verificado empiricamente), então o loadcli usa `SLSManagedDisplaySetCurrentSpace` — troca
+instantânea, sem abrir UI — **sempre verificando** o resultado e com fallback para um clique
+real no Mission Control. Terminal e navegador são lançados **sem ativação** (para o macOS não
+“pular” para outra mesa) e cada janela nova é **verificada e corrigida** até estar na mesa
+certa. `loadcli --doctor` roda um autoteste completo desse mecanismo em cada monitor.
 
 > Decisão de distribuição: **Developer ID** (fora da Mac App Store). A criação de mesas e o
 > controle de janelas dependem de Acessibilidade/Apple Events fora do sandbox da loja.

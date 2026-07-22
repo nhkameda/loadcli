@@ -11,24 +11,51 @@ Sem App Sandbox; Hardened Runtime ligado; entitlement de Apple Events.
 4. **Navegador + URL** → `AppLauncher.openBrowser` (nova janela + URL).
 5. **Posiciona janelas** → `WindowPositioner` via Acessibilidade (`kAXPosition`/`kAXSize`).
 
-## Criação de mesas — a decisão central
-Criar um Space **usável** com a API privada do SkyLight (`SLSSpaceCreate`) **não funciona de
-forma confiável** num processo normal: o espaço criado não se vincula a um display (verificado
-empiricamente — a contagem de spaces por display não muda). É por isso que o *yabai* injeta um
-*scripting addition* no Dock e exige **SIP parcialmente desligado** — inaceitável para um
-produto vendável.
+## Criação e troca de mesas — a decisão central (validada no macOS 26.3)
 
-**Solução:** dirigir o **Mission Control** pela Acessibilidade.
-- `SpaceManager.openMissionControl()` abre `/System/Applications/Mission Control.app`.
-- O processo **Dock** expõe, por display, um grupo “Barra do Spaces” com botões de mesa e um
-  botão **“+”**. O “+” é detectado de forma **independente de idioma**: é o botão da barra com
-  **título vazio** (botões de mesa sempre têm título).
-- O **monitor alvo** é escolhido pela **posição** do botão “+” (`AX.position` → display).
-- Após o clique, a nova mesa é identificada por **diferença de títulos** e clicada para
-  **alternar** (clicar uma mesa no Mission Control troca e fecha o overview).
-- `SkyLight` (somente leitura, `SLSCopyManagedDisplaySpaces`) **confirma** que a contagem de
-  mesas do display alvo aumentou.
-- Fallback gracioso: se falhar, segue na mesa atual e avisa o usuário.
+**Criar** um Space usável com a API privada do SkyLight (`SLSSpaceCreate`) **não funciona**
+num processo normal: o espaço criado não se vincula a um display (verificado empiricamente).
+É por isso que o *yabai* injeta um *scripting addition* no Dock e exige **SIP parcialmente
+desligado** — inaceitável para um produto vendável.
+
+**Criação — Mission Control via Acessibilidade** (mesmo caminho do `hs.spaces` do Hammerspoon):
+- O Mission Control é aberto/fechado com `CoreDockSendNotification("com.apple.expose.awake")`
+  (toggle; fallback: abrir `Mission Control.app` / tecla Esc).
+- Com o MC aberto, o processo **Dock** expõe uma árvore com **AXIdentifiers estáveis**:
+  `mc` → `mc.display` (um por monitor, com atributo **`AXDisplayID`** = CGDirectDisplayID)
+  → `mc.spaces` → `mc.spaces.add` (botão “+”) e `mc.spaces.list` (mesas, na ordem do SkyLight).
+- O monitor alvo é casado por `AXDisplayID` (fallback: origem CG do grupo `mc.display`).
+- `AXPress` no `mc.spaces.add` cria a mesa. A criação é confirmada por **diff de space-IDs**
+  (`SLSCopyManagedDisplaySpaces`) — nunca por contagem nem por nomes (que se repetem entre
+  displays e se reordenam com o `mru-spaces`).
+- É preciso um **settle (~350 ms)** após o MC abrir antes de pressionar qualquer botão — presses
+  cedo demais retornam sucesso sem efeito (fragilidade conhecida, Hammerspoon `MCwaitTime`).
+
+**Troca — `SLSManagedDisplaySetCurrentSpace`, sempre verificada:**
+- No macOS 26, `AXPress` no thumbnail de uma mesa **retorna sucesso, fecha o MC e NÃO troca**
+  (verificado empiricamente em 26.3 — era o bug raiz do loadcli). A troca confiável é a chamada
+  privada `SLSManagedDisplaySetCurrentSpace(conn, uuid, spaceID)`, instantânea e sem UI,
+  **sempre verificada** em seguida com `SLSManagedDisplayGetCurrentSpace`.
+- **Fallback** (se a chamada parar de funcionar num macOS futuro): clique **sintético** do mouse
+  no thumbnail da mesa — o cursor paira no topo do display para **expandir a barra** (só então
+  os thumbnails têm coordenadas reais na tela), clica no centro do botão e restaura o cursor.
+- Fallback final gracioso: segue na mesa atual e avisa o usuário.
+
+**Janelas na mesa nova — verificação por space-ID:**
+- Terminal/navegador são lançados **sem `activate`** (com `AppleSpacesSwitchOnActivate` — o
+  padrão — ativar um app pula para o Space das janelas existentes dele).
+- Cold start do Terminal: `do script` com o app fechado abriria **duas** janelas; o loadcli
+  lança o app em background (`NSWorkspace`, `activates=false`), espera a janela inicial e roda
+  `do script … in window 1`. iTerm análogo.
+- A janela nova é identificada por **diff de `CGWindowID`** (`_AXUIElementGetWindow`), pois sem
+  ativação ela não é a frontmost. Apps abrem a janela onde estava a última — possivelmente em
+  **outro display** —, então `WindowPositioner.placeVerified` move a janela para o retângulo do
+  display alvo (o que a re-associa ao Space corrente daquele display, a mesa nova) e **confirma**
+  com `SLSCopySpacesForWindows`, com retries.
+- `SLSMoveWindowsToManagedSpace` está quebrado desde o macOS 14.5 (no-op silencioso) — não é usado.
+
+**Autoteste:** `loadcli.app/Contents/MacOS/loadcli --doctor` roda um ciclo criar → entrar →
+voltar → remover em cada monitor e imprime PASS/FALHA por etapa — útil após updates do macOS.
 
 ## Coordenadas
 - `NSScreen` usa origem inferior-esquerda; Acessibilidade/CG usam superior-esquerda.
@@ -43,7 +70,7 @@ produto vendável.
 ## Camadas
 - **Models**: `Project`, `AppSettings`, `Store` (JSON em Application Support), `AppModel` (estado/UI).
 - **Services**: `SpaceManager`, `AppLauncher`, `WindowPositioner`, `DisplayManager`,
-  `SkyLight` (read-only), `AX` (wrappers), `Permissions`, `LaunchFlow`.
+  `SkyLight` (leitura + troca de mesa), `AX` (wrappers), `Permissions`, `LaunchFlow`, `Doctor`.
 - **Views**: grid de cards, editor, seletor de monitor, ajustes, overlay de progresso, menu de status.
 
 ## Portabilidade
