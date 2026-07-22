@@ -15,6 +15,9 @@ final class AppModel: ObservableObject {
     @Published var showLaunchConfirm = false
     @Published var showEditor = false
     @Published var editingProject: Project?   // nil = new
+    @Published var newProjectFolderID: UUID?  // folder a new card should land in
+    @Published var showFolderEditor = false
+    @Published var editingFolder: ProjectFolder?  // nil = new
 
     unowned let store: Store
     init(store: Store) { self.store = store }
@@ -22,8 +25,15 @@ final class AppModel: ObservableObject {
     var hasAccessibility: Bool { Permissions.hasAccessibility() }
 
     // MARK: Editor
-    func newProject() { editingProject = nil; showEditor = true }
-    func edit(_ p: Project) { editingProject = p; showEditor = true }
+    func newProject(in folderID: UUID? = nil) {
+        editingProject = nil
+        newProjectFolderID = folderID
+        showEditor = true
+    }
+    func edit(_ p: Project) { editingProject = p; newProjectFolderID = nil; showEditor = true }
+
+    func newFolder() { editingFolder = nil; showFolderEditor = true }
+    func editFolder(_ f: ProjectFolder) { editingFolder = f; showFolderEditor = true }
 
     // MARK: Launch
     /// Show the pre-launch confirmation (monitor + CLI/model/effort), or launch

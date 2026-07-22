@@ -6,6 +6,8 @@ struct ProjectCardView: View {
     var onEdit: () -> Void
     var onDuplicate: () -> Void
     var onDelete: () -> Void
+    var folders: [ProjectFolder] = []
+    var onMove: (UUID?) -> Void = { _ in }
 
     @State private var hovering = false
     @State private var confirmingDelete = false
@@ -40,18 +42,13 @@ struct ProjectCardView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
-                    if !project.url.isEmpty {
-                        Label(project.url, systemImage: "globe")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
-                    }
+                    secondaryPaneLine
                 }
 
                 Spacer(minLength: 0)
 
                 HStack(spacing: 6) {
-                    Tag(text: project.cliCommand.isEmpty ? "shell" : project.cliCommand, systemImage: "chevron.right")
+                    Tag(text: project.cliShortLabel, systemImage: "chevron.right")
                     Spacer()
                     if hovering {
                         Button { onEdit() } label: { Image(systemName: "pencil") }
@@ -79,12 +76,40 @@ struct ProjectCardView: View {
             Button("Abrir") { onLaunch() }
             Button("Editar…") { onEdit() }
             Button("Duplicar") { onDuplicate() }
+            Menu("Mover para") {
+                Button("Sem pasta") { onMove(nil) }
+                    .disabled(project.folderID == nil)
+                if !folders.isEmpty { Divider() }
+                ForEach(folders) { f in
+                    Button(f.name.isEmpty ? "Pasta" : f.name) { onMove(f.id) }
+                        .disabled(project.folderID == f.id)
+                }
+            }
             Divider()
             Button("Excluir", role: .destructive) { confirmingDelete = true }
         }
         .alert("Excluir “\(project.name)”?", isPresented: $confirmingDelete) {
             Button("Excluir", role: .destructive) { onDelete() }
             Button("Cancelar", role: .cancel) {}
+        }
+    }
+
+    /// The line under the folder name — what opens beside the terminal.
+    @ViewBuilder private var secondaryPaneLine: some View {
+        switch project.secondaryPane {
+        case .browser:
+            if !project.url.isEmpty {
+                Label(project.url, systemImage: "globe")
+                    .font(.caption).foregroundStyle(.secondary).lineLimit(1)
+            }
+        case .finder:
+            Label((project.effectiveFinderPath as NSString).lastPathComponent.isEmpty
+                    ? "Finder" : (project.effectiveFinderPath as NSString).lastPathComponent,
+                  systemImage: "folder.badge.gearshape")
+                .font(.caption).foregroundStyle(.secondary).lineLimit(1)
+        case .none:
+            Label("Só terminal", systemImage: "terminal")
+                .font(.caption).foregroundStyle(.secondary).lineLimit(1)
         }
     }
 }

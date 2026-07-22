@@ -9,12 +9,16 @@ struct MenuBarContent: View {
         if store.projects.isEmpty {
             Text("Nenhum projeto").foregroundStyle(.secondary)
         } else {
-            ForEach(store.projects) { project in
-                Button {
-                    NSApp.activate(ignoringOtherApps: true)
-                    model.requestLaunch(project)
-                } label: {
-                    Label(project.name, systemImage: project.iconSymbol)
+            let ungrouped = store.projects(in: nil)
+            ForEach(ungrouped) { project in launchButton(project) }
+            ForEach(store.folders) { folder in
+                let inFolder = store.projects(in: folder.id)
+                if !inFolder.isEmpty {
+                    Menu {
+                        ForEach(inFolder) { project in launchButton(project) }
+                    } label: {
+                        Label(folder.name.isEmpty ? "Pasta" : folder.name, systemImage: folder.iconSymbol)
+                    }
                 }
             }
         }
@@ -30,5 +34,14 @@ struct MenuBarContent: View {
         }
         Divider()
         Button("Sair") { NSApp.terminate(nil) }
+    }
+
+    private func launchButton(_ project: Project) -> some View {
+        Button {
+            NSApp.activate(ignoringOtherApps: true)
+            model.requestLaunch(project)
+        } label: {
+            Label(project.name, systemImage: project.iconSymbol)
+        }
     }
 }

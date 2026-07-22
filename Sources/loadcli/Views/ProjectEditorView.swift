@@ -8,8 +8,10 @@ struct ProjectEditorView: View {
     @State private var draft: Project
     private let isNew: Bool
 
-    init(project: Project?) {
-        _draft = State(initialValue: project ?? Project())
+    init(project: Project?, presetFolderID: UUID? = nil) {
+        var p = project ?? Project()
+        if project == nil, let fid = presetFolderID { p.folderID = fid }
+        _draft = State(initialValue: p)
         isNew = (project == nil)
     }
 
@@ -25,14 +27,20 @@ struct ProjectEditorView: View {
 
             Form {
                 Section("Identificação") {
-                    TextField("Nome", text: $draft.name, prompt: Text("erp-kameda"))
+                    TextField("Nome", text: $draft.name, prompt: Text("meu-projeto"))
+                    Picker("Pasta (grupo)", selection: folderIDBinding) {
+                        Text("Sem pasta").tag(UUID?.none)
+                        ForEach(store.folders) { f in
+                            Text(f.name.isEmpty ? "Pasta" : f.name).tag(Optional(f.id))
+                        }
+                    }
                     iconAndColorRow
                 }
 
                 Section("Pasta e CLI") {
                     HStack {
                         TextField("Pasta do projeto", text: $draft.folderPath,
-                                  prompt: Text("/Users/você/DEV/erp-kameda"))
+                                  prompt: Text("/Users/você/DEV/meu-projeto"))
                         Button("Escolher…") { chooseFolder() }
                     }
                     CLIConfigSection(project: $draft)
@@ -41,13 +49,33 @@ struct ProjectEditorView: View {
                     }
                 }
 
-                Section("Navegador e deploy") {
-                    TextField("URL", text: $draft.url, prompt: Text("https://erp.kamedatec.com"))
-                    Picker("Navegador", selection: $draft.browserBundleID) {
-                        ForEach(AppCatalog.browsers) { Text($0.name).tag($0.id) }
+                Section("Ao lado do terminal") {
+                    Picker("Painel", selection: secondaryPaneBinding) {
+                        ForEach(SecondaryPane.allCases) { Text($0.shortLabel).tag($0) }
                     }
-                    .onChange(of: draft.browserBundleID) { _, new in
-                        draft.browserName = AppCatalog.browsers.first { $0.id == new }?.name ?? "Google Chrome"
+                    .pickerStyle(.segmented)
+
+                    switch draft.secondaryPane {
+                    case .none:
+                        Text("Só o terminal abre — ocupando a mesa inteira.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    case .browser:
+                        TextField("URL", text: $draft.url, prompt: Text("https://app.exemplo.com"))
+                        Picker("Navegador", selection: $draft.browserBundleID) {
+                            ForEach(AppCatalog.browsers) { Text($0.name).tag($0.id) }
+                        }
+                        .onChange(of: draft.browserBundleID) { _, new in
+                            draft.browserName = AppCatalog.browsers.first { $0.id == new }?.name ?? "Google Chrome"
+                        }
+                    case .finder:
+                        HStack {
+                            TextField("Pasta no Finder", text: $draft.finderPath,
+                                      prompt: Text(draft.folderPath.isEmpty
+                                                   ? "/Users/você/DEV/meu-projeto" : draft.folderPath))
+                            Button("Escolher…") { chooseFinderFolder() }
+                        }
+                        Text("Se vazio, abre a pasta do projeto.")
+                            .font(.caption).foregroundStyle(.secondary)
                     }
                 }
 
@@ -55,13 +83,15 @@ struct ProjectEditorView: View {
                     Picker("Modo", selection: $draft.workspaceMode) {
                         ForEach(WorkspaceMode.allCases) { Text($0.label).tag($0) }
                     }
-                    Picker("Layout", selection: $draft.splitSide) {
-                        ForEach(SplitSide.allCases) { Text($0.label).tag($0) }
-                    }
-                    VStack(alignment: .leading) {
-                        Text("Divisão: navegador \(Int(draft.splitRatio * 100))% · terminal \(Int((1 - draft.splitRatio) * 100))%")
-                            .font(.caption).foregroundStyle(.secondary)
-                        Slider(value: $draft.splitRatio, in: 0.3...0.7, step: 0.05)
+                    if draft.secondaryPane != .none {
+                        Picker("Layout", selection: $draft.splitSide) {
+                            ForEach(SplitSide.allCases) { Text($0.label).tag($0) }
+                        }
+                        VStack(alignment: .leading) {
+                            Text("Divisão: terminal \(terminalPercent)% · painel \(100 - terminalPercent)%")
+                                .font(.caption).foregroundStyle(.secondary)
+                            Slider(value: $draft.splitRatio, in: 0.3...0.7, step: 0.05)
+                        }
                     }
                     Picker("Monitor", selection: monitorBinding) {
                         Text("Perguntar a cada vez").tag(String?.none)
@@ -125,18 +155,40 @@ struct ProjectEditorView: View {
         Binding(get: { draft.monitorPreference }, set: { draft.monitorPreference = $0 })
     }
 
+    private var folderIDBinding: Binding<UUID?> {
+        Binding(get: { draft.folderID }, set: { draft.folderID = $0 })
+    }
+
+    private var secondaryPaneBinding: Binding<SecondaryPane> {
+        Binding(get: { draft.secondaryPane }, set: { draft.secondaryPane = $0 })
+    }
+
+    /// Percentage of the split the terminal gets, honouring which side it's on.
+    private var terminalPercent: Int {
+        let frac = draft.splitSide == .terminalRight ? (1 - draft.splitRatio) : draft.splitRatio
+        return Int((frac * 100).rounded())
+    }
+
     private func chooseFolder() {
+        pickFolder(startingAt: draft.folderPath) { url in
+            draft.folderPath = url.path
+            if draft.name.isEmpty { draft.name = url.lastPathComponent }
+        }
+    }
+
+    private func chooseFinderFolder() {
+        pickFolder(startingAt: draft.finderPath.isEmpty ? draft.folderPath : draft.finderPath) { url in
+            draft.finderPath = url.path
+        }
+    }
+
+    private func pickFolder(startingAt path: String, _ apply: (URL) -> Void) {
         let panel = NSOpenPanel()
         panel.canChooseDirectories = true
         panel.canChooseFiles = false
         panel.allowsMultipleSelection = false
         panel.prompt = "Escolher"
-        if !draft.folderPath.isEmpty {
-            panel.directoryURL = URL(fileURLWithPath: draft.folderPath)
-        }
-        if panel.runModal() == .OK, let url = panel.url {
-            draft.folderPath = url.path
-            if draft.name.isEmpty { draft.name = url.lastPathComponent }
-        }
+        if !path.isEmpty { panel.directoryURL = URL(fileURLWithPath: path) }
+        if panel.runModal() == .OK, let url = panel.url { apply(url) }
     }
 }

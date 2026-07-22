@@ -22,8 +22,37 @@ enum SplitSide: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
     var label: String {
         switch self {
-        case .terminalRight: return "Terminal à direita · navegador à esquerda"
-        case .terminalLeft:  return "Terminal à esquerda · navegador à direita"
+        case .terminalRight: return "Terminal à direita · painel à esquerda"
+        case .terminalLeft:  return "Terminal à esquerda · painel à direita"
+        }
+    }
+}
+
+/// What opens beside the terminal in the split — nothing, a browser at the
+/// deploy URL, or a Finder window at a chosen folder.
+enum SecondaryPane: String, Codable, CaseIterable, Identifiable {
+    case none, browser, finder
+
+    var id: String { rawValue }
+    var label: String {
+        switch self {
+        case .none:    return "Nenhum (só terminal)"
+        case .browser: return "Navegador"
+        case .finder:  return "Finder (pasta)"
+        }
+    }
+    var shortLabel: String {
+        switch self {
+        case .none:    return "Só terminal"
+        case .browser: return "Navegador"
+        case .finder:  return "Finder"
+        }
+    }
+    var systemImage: String {
+        switch self {
+        case .none:    return "rectangle"
+        case .browser: return "globe"
+        case .finder:  return "folder"
         }
     }
 }
@@ -86,6 +115,14 @@ struct Project: Identifiable, Codable, Hashable {
     var iconSymbol: String = "terminal.fill"
     var colorHex: String = "#7C5CFF"
 
+    // Organisation: which folder (group) the card lives in. nil = ungrouped.
+    var folderID: UUID? = nil
+
+    // Secondary pane beside the terminal. Optional so older projects still
+    // decode; nil is interpreted from the presence of a saved URL below.
+    var secondaryPaneRaw: String? = nil
+    var finderPath: String = ""           // folder to reveal when pane == .finder
+
     // CLI tool + per-tool model/effort. Optionals so projects saved by older
     // versions (without these keys) still decode; nil/"" model/effort = padrão.
     var cliToolRaw: String? = nil
@@ -125,6 +162,32 @@ struct Project: Identifiable, Codable, Hashable {
             return cmd
         case .custom:
             return cliCommand
+        }
+    }
+
+    /// Which app (if any) sits beside the terminal. Falls back for legacy
+    /// projects: a saved deploy URL means the old browser behaviour.
+    var secondaryPane: SecondaryPane {
+        get {
+            if let raw = secondaryPaneRaw, let p = SecondaryPane(rawValue: raw) { return p }
+            return url.trimmingCharacters(in: .whitespaces).isEmpty ? .none : .browser
+        }
+        set { secondaryPaneRaw = newValue.rawValue }
+    }
+
+    /// Folder the Finder pane reveals — the explicit path, or the project folder.
+    var effectiveFinderPath: String {
+        let p = finderPath.trimmingCharacters(in: .whitespaces)
+        return p.isEmpty ? folderPath : p
+    }
+
+    /// Short descriptor of the CLI for the card tag (tool-aware, not just the
+    /// raw command which stays "claude" for tool-based projects).
+    var cliShortLabel: String {
+        switch cliTool {
+        case .claude: return "claude"
+        case .codex:  return "codex"
+        case .custom: return cliCommand.trimmingCharacters(in: .whitespaces).isEmpty ? "shell" : cliCommand
         }
     }
 

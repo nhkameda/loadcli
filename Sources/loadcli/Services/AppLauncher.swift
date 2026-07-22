@@ -98,6 +98,26 @@ enum AppLauncher {
         return run("tell application \(appLit) to do script \(cmdLit)")
     }
 
+    /// Open a NEW Finder window at `path`, without activating Finder (so the
+    /// window joins the freshly created mesa, like the browser). A fresh window
+    /// — rather than `open`, which may reuse an existing one — is what the
+    /// positioner tracks as "new".
+    @discardableResult
+    static func openFinder(path: String) -> (ok: Bool, error: String?) {
+        let trimmed = path.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return (false, "pasta não definida") }
+        let pathLit = asLiteral(trimmed)
+        let src = """
+        with timeout of 12 seconds
+            tell application "Finder"
+                set newWin to make new Finder window
+                set target of newWin to (POSIX file \(pathLit) as alias)
+            end tell
+        end timeout
+        """
+        return run(src)
+    }
+
     @discardableResult
     static func openBrowser(url: String, bundleID: String, name: String) -> (ok: Bool, error: String?) {
         let trimmed = url.trimmingCharacters(in: .whitespacesAndNewlines)

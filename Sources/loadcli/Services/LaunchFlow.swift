@@ -40,7 +40,8 @@ enum LaunchFlow {
         }
 
         let terminalBundle = AppCatalog.terminalBundleID(forName: project.terminalApp)
-        let hasURL = !project.url.trimmingCharacters(in: .whitespaces).isEmpty
+        let pane = project.secondaryPane
+        let hasPane = pane != .none
 
         // 2. Terminal + CLI in the project folder (track which window is new).
         progress("Abrindo \(project.terminalApp) em \(project.folderName)…")
@@ -51,23 +52,43 @@ enum LaunchFlow {
                                                bundleID: terminalBundle)
         if !t.ok { outcome.notice = "Terminal: \(t.error ?? "falha")" }
 
-        // 3. Browser + deploy URL.
-        var browserBefore = Set<CGWindowID>()
-        if hasURL {
+        // 3. Secondary pane (browser at the deploy URL, or Finder at a folder).
+        var paneBundle = ""
+        var paneBefore = Set<CGWindowID>()
+        switch pane {
+        case .browser:
             progress("Abrindo \(project.browserName)…")
-            browserBefore = WindowPositioner.windowIDs(bundleID: project.browserBundleID)
+            paneBundle = project.browserBundleID
+            paneBefore = WindowPositioner.windowIDs(bundleID: paneBundle)
             let b = AppLauncher.openBrowser(url: project.url,
-                                            bundleID: project.browserBundleID, name: project.browserName)
+                                            bundleID: paneBundle, name: project.browserName)
             if !b.ok { outcome.notice = "Navegador: \(b.error ?? "falha")" }
+        case .finder:
+            paneBundle = "com.apple.finder"
+            let target = project.effectiveFinderPath
+            progress("Abrindo Finder em \((target as NSString).lastPathComponent)…")
+            paneBefore = WindowPositioner.windowIDs(bundleID: paneBundle)
+            let f = AppLauncher.openFinder(path: target)
+            if !f.ok { outcome.notice = "Finder: \(f.error ?? "falha")" }
+        case .none:
+            break
         }
 
-        // 4. Position the two NEW windows as a split on the target display,
-        //    verifying each one actually sits on the new desktop.
+        // 4. Position the NEW windows on the target display, verifying each one
+        //    actually sits on the new desktop. With no secondary pane the
+        //    terminal takes the whole mesa; otherwise they split.
         progress("Posicionando janelas…")
         try? await Task.sleep(nanoseconds: UInt64(max(0.3, settings.launchDelaySeconds) * 1_000_000_000))
         let rects = WindowPositioner.halfRects(for: display, leftRatio: project.splitRatio)
-        let terminalRect = project.splitSide == .terminalRight ? rects.right : rects.left
-        let browserRect  = project.splitSide == .terminalRight ? rects.left : rects.right
+        let terminalRect: CGRect
+        let paneRect: CGRect
+        if hasPane {
+            terminalRect = project.splitSide == .terminalRight ? rects.right : rects.left
+            paneRect     = project.splitSide == .terminalRight ? rects.left  : rects.right
+        } else {
+            terminalRect = DisplayManager.cocoaToCG(display.visibleFrame)
+            paneRect = .zero
+        }
 
         if let tw = await WindowPositioner.newWindow(bundleID: terminalBundle, excluding: termBefore) {
             outcome.terminalWindow = tw
@@ -77,14 +98,13 @@ enum LaunchFlow {
         } else {
             outcome.notice = "Não encontrei a nova janela do terminal para posicionar."
         }
-        if hasURL {
-            if let bw = await WindowPositioner.newWindow(bundleID: project.browserBundleID,
-                                                         excluding: browserBefore) {
-                let onSpace = await WindowPositioner.placeVerified(bw, in: browserRect,
+        if hasPane {
+            if let pw = await WindowPositioner.newWindow(bundleID: paneBundle, excluding: paneBefore) {
+                let onSpace = await WindowPositioner.placeVerified(pw, in: paneRect,
                                                                    expectedSpace: targetSpaceID)
-                if !onSpace { outcome.notice = "A janela do navegador pode não ter ficado na nova mesa." }
+                if !onSpace { outcome.notice = "A janela do \(pane.shortLabel) pode não ter ficado na nova mesa." }
             } else {
-                outcome.notice = "Não encontrei a nova janela do navegador para posicionar."
+                outcome.notice = "Não encontrei a nova janela do \(pane.shortLabel) para posicionar."
             }
         }
 
