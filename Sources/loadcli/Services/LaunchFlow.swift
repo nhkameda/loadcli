@@ -68,7 +68,9 @@ enum LaunchFlow {
         let terminalRect = project.splitSide == .terminalRight ? rects.right : rects.left
         let browserRect  = project.splitSide == .terminalRight ? rects.left : rects.right
 
+        var terminalWindow: WindowPositioner.TrackedWindow? = nil
         if let tw = await WindowPositioner.newWindow(bundleID: terminalBundle, excluding: termBefore) {
+            terminalWindow = tw
             let onSpace = await WindowPositioner.placeVerified(tw, in: terminalRect,
                                                                expectedSpace: targetSpaceID)
             if !onSpace { outcome.notice = "A janela do terminal pode não ter ficado na nova mesa." }
@@ -84,6 +86,11 @@ enum LaunchFlow {
             } else {
                 outcome.notice = "Não encontrei a nova janela do navegador para posicionar."
             }
+        }
+
+        // 5. Leave the keyboard focus in the new terminal.
+        if let tw = terminalWindow {
+            WindowPositioner.focus(tw, appBundleID: terminalBundle)
         }
 
         progress("Pronto!")

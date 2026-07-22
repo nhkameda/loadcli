@@ -31,15 +31,24 @@ desligado** — inaceitável para um produto vendável.
 - É preciso um **settle (~350 ms)** após o MC abrir antes de pressionar qualquer botão — presses
   cedo demais retornam sucesso sem efeito (fragilidade conhecida, Hammerspoon `MCwaitTime`).
 
-**Troca — `SLSManagedDisplaySetCurrentSpace`, sempre verificada:**
+**Troca — clique real no thumbnail (dirigido pelo Dock), sempre verificada:**
 - No macOS 26, `AXPress` no thumbnail de uma mesa **retorna sucesso, fecha o MC e NÃO troca**
-  (verificado empiricamente em 26.3 — era o bug raiz do loadcli). A troca confiável é a chamada
-  privada `SLSManagedDisplaySetCurrentSpace(conn, uuid, spaceID)`, instantânea e sem UI,
-  **sempre verificada** em seguida com `SLSManagedDisplayGetCurrentSpace`.
-- **Fallback** (se a chamada parar de funcionar num macOS futuro): clique **sintético** do mouse
-  no thumbnail da mesa — o cursor paira no topo do display para **expandir a barra** (só então
-  os thumbnails têm coordenadas reais na tela), clica no centro do botão e restaura o cursor.
+  (verificado empiricamente em 26.3 — era o bug raiz do loadcli).
+- A chamada privada `SLSManagedDisplaySetCurrentSpace` troca o estado no WindowServer, mas o
+  **Dock não executa a transição**: o compositor fica com as **duas mesas (e duas barras de
+  menu) sobrepostas** até a próxima transição real, e uma interação posterior com o Mission
+  Control pode até **voltar** para a mesa que o Dock achava corrente (dessincronia — o mesmo
+  motivo pelo qual o yabai injeta código no Dock para atualizar `_currentSpace`).
+- Por isso o lançamento troca com um **clique sintético real** no thumbnail da mesa nova, com o
+  MC ainda aberto da criação: o cursor paira no topo do display para **expandir a barra** (só
+  então os thumbnails têm coordenadas reais na tela), clica no centro do botão e restaura o
+  cursor. O Dock faz a transição completa — sem artefato — e o **foco de teclado vai para o
+  display alvo**. Verificada com `SLSManagedDisplayGetCurrentSpace`.
+- `SLSManagedDisplaySetCurrentSpace` fica como **fallback** e para caminhos programáticos
+  (ex.: restauração no doctor), sempre verificado.
 - Fallback final gracioso: segue na mesa atual e avisa o usuário.
+- Ao final do lançamento, o **foco fica no terminal novo** (`AXRaise` + `kAXMain` + ativação do
+  app) — seguro nesse momento porque a janela está na mesa corrente (auto-swoosh não dispara).
 
 **Janelas na mesa nova — verificação por space-ID:**
 - Terminal/navegador são lançados **sem `activate`** (com `AppleSpacesSwitchOnActivate` — o

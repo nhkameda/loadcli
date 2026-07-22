@@ -65,6 +65,17 @@ enum WindowPositioner {
         AX.setSize(window, rect.size)
     }
 
+    /// Raise a window, make it the app's main window and bring the app
+    /// forward. Only called at the end of the launch, when the window already
+    /// lives on the current mesa — activating earlier would let auto-swoosh
+    /// jump to a Space with the app's other windows.
+    static func focus(_ window: TrackedWindow, appBundleID: String) {
+        AX.perform(window.element, action: kAXRaiseAction as String)
+        AXUIElementSetAttributeValue(window.element, kAXMainAttribute as CFString, kCFBooleanTrue)
+        NSRunningApplication.runningApplications(withBundleIdentifier: appBundleID).first?
+            .activate(options: [])
+    }
+
     /// Place the window and confirm it ended up on `expectedSpace`.
     ///
     /// Apps open windows wherever their last window frame was — possibly on

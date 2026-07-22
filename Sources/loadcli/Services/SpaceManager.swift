@@ -208,27 +208,47 @@ enum SpaceManager {
             }
             return false
         }
-        await closeMissionControl()
         dlog("created=\(created) newID=\(newID)")
-        guard created else { return .failed }
+        guard created else {
+            await closeMissionControl()
+            return .failed
+        }
 
-        if await switchTo(spaceID: newID, display: display) {
+        // PRIMARY switch: a real click on the new desktop's thumbnail (Mission
+        // Control is still open from the creation step). Only a Dock-driven
+        // transition repaints correctly — switching with the SLS call alone
+        // leaves the compositor with both desktops (and both menu bars)
+        // overlaid until the next real space transition. The click also gives
+        // the target display keyboard focus, right where the terminal opens.
+        if await clickThumbnail(of: newID, display: display) {
             return .created(spaceID: newID)
         }
-        dlog("switch to \(newID) failed (SLS + click fallback)")
+        dlog("clique no thumbnail falhou; tentando troca via SLS")
+        await closeMissionControl()
+        if await slsSwitch(to: newID, display: display) {
+            return .created(spaceID: newID)
+        }
+        dlog("switch to \(newID) failed (click + SLS)")
         return .createdNoSwitch(spaceID: newID)
     }
 
     /// Switch `display` to one of its existing desktops, verified.
+    /// SLS-first (fast, no UI) — used by programmatic paths like the doctor's
+    /// restore; project launches switch via the thumbnail click instead.
     static func switchTo(spaceID: UInt64, display: DisplayInfo) async -> Bool {
         guard SkyLight.desktopIDs(onDisplay: display.id).contains(spaceID) else { return false }
+        if await slsSwitch(to: spaceID, display: display) { return true }
+        return await clickThumbnail(of: spaceID, display: display)
+    }
+
+    private static func slsSwitch(to spaceID: UInt64, display: DisplayInfo) async -> Bool {
         for _ in 0..<2 {
             SkyLight.requestSwitch(to: spaceID, onDisplay: display.id)
             if await poll(1.2, { SkyLight.currentSpace(onDisplay: display.id) == spaceID }) {
                 return true
             }
         }
-        return await clickThumbnail(of: spaceID, display: display)
+        return false
     }
 
     /// Remove a desktop via the thumbnail's `AXRemoveDesktop` action (used by
@@ -279,6 +299,8 @@ enum SpaceManager {
             return false
         }
         postMouseClick(CGPoint(x: pos.x + size.width / 2, y: pos.y + size.height / 2))
+        try? await Task.sleep(nanoseconds: 150_000_000)
+        postMouseMove(originalMouse)   // snappy restore; defer re-posts harmlessly
         let switched = await poll(3.0) { SkyLight.currentSpace(onDisplay: display.id) == spaceID }
         await closeMissionControl()   // the click normally closes MC; make sure
         return switched

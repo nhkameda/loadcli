@@ -62,10 +62,14 @@ enum Doctor {
             switch await SpaceManager.createAndEnterDesktop(on: display) {
             case .created(let id):
                 line(true, "criar nova mesa e entrar nela (space \(id))")
-                let back = await SpaceManager.switchTo(spaceID: originalCurrent, display: display)
-                allOK = line(back, "voltar para a mesa original") && allOK
+                // Remove FIRST: deleting the current desktop makes macOS run a
+                // real (Dock-driven) transition back — an SLS switch followed
+                // by Mission Control interactions can snap to a stale desktop.
                 let removed = await SpaceManager.removeDesktop(spaceID: id, display: display)
                 allOK = line(removed, "remover a mesa de teste") && allOK
+                var back = SkyLight.currentSpace(onDisplay: display.id) == originalCurrent
+                if !back { back = await SpaceManager.switchTo(spaceID: originalCurrent, display: display) }
+                allOK = line(back, "voltar para a mesa original") && allOK
             case .createdNoSwitch(let id):
                 allOK = false
                 line(false, "entrar na nova mesa (space \(id) criado, mas sem alternar)")

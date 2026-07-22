@@ -37,12 +37,14 @@ Acessibilidade**, usando os identificadores estáveis do Dock (`mc.spaces.add`) 
 monitor pelo `AXDisplayID` — o mesmo caminho do `hs.spaces` do Hammerspoon. A criação é
 confirmada por **diff de IDs de space** (SkyLight, leitura).
 
-Para **entrar** na mesa nova, o clique de Acessibilidade no thumbnail é ignorado no macOS 26
-(verificado empiricamente), então o loadcli usa `SLSManagedDisplaySetCurrentSpace` — troca
-instantânea, sem abrir UI — **sempre verificando** o resultado e com fallback para um clique
-real no Mission Control. Terminal e navegador são lançados **sem ativação** (para o macOS não
-“pular” para outra mesa) e cada janela nova é **verificada e corrigida** até estar na mesa
-certa. `loadcli --doctor` roda um autoteste completo desse mecanismo em cada monitor.
+Para **entrar** na mesa nova, o clique de Acessibilidade no thumbnail é ignorado no macOS 26,
+e a troca por API privada deixa a tela com as duas mesas sobrepostas (o Dock não faz a
+transição). Então o loadcli faz o que um humano faria: um **clique real** no thumbnail da mesa
+nova no Mission Control — transição completa, sem artefatos, foco no monitor certo — **sempre
+verificando** o resultado (com `SLSManagedDisplaySetCurrentSpace` como fallback). Terminal e
+navegador são lançados **sem ativação** (para o macOS não “pular” para outra mesa), cada janela
+nova é **verificada e corrigida** até estar na mesa certa, e o **foco termina no terminal**.
+`loadcli --doctor` roda um autoteste completo desse mecanismo em cada monitor.
 
 > Decisão de distribuição: **Developer ID** (fora da Mac App Store). A criação de mesas e o
 > controle de janelas dependem de Acessibilidade/Apple Events fora do sandbox da loja.
