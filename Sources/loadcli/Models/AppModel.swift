@@ -90,6 +90,11 @@ final class AppModel: ObservableObject {
                 if focused, store.settings.increaseTerminalFont {
                     await bumpTerminalFont(steps: store.settings.terminalFontZoomSteps,
                                            terminalBundle: terminalBundle)
+                    // The font bump grows Terminal/iTerm windows (they keep the
+                    // column count), so re-assert the tiled rect afterwards.
+                    if let rect = outcome.terminalRect {
+                        await WindowPositioner.reassertRect(tw, in: rect)
+                    }
                 }
             }
         }

@@ -65,6 +65,17 @@ enum WindowPositioner {
         AX.setSize(window, rect.size)
     }
 
+    /// Re-apply a window's tiled rect after something resized it out from under
+    /// us. Terminal/iTerm keep their column/row count when the font changes, so
+    /// a ⌘+ font bump GROWS the window past its half — a couple of delayed
+    /// passes snap it back (the app then reflows columns to the smaller width).
+    static func reassertRect(_ window: TrackedWindow, in rect: CGRect) async {
+        for _ in 0..<3 {
+            place(window.element, in: rect)
+            try? await Task.sleep(nanoseconds: 150_000_000)
+        }
+    }
+
     /// Put a window into native macOS full screen (its own Space on whatever
     /// display it currently sits on). Position the window on the target display
     /// first, then call this. Retries because some apps ignore the first set

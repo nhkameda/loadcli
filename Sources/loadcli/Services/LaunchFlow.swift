@@ -8,6 +8,7 @@ enum LaunchFlow {
         var error: String? = nil
         var spaceID: UInt64? = nil   // the desktop that was created (if any)
         var terminalWindow: WindowPositioner.TrackedWindow? = nil   // for late focus
+        var terminalRect: CGRect? = nil   // tiled target, re-asserted after the font bump
     }
 
     static func run(_ project: Project, on display: DisplayInfo, settings: AppSettings,
@@ -114,6 +115,7 @@ enum LaunchFlow {
 
         if let tw = await WindowPositioner.newWindow(bundleID: terminalBundle, excluding: termBefore) {
             outcome.terminalWindow = tw
+            outcome.terminalRect = terminalRect
             let onSpace = await WindowPositioner.placeVerified(tw, in: terminalRect,
                                                                expectedSpace: targetSpaceID)
             if !onSpace { outcome.notice = "A janela do terminal pode não ter ficado na nova mesa." }
