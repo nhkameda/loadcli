@@ -58,9 +58,10 @@ final class AppModel: ObservableObject {
             // Focus the new terminal only AFTER the overlay is gone, so
             // nothing in our own UI re-takes activation.
             if let tw = outcome.terminalWindow {
-                try? await Task.sleep(nanoseconds: 400_000_000)
-                WindowPositioner.focus(
-                    tw, appBundleID: AppCatalog.terminalBundleID(forName: updated.terminalApp))
+                try? await Task.sleep(nanoseconds: 600_000_000)
+                _ = await WindowPositioner.focusVerified(
+                    tw, appBundleID: AppCatalog.terminalBundleID(forName: updated.terminalApp),
+                    appName: updated.terminalApp)
             }
         }
     }

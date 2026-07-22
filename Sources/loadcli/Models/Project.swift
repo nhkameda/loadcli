@@ -48,7 +48,7 @@ enum CLITool: String, Codable, CaseIterable, Identifiable {
 /// `-m` + `-c model_reasoning_effort=…`.
 enum CLICatalog {
     static let claudeModels = ["fable", "opus", "sonnet", "haiku"]
-    static let claudeEfforts = ["low", "medium", "high", "xhigh", "max"]
+    static let claudeEfforts = ["low", "medium", "high", "xhigh", "max", "ultracode"]
     static let codexModels = ["gpt-5.6-sol", "gpt-5.5"]
     static let codexEfforts = ["minimal", "low", "medium", "high"]
 

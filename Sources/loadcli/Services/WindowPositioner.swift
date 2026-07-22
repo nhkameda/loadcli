@@ -71,18 +71,60 @@ enum WindowPositioner {
         AXUIElementSetAttributeValue(window.element, kAXMainAttribute as CFString, kCFBooleanTrue)
     }
 
-    /// Raise the window and bring its app forward. Only safe when the window
-    /// already lives on the current mesa — activating earlier would let
-    /// auto-swoosh jump to a Space with the app's other windows.
-    static func focus(_ window: TrackedWindow, appBundleID: String) {
+    /// Bring the terminal window to the user's focus, escalating mechanisms
+    /// and VERIFYING after each (frontmost app must become the target).
+    ///
+    /// Why the ladder: after entering the freshly created (empty) mesa,
+    /// loadcli is usually no longer the frontmost app, so macOS 14+
+    /// cooperative activation (`activate(from:)` — yield) has nothing to
+    /// yield and plain `activate(options:)` is ignored. An app may always
+    /// activate ITSELF though, so an AppleScript `activate` sent to the
+    /// terminal works — and the final fallback is what a human does: click
+    /// the window's title bar. Only safe when the window already lives on the
+    /// current mesa (no auto-swoosh).
+    static func focusVerified(_ window: TrackedWindow, appBundleID: String,
+                              appName: String) async -> Bool {
         raise(window)
-        guard let app = NSRunningApplication
-            .runningApplications(withBundleIdentifier: appBundleID).first else { return }
-        // macOS 14+ cooperative activation: a plain activate(options:) coming
-        // from another frontmost app is ignored — the caller must yield.
-        if !app.activate(from: .current, options: []) {
-            app.activate(options: [])
+
+        func isFront() -> Bool {
+            NSWorkspace.shared.frontmostApplication?.bundleIdentifier == appBundleID
         }
+        func settled(_ timeout: TimeInterval) async -> Bool {
+            let deadline = Date().addingTimeInterval(timeout)
+            while Date() < deadline {
+                if isFront() { return true }
+                try? await Task.sleep(nanoseconds: 120_000_000)
+            }
+            return isFront()
+        }
+        if isFront() { return true }
+
+        // 1. Cooperative yield — works only while loadcli still holds activation.
+        if let app = NSRunningApplication
+            .runningApplications(withBundleIdentifier: appBundleID).first {
+            app.activate(from: .current, options: [])
+            if await settled(0.6) { return true }
+        }
+
+        // 2. The target app activates itself via Apple Events.
+        _ = AppLauncher.run("tell application \"\(appName)\" to activate")
+        if await settled(0.9) { return true }
+
+        // 3. Human-equivalent: click the title bar (cursor restored after).
+        if let pos = AX.position(window.element), let size = AX.size(window.element) {
+            let original = CGEvent(source: nil)?.location ?? .zero
+            let p = CGPoint(x: pos.x + min(size.width / 2, 180), y: pos.y + 12)
+            CGEvent(mouseEventSource: nil, mouseType: .leftMouseDown,
+                    mouseCursorPosition: p, mouseButton: .left)?.post(tap: .cghidEventTap)
+            usleep(60_000)
+            CGEvent(mouseEventSource: nil, mouseType: .leftMouseUp,
+                    mouseCursorPosition: p, mouseButton: .left)?.post(tap: .cghidEventTap)
+            try? await Task.sleep(nanoseconds: 150_000_000)
+            CGEvent(mouseEventSource: nil, mouseType: .mouseMoved,
+                    mouseCursorPosition: original, mouseButton: .left)?.post(tap: .cghidEventTap)
+            if await settled(0.9) { return true }
+        }
+        return isFront()
     }
 
     /// Place the window and confirm it ended up on `expectedSpace`.
