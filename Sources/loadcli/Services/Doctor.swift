@@ -39,6 +39,21 @@ enum Doctor {
         allOK = line(SkyLight.isAvailable, "SkyLight — leitura de mesas") && allOK
         allOK = line(SkyLight.canSwitch, "SkyLight — troca de mesa disponível") && allOK
 
+        // AXIsProcessTrusted pode dizer "sim" (via processo responsável) enquanto
+        // as chamadas AX reais, feitas com a identidade do app, são negadas —
+        // este check lê a árvore AX do Dock de verdade.
+        let dockReadable: Bool = {
+            guard let dock = NSRunningApplication
+                .runningApplications(withBundleIdentifier: "com.apple.dock").first else { return false }
+            return !AX.children(AX.app(pid: dock.processIdentifier)).isEmpty
+        }()
+        allOK = line(dockReadable, "Leitura da árvore AX do Dock") && allOK
+        guard dockReadable else {
+            print("→ As chamadas de Acessibilidade estão sendo negadas para ESTE processo.")
+            print("  Conceda Acessibilidade ao loadcli (o app), abra-o normalmente e rode o doctor de novo.")
+            return 1
+        }
+
         for display in DisplayManager.displays() {
             print("Monitor: \(display.name)")
             let originalCurrent = SkyLight.currentSpace(onDisplay: display.id)

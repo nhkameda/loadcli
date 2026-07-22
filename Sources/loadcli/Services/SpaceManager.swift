@@ -23,6 +23,12 @@ enum SpaceManager {
         case failed
     }
 
+    /// Set LOADCLI_DEBUG=1 to trace each step on stderr (support/diagnóstico).
+    private static let debugEnabled = ProcessInfo.processInfo.environment["LOADCLI_DEBUG"] == "1"
+    private static func dlog(_ msg: @autoclosure () -> String) {
+        if debugEnabled { FileHandle.standardError.write(Data(("[SpaceManager] " + msg() + "\n").utf8)) }
+    }
+
     // MARK: - Mission Control open/close
 
     /// `CoreDockSendNotification("com.apple.expose.awake")` toggles Mission
@@ -38,12 +44,25 @@ enum SpaceManager {
         return nil
     }()
 
-    private static func toggleMissionControl() {
-        if let coreDockNotify {
-            coreDockNotify("com.apple.expose.awake" as CFString, 0)
-        } else {
-            NSWorkspace.shared.open(URL(fileURLWithPath: "/System/Applications/Mission Control.app"))
-        }
+    /// Under the Hardened Runtime (how the app ships) the CoreDock
+    /// notification is silently ignored, so after it fails once we go straight
+    /// to the `/usr/bin/open` child, which is proven to work there.
+    /// (NSWorkspace with `activates=false` must NOT be used for the
+    /// exposelauncher: it wedges the LaunchServices request and the subsequent
+    /// `open -b` becomes a no-op — observed on macOS 26.3.)
+    private static var coreDockToggleWorks = true
+
+    private static func toggleViaCoreDock() -> Bool {
+        guard coreDockToggleWorks, let coreDockNotify else { return false }
+        coreDockNotify("com.apple.expose.awake" as CFString, 0)
+        return true
+    }
+
+    private static func toggleViaOpenTool() {
+        let p = Process()
+        p.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+        p.arguments = ["-b", "com.apple.exposelauncher"]
+        try? p.run()
     }
 
     private static func dockApp() -> AXUIElement? {
@@ -58,15 +77,27 @@ enum SpaceManager {
         return AX.children(dock).first { AX.identifier($0) == "mc" }
     }
 
+    /// Open Mission Control and wait for the Dock's `mc` group to appear.
     private static func openMissionControl() async -> Bool {
-        if missionControlGroup() == nil { toggleMissionControl() }
+        if missionControlGroup() != nil { return true }
+        if toggleViaCoreDock() {
+            if await poll(1.2, { missionControlGroup() != nil }) { return true }
+            coreDockToggleWorks = false
+            dlog("CoreDock toggle sem efeito; usando /usr/bin/open daqui em diante")
+        }
+        toggleViaOpenTool()
         return await poll(2.5) { missionControlGroup() != nil }
     }
 
     private static func closeMissionControl() async {
-        if missionControlGroup() != nil { toggleMissionControl() }
+        guard missionControlGroup() != nil else { return }
+        if toggleViaCoreDock() {
+            if await poll(1.2, { missionControlGroup() == nil }) { return }
+            coreDockToggleWorks = false
+        }
+        toggleViaOpenTool()
         if await poll(1.5, { missionControlGroup() == nil }) { return }
-        pressEscape()
+        pressEscape()   // last resort — does not always dismiss MC
         _ = await poll(1.0) { missionControlGroup() == nil }
     }
 
@@ -139,9 +170,12 @@ enum SpaceManager {
     /// Create a new desktop on `display` and switch to it.
     static func createAndEnterDesktop(on display: DisplayInfo) async -> Result {
         let beforeIDs = Set(SkyLight.desktopIDs(onDisplay: display.id))
+        dlog("before: \(beforeIDs.sorted()) display=\(display.displayID) coreDockNotify=\(coreDockNotify != nil)")
 
-        guard await openMissionControl(),
-              var bar = await waitForSpacesBar(display, timeout: 2.0) else {
+        let opened = await openMissionControl()
+        dlog("openMissionControl -> \(opened), mcGroup=\(missionControlGroup() != nil), bars=\(spacesBars().count)")
+        guard opened, var bar = await waitForSpacesBar(display, timeout: 2.0) else {
+            dlog("bar for display not found; bars displayIDs=\(spacesBars().map { String(describing: $0.displayID) })")
             await closeMissionControl()
             return .failed
         }
@@ -158,6 +192,7 @@ enum SpaceManager {
                 pressed = AX.press(bar.addButton)
             }
         }
+        dlog("press add -> \(pressed)")
         guard pressed else {
             await closeMissionControl()
             return .failed
@@ -174,11 +209,13 @@ enum SpaceManager {
             return false
         }
         await closeMissionControl()
+        dlog("created=\(created) newID=\(newID)")
         guard created else { return .failed }
 
         if await switchTo(spaceID: newID, display: display) {
             return .created(spaceID: newID)
         }
+        dlog("switch to \(newID) failed (SLS + click fallback)")
         return .createdNoSwitch(spaceID: newID)
     }
 
