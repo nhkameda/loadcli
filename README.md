@@ -1,117 +1,205 @@
+<div align="center">
+
+<img src="Sources/loadcli/Resources/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="loadcli">
+
 # loadcli
 
-**Lançador de workspaces de desenvolvimento para macOS.**
+### Your entire dev environment — in **one click**.
 
-Escolha um projeto e, com **um clique**, o loadcli:
+Pick a project and `loadcli` sets the stage: a **new desktop** on the right monitor, the **Terminal** already running your **CLI** in the project folder and, beside it, **whatever that project needs** — the browser at the deploy URL, a Finder folder, or nothing. All positioned, without you touching a thing.
 
-1. cria uma **nova mesa** (área de trabalho do Mission Control) no monitor que você escolher;
-2. abre o **Terminal** já com `cd` na pasta do projeto e o seu **CLI** rodando (ex.: `claude`);
-3. abre o **navegador** na URL de deploy (ex.: `https://erp.kamedatec.com`);
-4. organiza as duas janelas **lado a lado** (terminal à direita, navegador à esquerda).
+**English** · [Português](README.pt-BR.md) · [中文](README.zh-CN.md)
 
-Tudo é configurável por projeto — pasta, comando CLI, URL, navegador, terminal, layout e
-monitor — e você pode ter **dezenas de projetos**, cada um a um clique.
+![macOS 14+](https://img.shields.io/badge/macOS-14%2B-000000?style=flat-square&logo=apple&logoColor=white)
+![Tested on macOS 26.3](https://img.shields.io/badge/tested%20on-macOS%2026.3%20Tahoe-1D9BF0?style=flat-square&logo=apple&logoColor=white)
+![Swift 5](https://img.shields.io/badge/Swift-5-F05138?style=flat-square&logo=swift&logoColor=white)
+![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-0A84FF?style=flat-square)
+![SIP intact](https://img.shields.io/badge/SIP-intact-3FB950?style=flat-square)
+![MIT license](https://img.shields.io/badge/license-MIT-3FB950?style=flat-square)
 
-<p align="center">
-  <img src="Sources/loadcli/Resources/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="ícone do loadcli">
-</p>
+</div>
 
 ---
 
-## Recursos
+## 😮‍💨 The chore it kills
 
-- 🖥️ **Nova mesa por projeto** no monitor escolhido (com seletor de monitor quando há 2+ telas).
-- ⌨️ **Terminal + CLI** na pasta certa (Terminal.app ou iTerm).
-- 🌐 **Navegador + URL** de deploy (Chrome, Brave, Edge, Arc, Safari).
-- ↔️ **Split automático** das janelas (proporção ajustável).
-- 🗂️ **Catálogo de projetos** com ícones, cores, edição, duplicação e exclusão.
-- 🧭 **Menu na barra de status** para lançar qualquer projeto sem abrir a janela principal.
-- ⚙️ Configurações, tela **Sobre**, ícone próprio e interface nativa SwiftUI.
+Every time you sit down with a project it's the same ritual: open the Terminal, `cd` into the right folder, fire up the CLI, open the browser at the deploy, spin up a fresh desktop so you don't clutter the others, drag and resize windows… times **dozens of projects**, ten times a day.
 
-## Como funciona (e por que assim)
+`loadcli` turns that ritual into **one click on a card**.
 
-**Criar** uma mesa via API privada (SkyLight) **não funciona** num app normal no macOS
-moderno — é por isso que ferramentas como o *yabai* exigem **desligar o SIP**. O loadcli cria
-a mesa pelo caminho **sem SIP**: dirige o botão “+” do **Mission Control** pela **API de
-Acessibilidade**, usando os identificadores estáveis do Dock (`mc.spaces.add`) e mirando o
-monitor pelo `AXDisplayID` — o mesmo caminho do `hs.spaces` do Hammerspoon. A criação é
-confirmada por **diff de IDs de space** (SkyLight, leitura).
-
-Para **entrar** na mesa nova, o clique de Acessibilidade no thumbnail é ignorado no macOS 26,
-e a troca por API privada deixa a tela com as duas mesas sobrepostas (o Dock não faz a
-transição). Então o loadcli faz o que um humano faria: um **clique real** no thumbnail da mesa
-nova no Mission Control — transição completa, sem artefatos, foco no monitor certo — **sempre
-verificando** o resultado (com `SLSManagedDisplaySetCurrentSpace` como fallback). Terminal e
-navegador são lançados **sem ativação** (para o macOS não “pular” para outra mesa), cada janela
-nova é **verificada e corrigida** até estar na mesa certa, e o **foco termina no terminal**.
-`loadcli --doctor` roda um autoteste completo desse mecanismo em cada monitor.
-
-> Decisão de distribuição: **Developer ID** (fora da Mac App Store). A criação de mesas e o
-> controle de janelas dependem de Acessibilidade/Apple Events fora do sandbox da loja.
-> Veja [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-
-## Permissões (1ª execução)
-
-O loadcli pede duas permissões padrão do macOS:
-
-- **Acessibilidade** — criar mesas e posicionar janelas
-  (Ajustes do Sistema › Privacidade e Segurança › **Acessibilidade**).
-- **Automação** — controlar Terminal e navegador (o macOS pergunta no primeiro uso; clique em
-  *Permitir*).
-
-## Build & execução
-
-Pré-requisitos: **Xcode** + Homebrew.
-
-```bash
-make bootstrap     # instala xcodegen, create-dmg, xcbeautify
-make run           # gera o projeto, compila (assinatura ad-hoc) e abre o app
+```
+┌───────────────────── new desktop · chosen monitor ──────────────────────┐
+│                                    │                                     │
+│     🌐  Browser (deploy URL)        │        ⌨️   Terminal + CLI           │
+│     🗂️  or a Finder folder          │        cd ~/DEV/my-project          │
+│     ▫️  or nothing (full screen)    │        $ claude                     │
+│                                    │                                     │
+└────────────────────────────────────┴─────────────────────────────────────┘
+        pane on the left                    terminal on the right, focused
 ```
 
-Outros alvos:
+---
 
-```bash
-make icon          # regenera o ícone do app
-make gen           # gera loadcli.xcodeproj a partir do project.yml
-make build         # build Debug
-make release       # build Release
+## 🎬 What one click does
+
+```mermaid
+flowchart LR
+    A([🖱️ click a card]) --> B[🖥️ new desktop<br/>on the chosen monitor]
+    B --> C[⌨️ Terminal + CLI<br/>in the project folder]
+    B --> D{side pane?}
+    D -->|Browser| E[🌐 deploy URL]
+    D -->|Finder| F[🗂️ chosen folder]
+    D -->|None| G[▫️ terminal full-screen]
+    C --> H([↔️ tiled side by side<br/>focus on the terminal])
+    E --> H
+    F --> H
+    G --> H
 ```
 
-## Distribuição (assinar + notarizar + DMG)
+Every window is **verified** — `loadcli` checks it actually landed on the new desktop and fixes it if it didn't — and the **focus ends on the terminal**, ready for you to type.
 
-Requer conta **Apple Developer** paga e um certificado **Developer ID Application** instalado
-(Xcode › Settings › Accounts › Manage Certificates › “+”). Credenciais via ambiente
-(use `op run` — **nunca** comite segredos):
+---
+
+## ✨ Highlights
+
+- 🖥️ **One desktop per project** on the monitor you pick (monitor picker when you have 2+ screens).
+- ⌨️ **Terminal + CLI** already in the right folder — Terminal.app or iTerm.
+- 🧩 **Per-project side pane:**
+  - 🌐 **Browser** at the deploy URL (Chrome, Brave, Edge, Arc, Safari)
+  - 🗂️ **A Finder folder** — tiled just like the browser
+  - ▫️ **Nothing** — for projects that only want the terminal, full-screen
+- 📁 **Folders** — group cards into collapsible folders; move them with a menu.
+- 🤖 **Per-project CLI** — Claude Code, Codex or a custom command, each with its own **model and _effort_** (e.g. `opus` + `ultracode`).
+- ↔️ **Automatic split** with adjustable ratio.
+- 🧭 **Menu bar launcher** — start any project (grouped by folder) without opening the main window.
+- 🩺 `loadcli --doctor` — self-test of the desktop mechanism on every monitor.
+- 🍎 **100% native** — SwiftUI, custom icon, About panel, Settings.
+
+---
+
+## 🧠 The hard part: creating Spaces **without disabling SIP**
+
+Creating a desktop (Space) through a private API (SkyLight) **doesn't work** in a normal modern-macOS app — which is why tools like *yabai* ask you to **turn off SIP**. `loadcli` sidesteps that.
+
+It creates the desktop **the way a human would**: it drives the **Mission Control “+” button** through the **Accessibility API**, using the Dock's stable identifiers (`mc.spaces.add`) and targeting the monitor by its `AXDisplayID` — the same path Hammerspoon's `hs.spaces` uses. Creation is confirmed by a **space-ID diff** (SkyLight, read-only).
+
+To **enter** the new desktop (the Accessibility click on the thumbnail is ignored on macOS 26, and switching via the private API leaves the screens overlapping), it again does what a person would: a **real click** on the desktop's thumbnail in Mission Control — a clean transition, focus on the right monitor — **always verifying** the result.
+
+> **SIP stays intact. No daemon. No kernel hack.** Just Accessibility and Apple Events — the same permissions you grant any automation app.
+
+Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+---
+
+## 🚀 Getting started
+
+**Prerequisites:** macOS 14+, **Xcode** and **Homebrew**.
+
+> 🧪 **Tested on macOS 26.3 (Tahoe).** The deployment target is macOS 14, but the desktop-creation flow has only been validated on macOS 26 — on 14/15 the Mission Control internals differ, so behavior there is unverified.
 
 ```bash
-# Uma vez: guarde o perfil de notarização no Keychain
+git clone https://github.com/<your-user>/loadcli.git
+cd loadcli
+make bootstrap     # installs xcodegen, xcbeautify, create-dmg
+make run           # generates the project, builds and opens the app
+```
+
+On first run macOS asks for **two permissions** (see below). Then just click **Add Project** and point it at a folder.
+
+<details>
+<summary>Other <code>make</code> targets</summary>
+
+```bash
+make gen           # generates loadcli.xcodeproj from project.yml
+make build         # Debug build
+make release       # Release build
+make icon          # regenerates the app icon
+make sign-notarize # sign (Developer ID) + notarize + build the DMG
+```
+</details>
+
+---
+
+## 🗂️ Configuring a project
+
+Each card holds everything that project needs:
+
+| Field | What it does |
+|------|-----------|
+| **Project folder** | where the Terminal `cd`s |
+| **CLI** | Claude Code / Codex / custom command — with **model** and **_effort_** |
+| **Side pane** | Browser (URL) · Finder (folder) · None |
+| **Desktop** | create a new desktop or use the current one |
+| **Layout** | terminal on the right/left + split ratio |
+| **Monitor** | fixed or “ask every time” |
+| **Folder (group)** | organizes the card into a collapsible folder |
+| **Icon & color** | the card's visual identity |
+
+Config lives in `~/Library/Application Support/loadcli/` (`projects.json`, `folders.json`, `settings.json`) — version it, back it up, hand-edit if you like.
+
+---
+
+## 🔐 Permissions
+
+| Permission | For | Where |
+|-----------|---------|------|
+| **Accessibility** | create desktops and position windows | Settings › Privacy & Security › **Accessibility** |
+| **Automation** | control Terminal and the browser | macOS asks on first use — click *Allow* |
+
+> Changed the bundle ID or rebuilt with a different signature? macOS treats it as a new app — just **re-add** the app under Accessibility.
+
+---
+
+## 📦 Distribution
+
+Shipped as **Developer ID, outside the Mac App Store** — creating desktops and controlling windows need Accessibility/Apple Events **outside** the store sandbox.
+
+```bash
+# Once: store the notarization profile (never commit secrets)
 xcrun notarytool store-credentials loadcli-notary \
-  --apple-id "voce@exemplo.com" --team-id "TEAMID" --password "app-specific-password"
+  --apple-id "you@example.com" --team-id "TEAMID" --password "app-specific-password"
 
-export LOADCLI_SIGN_ID="Developer ID Application: Seu Nome (TEAMID)"
+export LOADCLI_SIGN_ID="Developer ID Application: Your Name (TEAMID)"
 export LOADCLI_NOTARY_PROFILE="loadcli-notary"
-make sign-notarize     # -> dist/loadcli-<versão>.dmg (assinado, notarizado, stapled)
-```
-
-## Roadmap
-
-- **Windows** (app nativo .NET/WinUI 3, Virtual Desktops + Win32): [`docs/WINDOWS_ROADMAP.md`](docs/WINDOWS_ROADMAP.md).
-- Login automático opcional, perfis de layout, atalhos globais por projeto.
-
-## Estrutura
-
-```
-project.yml                 # definição do projeto (XcodeGen)
-Makefile                    # gen / build / run / release / sign-notarize
-scripts/                    # bootstrap, gerador de ícone, assinatura/notarização
-Sources/loadcli/
-  Models/                   # Project, AppSettings, Store, AppModel
-  Services/                 # SpaceManager, AppLauncher, WindowPositioner, DisplayManager, SkyLight, AX
-  Views/                    # SwiftUI (grid, editor, seletor de monitor, ajustes…)
-  Resources/                # Info.plist, entitlements, Assets (ícone)
-docs/                       # arquitetura + roadmap Windows
+make sign-notarize     # -> dist/loadcli-<version>.dmg (signed, notarized, stapled)
 ```
 
 ---
 
-© 2026 KamedaTec. Todos os direitos reservados. Veja [LICENSE](LICENSE).
+## 🛣️ Roadmap
+
+- 🪟 **Windows** — native .NET/WinUI 3 app (Virtual Desktops + Win32), sharing the `projects.json` schema: [`docs/WINDOWS_ROADMAP.md`](docs/WINDOWS_ROADMAP.md).
+- 🔁 Layout profiles, per-project global shortcuts, optional auto-login.
+
+---
+
+## 🏗️ Layout
+
+```
+project.yml                 # project definition (XcodeGen)
+Makefile                    # gen / build / run / release / sign-notarize
+scripts/                    # bootstrap, icon generator, signing/notarization
+Sources/loadcli/
+  Models/                   # Project, ProjectFolder, AppSettings, Store, AppModel
+  Services/                 # SpaceManager, AppLauncher, WindowPositioner, DisplayManager, SkyLight, AX
+  Views/                    # SwiftUI — grid + folders, editors, monitor picker, settings
+  Resources/                # Info.plist, entitlements, Assets (icon)
+docs/                       # architecture + Windows roadmap
+```
+
+---
+
+## 🤝 Contributing
+
+Issues and PRs welcome. Run `make build` before opening a PR and describe *how to test*. The codebase speaks its house language: **Portuguese** in UI strings and comments.
+
+## 📄 License
+
+[MIT](LICENSE) — use, modify and distribute freely, keeping the copyright notice.
+
+<div align="center">
+<br>
+
+Made with ☕ and Mission Control by **HISAYOSHI, N. KAMEDA** · [kameda.app](https://kameda.app)
+
+</div>
