@@ -64,11 +64,12 @@ Every window is **verified** — `loadcli` checks it actually landed on the new 
 
 - 🖥️ **One desktop per project** on the monitor you pick (monitor picker when you have 2+ screens).
 - ⌨️ **Terminal + CLI** already in the right folder — Terminal.app or iTerm.
+- 🔤 **Auto font bump** — after focusing the terminal it presses ⌘+ a set number of times (**1–20, default 7**) so the text isn't tiny (set it in Settings).
 - 🧩 **Per-project side pane:**
   - 🌐 **Browser** at the deploy URL (Chrome, Brave, Edge, Arc, Safari)
   - 🗂️ **A Finder folder** — tiled just like the browser
-  - ▫️ **Nothing** — for projects that only want the terminal, full-screen
-- 📁 **Folders** — group cards into collapsible folders; move them with a menu.
+  - ▫️ **Nothing** — terminal only, **maximized or native full screen** (its own Space)
+- 📁 **Folders** — group cards into folders that **start collapsed on every launch** for quick scanning; move cards with a menu.
 - 🤖 **Per-project CLI** — Claude Code, Codex or a custom command, each with its own **model and _effort_** (e.g. `opus` + `ultracode`).
 - ↔️ **Automatic split** with adjustable ratio.
 - 🧭 **Menu bar launcher** — start any project (grouped by folder) without opening the main window.

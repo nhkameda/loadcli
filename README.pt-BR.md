@@ -64,11 +64,12 @@ Cada janela é **verificada** — o `loadcli` confere que ela realmente caiu na 
 
 - 🖥️ **Uma mesa por projeto** no monitor que você escolher (seletor de monitor quando há 2+ telas).
 - ⌨️ **Terminal + CLI** já na pasta certa — Terminal.app ou iTerm.
+- 🔤 **Aumento de fonte automático** — depois de focar o terminal, pressiona ⌘+ um número de vezes configurável (**1 a 20, padrão 7**) pra fonte não vir minúscula (ajuste em Ajustes).
 - 🧩 **Painel lateral escolhível por projeto:**
   - 🌐 **Navegador** na URL de deploy (Chrome, Brave, Edge, Arc, Safari)
   - 🗂️ **Pasta no Finder** — posicionada no split igual ao navegador
-  - ▫️ **Nenhum** — pros projetos que só querem o terminal, em tela cheia
-- 📁 **Organização em pastas** — agrupe os cards em pastas recolhíveis; mova com um menu.
+  - ▫️ **Nenhum** — só o terminal, **maximizado ou em tela cheia nativa** (mesa própria)
+- 📁 **Organização em pastas** — agrupe os cards em pastas que **abrem sempre fechadas** a cada abertura, pra achar rápido; mova com um menu.
 - 🤖 **CLI por projeto** — Claude Code, Codex ou comando personalizado, com **modelo e _effort_** próprios (ex.: `opus` + `ultracode`).
 - ↔️ **Split automático** com proporção ajustável.
 - 🧭 **Menu na barra de status** — lance qualquer projeto (agrupado por pasta) sem abrir a janela principal.
