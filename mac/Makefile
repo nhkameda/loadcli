@@ -5,7 +5,7 @@ DERIVED     := build
 DEBUG_APP   := $(DERIVED)/Build/Products/Debug/loadcli.app
 RELEASE_APP := $(DERIVED)/Build/Products/Release/loadcli.app
 
-.PHONY: all bootstrap icon gen build run release sign-notarize dmg clean
+.PHONY: all bootstrap icon gen build run release dmg sign-notarize clean
 
 all: build
 
@@ -41,6 +41,10 @@ release: gen
 		CODE_SIGN_STYLE=Manual \
 		build | xcbeautify --quiet
 	@echo "Built: $(RELEASE_APP)"
+
+## DMG ad-hoc (sem notarização) — o que dá para publicar sem Developer ID.
+dmg: release
+	./scripts/package_dmg.sh "$(RELEASE_APP)"
 
 ## Sign (Developer ID) + notarize + staple + build the DMG.
 sign-notarize: release

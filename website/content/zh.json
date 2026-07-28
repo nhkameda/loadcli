@@ -1,0 +1,180 @@
+{
+  "lang": "zh",
+  "meta": {
+    "title": "loadcli —— 你的整个开发环境，一键就位",
+    "description": "点一下，就在指定显示器上新建桌面、让终端带着你的 CLI 进入项目目录，并把浏览器并排摆好。macOS 原生 App，开源，且无需关闭 SIP。",
+    "ogLocale": "zh_CN"
+  },
+  "nav": {
+    "skip": "跳到正文",
+    "aria": "章节",
+    "langAria": "语言",
+    "download": "下载",
+    "links": [
+      { "href": "#one-click", "label": "一键" },
+      { "href": "#card", "label": "卡片" },
+      { "href": "#ai", "label": "AI" },
+      { "href": "#spaces", "label": "桌面" }
+    ]
+  },
+  "hero": {
+    "title": "你的整个开发环境。<br><span class=\"grad-text\">一键</span>就位。",
+    "lead": "选中一个项目。loadcli 会在你指定的显示器上新建一个桌面，让终端带着你的 CLI 直接进入项目目录，并把浏览器并排摆在旁边。全部就位，焦点落在终端上。",
+    "ctaPrimary": "下载 Mac 版",
+    "ctaSecondary": "在 GitHub 查看",
+    "meta": ["macOS 14+ · Apple Silicon", "开源，MIT 许可证", "SIP 保持开启"]
+  },
+  "stage": {
+    "deskLabel": "acme —— 桌面 3",
+    "browserUrl": "app.acme.com",
+    "command": "claude --model opus --effort ultracode",
+    "output": [
+      { "mark": "✓", "text": "已在 Studio 显示器上新建桌面" },
+      { "mark": "✓", "text": "浏览器已摆在左侧" },
+      { "mark": "✓", "text": "焦点已落在终端" }
+    ],
+    "labels": [
+      "你的桌面，一个项目一个",
+      "在所选显示器上新建的桌面",
+      "终端与浏览器，左右并排"
+    ]
+  },
+  "ritual": {
+    "eyebrow": "那些琐事",
+    "title": "八个步骤，一天十遍。",
+    "lead": "每次坐下来动一个项目，都是同一套流程。再乘以几十个项目，每天如此，年复一年。",
+    "punch": "八步交给 loadcli。你只做一步。",
+    "steps": [
+      "打开终端",
+      "cd 到正确的目录",
+      "启动 CLI",
+      "挑选模型和 effort",
+      "打开浏览器",
+      "翻出部署地址",
+      "新建一个桌面，免得弄乱其他的",
+      "拖动并调整窗口大小"
+    ],
+    "kept": "双击卡片"
+  },
+  "flow": {
+    "eyebrow": "一键",
+    "title": "双击之后发生了什么。",
+    "lead": "每个窗口都会被验证。如果某个没落到该在的位置，loadcli 会先纠正，再把控制权交还给你。",
+    "cards": [
+      {
+        "title": "你双击一下",
+        "text": "点项目的卡片。或者从菜单栏启动，连主窗口都不用打开。"
+      },
+      {
+        "title": "桌面诞生",
+        "text": "在你选定的显示器上新建一个 Space。其他桌面保持原样，纹丝不动。"
+      },
+      {
+        "title": "终端开好就绪",
+        "text": "已经在项目目录里，你的 CLI 正在运行，用的是这个项目该用的模型和 effort。"
+      },
+      {
+        "title": "一切各就各位",
+        "text": "浏览器打开部署地址、一个 Finder 文件夹，或者只让终端全屏。焦点最终停在你要敲字的地方。"
+      }
+    ]
+  },
+  "card": {
+    "eyebrow": "与众不同之处",
+    "title": "卡片就住在项目文件夹里。",
+    "lead": "没有项目数据库。每个文件夹里带着一个 LOADCLI.md，那个文件就是卡片。loadcli 遍历你登记过的文件夹，找出这些文档，再按文档里写的内容生成网格。",
+    "fileLabel": "acme/LOADCLI.md",
+    "groupValue": "客户",
+    "bodyText": "Acme 的商店。部署在 Vercel。",
+    "start": "启动",
+    "points": [
+      {
+        "title": "绝不写入绝对路径",
+        "text": "项目文件夹就是文件所在之处。同一份文档在任何 Mac、任何用户名下都能用。"
+      },
+      {
+        "title": "同步一下就好",
+        "text": "把项目文件夹放进 Google Drive 或 ownCloud。你所有的 Mac 都会显示同一份、始终最新的卡片。"
+      },
+      {
+        "title": "文件是你的",
+        "text": "用你的编辑器改它，用 git 管它。你添加的键和 markdown 正文，在每次重写后都会保留。"
+      },
+      {
+        "title": "秒开",
+        "text": "上一次扫描会被缓存。窗口立刻出现，新卡片稍后浮现。"
+      }
+    ]
+  },
+  "ai": {
+    "eyebrow": "为用 AI 写代码的人而做",
+    "title": "每个项目，配自己的大脑。",
+    "lead": "这个用 Claude Code，那个用 Codex，第三个跑你自己的脚本。模型和 effort 就写在项目的文件里，所以一打开就是对的状态。不用记任何参数。",
+    "cards": [
+      {
+        "title": "Claude Code",
+        "text": "按项目设定模型和 effort。命令会照你配置的样子拼好。",
+        "chips": ["fable", "opus", "sonnet", "haiku", "xhigh", "ultracode"]
+      },
+      {
+        "title": "Codex",
+        "text": "同样的思路，用 Codex 自己的参数。想改的话，启动时改也行。",
+        "chips": ["gpt-5.6-sol", "gpt-5.5", "minimal", "high"]
+      },
+      {
+        "title": "自定义命令",
+        "text": "任何能在 shell 里跑的东西。loadcli 负责 cd，然后执行。",
+        "chips": ["npm run dev", "docker compose up", "make watch"]
+      }
+    ],
+    "swatchLead": "每张卡片都有自己的图标和颜色。扫一眼十秒，就能找到要的那个项目。"
+  },
+  "spaces": {
+    "eyebrow": "难的地方",
+    "title": "不用你关闭 SIP，也能新建桌面。",
+    "p1": "在现代 macOS 的 App 里，通过私有 API 创建 Space 是行不通的。这正是那些平铺窗口工具要你关掉系统完整性保护的原因。",
+    "p2": "loadcli 做的是人会做的事：通过辅助功能 API 驱动 Mission Control 的 + 按钮，按显示器标识定位屏幕，再点击新桌面的缩略图。每一步都会先验证结果再继续。",
+    "pull": "SIP 保持开启。没有守护进程。没有内核 hack。",
+    "link": "阅读架构说明"
+  },
+  "features": {
+    "eyebrow": "细节",
+    "title": "其余那些你每天都会用到的东西。",
+    "items": [
+      { "title": "快速搜索", "text": "边输入，含匹配结果的文件夹会自动展开。清空后，它们又全部折叠。" },
+      { "title": "最近", "text": "你最近打开过的项目，从新到旧。" },
+      { "title": "文件夹", "text": "按文档里的 grupo 键分组。默认折叠，方便一眼扫过。" },
+      { "title": "多显示器", "text": "按项目固定显示器，或者让 loadcli 每次都问你。" },
+      { "title": "终端字号", "text": "它替你把字号调大，次数由你设定。" },
+      { "title": "菜单栏", "text": "不用打开主窗口，也能启动任意项目。" },
+      { "title": "自检", "text": "loadcli --doctor 会在每块显示器上检查桌面机制。" },
+      { "title": "100% 原生", "text": "SwiftUI，没有 Electron。秒开，几乎不占内存。" }
+    ]
+  },
+  "download": {
+    "eyebrow": "下载",
+    "title": "现在就开始。",
+    "soon": "即将推出",
+    "mac": {
+      "name": "loadcli 1.0.0",
+      "meta": "Apple Silicon · macOS 14 或更新版本 · DMG",
+      "button": "下载 Mac 版",
+      "noteTitle": "首次打开：",
+      "noteText": "这个 App 还没有经过 Apple 公证。请右键点击它并选择“打开”。如果 macOS 仍然拒绝，去“设置 › 隐私与安全性”，点击“仍要打开”。"
+    },
+    "win": {
+      "name": "Windows 版 loadcli",
+      "meta": "虚拟桌面加 WinUI 3，读取完全相同的 LOADCLI.md 文件。",
+      "button": "查看路线图"
+    },
+    "oss": {
+      "title": "开源，MIT 许可证。",
+      "text": "全部代码都在 GitHub 上。欢迎提 issue 和 pull request。",
+      "button": "在 GitHub 查看"
+    }
+  },
+  "footer": {
+    "credit": "由 <b>HISAYOSHI, N. KAMEDA</b> 用咖啡和 Mission Control 打造 · <a href=\"https://kameda.app\" rel=\"noopener\">kameda.app</a>",
+    "license": "MIT 许可证"
+  }
+}

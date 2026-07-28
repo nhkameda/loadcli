@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>loadcli —— 你的整个开发环境，一键就位</title>
+  <meta name="description" content="点一下，就在指定显示器上新建桌面、让终端带着你的 CLI 进入项目目录，并把浏览器并排摆好。macOS 原生 App，开源，且无需关闭 SIP。">
+  <link rel="canonical" href="https://www.loadcli.com/zh.html">
+  <link rel="alternate" hreflang="en" href="https://www.loadcli.com/">
+  <link rel="alternate" hreflang="es" href="https://www.loadcli.com/es.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://www.loadcli.com/zh.html">
+  <link rel="alternate" hreflang="pt-BR" href="https://www.loadcli.com/pt.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.loadcli.com/">
+  <meta name="theme-color" content="#fbfbfd">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="/assets/img/icon-128.png" sizes="128x128" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/img/icon-256.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="loadcli">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:url" content="https://www.loadcli.com/zh.html">
+  <meta property="og:title" content="loadcli —— 你的整个开发环境，一键就位">
+  <meta property="og:description" content="点一下，就在指定显示器上新建桌面、让终端带着你的 CLI 进入项目目录，并把浏览器并排摆好。macOS 原生 App，开源，且无需关闭 SIP。">
+  <meta property="og:image" content="https://www.loadcli.com/assets/img/og-zh.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/site.css?v=4">
+  <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}.pane--browser,.pane--terminal{opacity:1!important;transform:none!important}.desk__seam{opacity:1!important}</style></noscript>
+</head>
+<body data-lang="zh">
+  <a class="skip-link" href="#one-click">跳到正文</a>
+
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <a class="brand" href="/zh.html">
+        <img src="/assets/img/icon-128.png" alt="" width="24" height="24">
+        <span>loadcli</span>
+      </a>
+      <nav class="nav__links" aria-label="章节">
+            <a href="#one-click">一键</a>
+            <a href="#card">卡片</a>
+            <a href="#ai">AI</a>
+            <a href="#spaces">桌面</a>
+      </nav>
+      <div class="nav__right">
+        <nav class="langbar" aria-label="语言"><a href="/" hreflang="en">EN</a><a href="/es.html" hreflang="es">ES</a><a href="/zh.html" hreflang="zh-CN" aria-current="true">中文</a><a href="/pt.html" hreflang="pt-BR">PT</a></nav>
+        <a class="icon-link" href="https://github.com/nhkameda/loadcli" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+        <a class="btn btn--primary btn--sm" href="#download">下载</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ------------------------------------------------------- hero -->
+    <section class="hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="wrap hero__inner">
+        <h1 data-reveal>你的整个开发环境。<br><span class="grad-text">一键</span>就位。</h1>
+        <p class="lead" data-reveal style="--delay:90ms">选中一个项目。loadcli 会在你指定的显示器上新建一个桌面，让终端带着你的 CLI 直接进入项目目录，并把浏览器并排摆在旁边。全部就位，焦点落在终端上。</p>
+        <div class="hero__cta" data-reveal style="--delay:170ms">
+          <a class="btn btn--primary" href="#download"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10m0 0 4-4m-4 4-4-4M3.5 15.5h13"/></svg>下载 Mac 版</a>
+          <a class="btn btn--ghost" href="https://github.com/nhkameda/loadcli" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>在 GitHub 查看</a>
+        </div>
+        <p class="hero__meta" data-reveal style="--delay:230ms"><span>macOS 14+ · Apple Silicon</span><span aria-hidden="true">·</span><span>开源，MIT 许可证</span><span aria-hidden="true">·</span><span>SIP 保持开启</span></p>
+
+        <div class="stage" data-reveal style="--delay:300ms">
+          <div class="stage__scene">
+            <div class="desk desk--back-1" aria-hidden="true"></div>
+            <div class="desk desk--back-2" aria-hidden="true"></div>
+            <div class="desk desk--front">
+              <div class="desk__bar">
+                <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
+                <span class="desk__label">acme —— 桌面 3</span>
+              </div>
+              <div class="desk__panes">
+                <div class="pane pane--browser">
+                  <div class="browser__chrome">
+                    <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
+                    <span class="browser__url">app.acme.com</span>
+                  </div>
+                  <div class="browser__body">
+                    <div class="skeleton skeleton--title"></div>
+                    <div class="skeleton skeleton--w80"></div>
+                    <div class="skeleton skeleton--w60"></div>
+                    <div class="browser__cards">
+                      <div class="browser__card"></div><div class="browser__card"></div>
+                      <div class="browser__card"></div><div class="browser__card"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pane pane--terminal">
+                  <div class="term">
+                    <div><span class="dim">~/DEV/acme</span></div>
+                    <div><span class="p">$</span> <span data-typed="claude --model opus --effort ultracode"></span><span class="caret"></span></div>
+                    <div data-term-line style="opacity:0;transition:opacity .4s ease"><span class="ok">✓</span> <span class="dim">已在 Studio 显示器上新建桌面</span></div>
+                    <div data-term-line style="opacity:0;transition:opacity .4s ease"><span class="ok">✓</span> <span class="dim">浏览器已摆在左侧</span></div>
+                    <div data-term-line style="opacity:0;transition:opacity .4s ease"><span class="ok">✓</span> <span class="dim">焦点已落在终端</span></div>
+                  </div>
+                </div>
+              </div>
+              <span class="desk__seam" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="stage__tag" aria-hidden="true">
+            <span class="dotlive"></span>
+            <span data-labels='["你的桌面，一个项目一个","在所选显示器上新建的桌面","终端与浏览器，左右并排"]'>你的桌面，一个项目一个</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------- ritual -->
+    <section class="section section--alt">
+      <div class="wrap ritual">
+        <div>
+          <p class="eyebrow" data-reveal>那些琐事</p>
+          <h2 data-reveal>八个步骤，一天十遍。</h2>
+          <p class="lead" data-reveal style="--delay:80ms;margin-top:20px">每次坐下来动一个项目，都是同一套流程。再乘以几十个项目，每天如此，年复一年。</p>
+          <p class="ritual__punch grad-text" data-reveal style="--delay:140ms">八步交给 loadcli。你只做一步。</p>
+        </div>
+        <ul class="steps" data-reveal>
+          <li class="step">打开终端</li>
+          <li class="step">cd 到正确的目录</li>
+          <li class="step">启动 CLI</li>
+          <li class="step">挑选模型和 effort</li>
+          <li class="step">打开浏览器</li>
+          <li class="step">翻出部署地址</li>
+          <li class="step">新建一个桌面，免得弄乱其他的</li>
+          <li class="step">拖动并调整窗口大小</li>
+          <li class="step step--kept">双击卡片</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- um clique -->
+    <section class="section" id="one-click">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>一键</p>
+        <h2 class="narrow" data-reveal>双击之后发生了什么。</h2>
+        <p class="lead narrow" data-reveal style="--delay:80ms;margin-top:20px">每个窗口都会被验证。如果某个没落到该在的位置，loadcli 会先纠正，再把控制权交还给你。</p>
+        <div class="flow">
+          <article class="flowcard" data-reveal style="--delay:0ms" data-parallax="0.11">
+            <span class="flowcard__n">01</span>
+            <h3>你双击一下</h3>
+            <p>点项目的卡片。或者从菜单栏启动，连主窗口都不用打开。</p>
+          </article>
+          <article class="flowcard" data-reveal style="--delay:80ms" data-parallax="0.06">
+            <span class="flowcard__n">02</span>
+            <h3>桌面诞生</h3>
+            <p>在你选定的显示器上新建一个 Space。其他桌面保持原样，纹丝不动。</p>
+          </article>
+          <article class="flowcard" data-reveal style="--delay:160ms" data-parallax="0.11">
+            <span class="flowcard__n">03</span>
+            <h3>终端开好就绪</h3>
+            <p>已经在项目目录里，你的 CLI 正在运行，用的是这个项目该用的模型和 effort。</p>
+          </article>
+          <article class="flowcard" data-reveal style="--delay:240ms" data-parallax="0.06">
+            <span class="flowcard__n">04</span>
+            <h3>一切各就各位</h3>
+            <p>浏览器打开部署地址、一个 Finder 文件夹，或者只让终端全屏。焦点最终停在你要敲字的地方。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- o card -->
+    <section class="section section--alt" id="card">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>与众不同之处</p>
+        <h2 class="narrow" data-reveal>卡片就住在项目文件夹里。</h2>
+        <p class="lead narrow" data-reveal style="--delay:80ms;margin-top:20px">没有项目数据库。每个文件夹里带着一个 LOADCLI.md，那个文件就是卡片。loadcli 遍历你登记过的文件夹，找出这些文档，再按文档里写的内容生成网格。</p>
+
+        <div class="morph">
+          <div class="codeblock" data-reveal data-parallax="0.09">
+            <div class="codeblock__head"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h3.2l1.4 1.7H16a1.5 1.5 0 0 1 1.5 1.5v7.3A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z"/></svg>&nbsp;acme/LOADCLI.md</div>
+            <pre><code><span class="c">---</span>
+<span class="k">loadcli</span>: <span class="v">1</span>
+<span class="k">nome</span>: <span class="v">Acme Site</span>
+<span class="k">grupo</span>: <span class="v">客户</span>
+<span class="k">icone</span>: <span class="v">cart.fill</span>
+<span class="k">cor</span>: <span class="v">"#3B82F6"</span>
+<span class="k">repositorio</span>: <span class="v">github.com/acme/site</span>
+<span class="k">url</span>: <span class="v">app.acme.com</span>
+<span class="k">cli</span>: <span class="v">claude</span>
+<span class="k">modelo</span>: <span class="v">opus</span>
+<span class="k">esforco</span>: <span class="v">xhigh</span>
+<span class="c">---</span>
+
+<span class="d">Acme 的商店。部署在 Vercel。</span></code></pre>
+          </div>
+
+          <div class="morph__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg></div>
+
+          <div class="appcard" data-reveal style="--delay:120ms" data-parallax="0.14">
+            <div class="appcard__top">
+              <span class="appcard__icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M2.8 10h14.4M10 2.8c1.9 2 2.9 4.5 2.9 7.2s-1 5.2-2.9 7.2c-1.9-2-2.9-4.5-2.9-7.2s1-5.2 2.9-7.2Z"/></svg></span>
+              <span class="appcard__tag">claude</span>
+            </div>
+            <h4>Acme Site</h4>
+            <p class="appcard__path"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h3.2l1.4 1.7H16a1.5 1.5 0 0 1 1.5 1.5v7.3A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z"/></svg> acme</p>
+            <p class="appcard__desc">Acme 的商店。部署在 Vercel。</p>
+            <p class="appcard__repo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 6-4 4 4 4m6-8 4 4-4 4"/></svg> acme/site</p>
+            <div class="appcard__actions">
+              <span class="appcard__play"><svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 1.8v8.4l7-4.2z"/></svg> 启动</span>
+              <span class="appcard__spacer"></span>
+              <span class="appcard__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h3.2l1.4 1.7H16a1.5 1.5 0 0 1 1.5 1.5v7.3A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z"/></svg></span>
+              <span class="appcard__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M2.8 10h14.4M10 2.8c1.9 2 2.9 4.5 2.9 7.2s-1 5.2-2.9 7.2c-1.9-2-2.9-4.5-2.9-7.2s1-5.2 2.9-7.2Z"/></svg></span>
+              <span class="appcard__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 6-4 4 4 4m6-8 4 4-4 4"/></svg></span>
+              <span class="appcard__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.6 3.9a1.7 1.7 0 0 1 2.4 2.4L7.4 15 4 16l1-3.4 8.6-8.7Z"/></svg></span>
+            </div>
+          </div>
+        </div>
+
+        <ul class="sync">
+          <li data-reveal style="--delay:0ms"><b>绝不写入绝对路径</b>项目文件夹就是文件所在之处。同一份文档在任何 Mac、任何用户名下都能用。</li>
+          <li data-reveal style="--delay:70ms"><b>同步一下就好</b>把项目文件夹放进 Google Drive 或 ownCloud。你所有的 Mac 都会显示同一份、始终最新的卡片。</li>
+          <li data-reveal style="--delay:140ms"><b>文件是你的</b>用你的编辑器改它，用 git 管它。你添加的键和 markdown 正文，在每次重写后都会保留。</li>
+          <li data-reveal style="--delay:210ms"><b>秒开</b>上一次扫描会被缓存。窗口立刻出现，新卡片稍后浮现。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------- IA -->
+    <section class="section section--dark" id="ai">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>为用 AI 写代码的人而做</p>
+        <h2 class="narrow" data-reveal>每个项目，配自己的大脑。</h2>
+        <p class="lead narrow" data-reveal style="--delay:80ms;margin-top:20px">这个用 Claude Code，那个用 Codex，第三个跑你自己的脚本。模型和 effort 就写在项目的文件里，所以一打开就是对的状态。不用记任何参数。</p>
+        <div class="cli-grid">
+          <article class="clicard" data-reveal style="--delay:0ms">
+            <h3>Claude Code</h3>
+            <p>按项目设定模型和 effort。命令会照你配置的样子拼好。</p>
+            <div class="chips"><span class="chip">fable</span><span class="chip">opus</span><span class="chip">sonnet</span><span class="chip">haiku</span><span class="chip">xhigh</span><span class="chip">ultracode</span></div>
+          </article>
+          <article class="clicard" data-reveal style="--delay:90ms">
+            <h3>Codex</h3>
+            <p>同样的思路，用 Codex 自己的参数。想改的话，启动时改也行。</p>
+            <div class="chips"><span class="chip">gpt-5.6-sol</span><span class="chip">gpt-5.5</span><span class="chip">minimal</span><span class="chip">high</span></div>
+          </article>
+          <article class="clicard" data-reveal style="--delay:180ms">
+            <h3>自定义命令</h3>
+            <p>任何能在 shell 里跑的东西。loadcli 负责 cd，然后执行。</p>
+            <div class="chips"><span class="chip">npm run dev</span><span class="chip">docker compose up</span><span class="chip">make watch</span></div>
+          </article>
+        </div>
+        <p class="lead" data-reveal style="margin-top:44px">每张卡片都有自己的图标和颜色。扫一眼十秒，就能找到要的那个项目。</p>
+        <div class="swatches" data-reveal>
+          <span class="swatch" style="background:#7C5CFF"></span><span class="swatch" style="background:#3B82F6"></span><span class="swatch" style="background:#06B6D4"></span><span class="swatch" style="background:#10B981"></span><span class="swatch" style="background:#F59E0B"></span><span class="swatch" style="background:#EF4444"></span><span class="swatch" style="background:#EC4899"></span><span class="swatch" style="background:#8B5CF6"></span><span class="swatch" style="background:#64748B"></span><span class="swatch" style="background:#0EA5E9"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- spaces -->
+    <section class="section" id="spaces">
+      <div class="wrap narrow">
+        <p class="eyebrow" data-reveal>难的地方</p>
+        <h2 data-reveal>不用你关闭 SIP，也能新建桌面。</h2>
+        <p class="lead" data-reveal style="--delay:80ms;margin-top:22px">在现代 macOS 的 App 里，通过私有 API 创建 Space 是行不通的。这正是那些平铺窗口工具要你关掉系统完整性保护的原因。</p>
+        <p class="lead" data-reveal style="--delay:120ms;margin-top:16px">loadcli 做的是人会做的事：通过辅助功能 API 驱动 Mission Control 的 + 按钮，按显示器标识定位屏幕，再点击新桌面的缩略图。每一步都会先验证结果再继续。</p>
+        <p class="ritual__punch grad-text" data-reveal style="--delay:170ms">SIP 保持开启。没有守护进程。没有内核 hack。</p>
+        <p data-reveal style="--delay:210ms;margin-top:22px">
+          <a class="btn btn--ghost btn--sm" href="https://github.com/nhkameda/loadcli/blob/main/docs/ARCHITECTURE.md" rel="noopener">阅读架构说明<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg></a>
+        </p>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------- recursos -->
+    <section class="section section--alt">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>细节</p>
+        <h2 class="narrow" data-reveal>其余那些你每天都会用到的东西。</h2>
+        <div class="features">
+          <article class="feature" data-reveal style="--delay:0ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.4"/><path d="m13.2 13.2 3.3 3.3"/></svg></span>
+            <h3>快速搜索</h3>
+            <p>边输入，含匹配结果的文件夹会自动展开。清空后，它们又全部折叠。</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:60ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M10 5.8V10l3 1.8"/></svg></span>
+            <h3>最近</h3>
+            <p>你最近打开过的项目，从新到旧。</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:120ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h3.2l1.4 1.7H16a1.5 1.5 0 0 1 1.5 1.5v7.3A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z"/></svg></span>
+            <h3>文件夹</h3>
+            <p>按文档里的 grupo 键分组。默认折叠，方便一眼扫过。</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:180ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.4" y="3.6" width="15.2" height="10" rx="1.6"/><path d="M7 16.6h6"/></svg></span>
+            <h3>多显示器</h3>
+            <p>按项目固定显示器，或者让 loadcli 每次都问你。</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:0ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.2h12M10 5.2V15m-3 0h6"/></svg></span>
+            <h3>终端字号</h3>
+            <p>它替你把字号调大，次数由你设定。</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:60ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.4" y="3.4" width="15.2" height="13.2" rx="2"/><path d="M2.4 7.4h15.2"/></svg></span>
+            <h3>菜单栏</h3>
+            <p>不用打开主窗口，也能启动任意项目。</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:120ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 3v4.2a3.3 3.3 0 0 0 6.6 0V3"/><path d="M8.8 10.5v2.2a3.6 3.6 0 0 0 7.2 0v-1"/><circle cx="16" cy="10.6" r="1.5"/></svg></span>
+            <h3>自检</h3>
+            <p>loadcli --doctor 会在每块显示器上检查桌面机制。</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:180ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 4.2c3.8 4.6 7.6 7.7 12.6 9.4-1 1.6-2.6 2.6-4.9 2.6-3.6 0-6.7-2.6-7.9-6"/><path d="M12.4 3.6c1.6 3.1 3 5.6 4.1 7.4"/></svg></span>
+            <h3>100% 原生</h3>
+            <p>SwiftUI，没有 Electron。秒开，几乎不占内存。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------- download -->
+    <section class="section" id="download">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>下载</p>
+        <h2 class="narrow" data-reveal>现在就开始。</h2>
+        <div class="dl">
+          <article class="dlcard" data-reveal>
+            <p class="dlcard__os"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.36 12.72c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.83-.81-3-.79-1.55.02-2.97.9-3.77 2.28-1.61 2.79-.41 6.92 1.15 9.19.77 1.11 1.68 2.35 2.88 2.31 1.16-.05 1.6-.75 3-.75s1.79.75 3.01.72c1.24-.02 2.03-1.13 2.79-2.24.88-1.29 1.24-2.54 1.26-2.6-.03-.01-2.42-.93-2.44-3.69ZM14.1 5.9c.64-.77 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.11 1.77-.97 2.82 1.02.08 2.07-.52 2.71-1.28Z"/></svg> macOS</p>
+            <h3>loadcli 1.0.0</h3>
+            <p class="dlcard__meta">Apple Silicon · macOS 14 或更新版本 · DMG</p>
+            <a class="btn btn--primary" href="/download/loadcli-1.0.0.dmg" download><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10m0 0 4-4m-4 4-4-4M3.5 15.5h13"/></svg>下载 Mac 版</a>
+            <p class="dlcard__note"><b>首次打开：</b> 这个 App 还没有经过 Apple 公证。请右键点击它并选择“打开”。如果 macOS 仍然拒绝，去“设置 › 隐私与安全性”，点击“仍要打开”。</p>
+          </article>
+          <article class="dlcard dlcard--soon" data-reveal style="--delay:100ms">
+            <span class="badge-soon">即将推出</span>
+            <p class="dlcard__os"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.7 10.2 4.7v6.9H3V5.7Zm0 12.6 7.2 1v-6.8H3v5.8Zm8 1.1L21 21V12.8h-10v6.6Zm0-14.7v6.9h10V3l-10 1.7Z"/></svg> Windows</p>
+            <h3>Windows 版 loadcli</h3>
+            <p class="dlcard__meta">虚拟桌面加 WinUI 3，读取完全相同的 LOADCLI.md 文件。</p>
+            <a class="btn btn--ghost" href="https://github.com/nhkameda/loadcli/blob/main/windows/ROADMAP.md" rel="noopener">查看路线图<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg></a>
+          </article>
+        </div>
+        <div class="oss" data-reveal style="--delay:140ms">
+          <span><b>开源，MIT 许可证。</b> 全部代码都在 GitHub 上。欢迎提 issue 和 pull request。</span>
+          <a class="btn btn--ghost btn--sm" href="https://github.com/nhkameda/loadcli" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>在 GitHub 查看</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__grid">
+      <p class="footer__credit">由 <b>HISAYOSHI, N. KAMEDA</b> 用咖啡和 Mission Control 打造 · <a href="https://kameda.app" rel="noopener">kameda.app</a></p>
+      <div class="footer__right">
+        <span class="tiny">MIT 许可证</span>
+        <nav class="langbar" aria-label="语言"><a href="/" hreflang="en">EN</a><a href="/es.html" hreflang="es">ES</a><a href="/zh.html" hreflang="zh-CN" aria-current="true">中文</a><a href="/pt.html" hreflang="pt-BR">PT</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/vendor/lenis.min.js?v=4"></script>
+  <script type="module" src="/assets/js/site.js?v=4"></script>
+</body>
+</html>

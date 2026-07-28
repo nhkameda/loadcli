@@ -1,0 +1,180 @@
+{
+  "lang": "pt",
+  "meta": {
+    "title": "loadcli — seu ambiente de desenvolvimento inteiro, em um clique",
+    "description": "Um clique cria a mesa nova no monitor certo, abre o Terminal com seu CLI na pasta do projeto e posiciona o navegador ao lado. App nativo para macOS, open source, sem desligar o SIP.",
+    "ogLocale": "pt_BR"
+  },
+  "nav": {
+    "skip": "Ir para o conteúdo",
+    "aria": "Seções",
+    "langAria": "Idioma",
+    "download": "Baixar",
+    "links": [
+      { "href": "#one-click", "label": "Um clique" },
+      { "href": "#card", "label": "O card" },
+      { "href": "#ai", "label": "IA" },
+      { "href": "#spaces", "label": "Mesas" }
+    ]
+  },
+  "hero": {
+    "title": "Seu ambiente de desenvolvimento inteiro.<br>Em <span class=\"grad-text\">um clique</span>.",
+    "lead": "Escolha um projeto. O loadcli cria uma mesa nova no monitor certo, abre o Terminal com o seu CLI já na pasta e coloca o navegador do lado. Tudo posicionado, com o foco no terminal.",
+    "ctaPrimary": "Baixar para Mac",
+    "ctaSecondary": "Ver no GitHub",
+    "meta": ["macOS 14+ · Apple Silicon", "Open source, licença MIT", "SIP intacto"]
+  },
+  "stage": {
+    "deskLabel": "acme — mesa 3",
+    "browserUrl": "app.acme.com",
+    "command": "claude --model opus --effort ultracode",
+    "output": [
+      { "mark": "✓", "text": "mesa criada no monitor Studio" },
+      { "mark": "✓", "text": "navegador posicionado à esquerda" },
+      { "mark": "✓", "text": "foco no terminal" }
+    ],
+    "labels": [
+      "Suas mesas, uma por projeto",
+      "Uma mesa nova, no monitor escolhido",
+      "Terminal e navegador, lado a lado"
+    ]
+  },
+  "ritual": {
+    "eyebrow": "O tédio",
+    "title": "Oito passos, dez vezes por dia.",
+    "lead": "Toda vez que você senta para mexer num projeto é o mesmo ritual. Multiplicado por dezenas de projetos, todo dia, a vida inteira.",
+    "punch": "O loadcli faz os oito. Você faz um.",
+    "steps": [
+      "abrir o Terminal",
+      "cd na pasta certa",
+      "subir o CLI",
+      "escolher o modelo e o effort",
+      "abrir o navegador",
+      "achar a URL do deploy",
+      "criar uma mesa nova pra não bagunçar as outras",
+      "arrastar e redimensionar as janelas"
+    ],
+    "kept": "clicar duas vezes no card"
+  },
+  "flow": {
+    "eyebrow": "Um clique",
+    "title": "O que acontece quando você clica duas vezes.",
+    "lead": "Cada janela é verificada. Se alguma não caiu onde devia, o loadcli corrige antes de te devolver o controle.",
+    "cards": [
+      {
+        "title": "Você clica duas vezes",
+        "text": "No card do projeto. Ou pelo menu da barra de status, sem nem abrir a janela principal."
+      },
+      {
+        "title": "A mesa nasce",
+        "text": "Uma área de trabalho nova, no monitor que você escolheu. Suas outras mesas continuam como estavam."
+      },
+      {
+        "title": "O terminal abre pronto",
+        "text": "Já na pasta do projeto, com o seu CLI rodando, no modelo e no effort que aquele projeto pede."
+      },
+      {
+        "title": "Tudo assume o lugar",
+        "text": "Navegador no deploy, uma pasta no Finder, ou só o terminal em tela cheia. O foco termina onde você vai digitar."
+      }
+    ]
+  },
+  "card": {
+    "eyebrow": "O diferencial",
+    "title": "O card mora dentro da pasta do projeto.",
+    "lead": "Não existe banco de dados de projetos. Cada pasta carrega um LOADCLI.md, e esse arquivo é o card. O loadcli varre as pastas que você cadastrou, encontra os arquivos e monta a grade a partir do que está escrito neles.",
+    "fileLabel": "acme/LOADCLI.md",
+    "groupValue": "Clientes",
+    "bodyText": "Loja da Acme. Deploy pela Vercel.",
+    "start": "Iniciar",
+    "points": [
+      {
+        "title": "Nenhum caminho absoluto",
+        "text": "A pasta do projeto é onde o arquivo está. O mesmo documento funciona em qualquer Mac, com qualquer nome de usuário."
+      },
+      {
+        "title": "Sincronize e pronto",
+        "text": "Coloque sua pasta de projetos no Google Drive ou no ownCloud. Todos os seus Macs mostram os mesmos cards, sempre atualizados."
+      },
+      {
+        "title": "O arquivo é seu",
+        "text": "Edite no seu editor, versione no git. As chaves que você acrescentar e o texto em markdown sobrevivem a qualquer regravação."
+      },
+      {
+        "title": "Abre na hora",
+        "text": "A última varredura fica em cache. A janela pinta imediatamente e os cards novos aparecem um instante depois."
+      }
+    ]
+  },
+  "ai": {
+    "eyebrow": "Feito para quem programa com IA",
+    "title": "Cada projeto com o seu cérebro.",
+    "lead": "Claude Code num, Codex noutro, um script seu no terceiro. Modelo e effort ficam salvos no arquivo do projeto, então você abre e já está do jeito certo. Sem lembrar de flag nenhuma.",
+    "cards": [
+      {
+        "title": "Claude Code",
+        "text": "Modelo e effort por projeto. O comando sai montado do jeito que você configurou.",
+        "chips": ["fable", "opus", "sonnet", "haiku", "xhigh", "ultracode"]
+      },
+      {
+        "title": "Codex",
+        "text": "Mesma ideia, com as flags do Codex. Troque na hora de iniciar, se quiser.",
+        "chips": ["gpt-5.6-sol", "gpt-5.5", "minimal", "high"]
+      },
+      {
+        "title": "Comando personalizado",
+        "text": "Qualquer coisa que rode no shell. O loadcli faz o cd e executa.",
+        "chips": ["npm run dev", "docker compose up", "make watch"]
+      }
+    ],
+    "swatchLead": "Cada card com o seu ícone e a sua cor. Dez segundos para bater o olho e achar o projeto certo."
+  },
+  "spaces": {
+    "eyebrow": "A parte difícil",
+    "title": "Cria mesas sem você desligar o SIP.",
+    "p1": "Criar uma área de trabalho por API privada não funciona num app moderno do macOS. É por isso que as ferramentas de tiling pedem para você desligar a proteção de integridade do sistema.",
+    "p2": "O loadcli faz o que uma pessoa faria: dirige o botão + do Mission Control pela API de Acessibilidade, mira o monitor pelo identificador de tela e clica no thumbnail da mesa nova. Sempre conferindo o resultado antes de seguir.",
+    "pull": "SIP intacto. Nenhum daemon. Nenhum hack de kernel.",
+    "link": "Ler a arquitetura"
+  },
+  "features": {
+    "eyebrow": "Detalhes",
+    "title": "O resto das coisas que você vai usar todo dia.",
+    "items": [
+      { "title": "Busca rápida", "text": "Digite e as pastas com resultado se abrem sozinhas. Apague e todas fecham de novo." },
+      { "title": "Recentes", "text": "Os projetos que você abriu por último, do mais novo para o mais antigo." },
+      { "title": "Pastas", "text": "Agrupe pelo campo grupo do documento. Começam fechadas, para você bater o olho." },
+      { "title": "Multi-monitor", "text": "Fixe o monitor por projeto, ou deixe o loadcli perguntar a cada vez." },
+      { "title": "Fonte do terminal", "text": "Ele aumenta a fonte para você, o número de vezes que você definir." },
+      { "title": "Menu na barra", "text": "Lance qualquer projeto sem abrir a janela principal." },
+      { "title": "Autoteste", "text": "loadcli --doctor confere o mecanismo de mesas em cada monitor." },
+      { "title": "100% nativo", "text": "SwiftUI, sem Electron. Abre instantâneo e quase não ocupa memória." }
+    ]
+  },
+  "download": {
+    "eyebrow": "Baixar",
+    "title": "Comece agora.",
+    "soon": "Em breve",
+    "mac": {
+      "name": "loadcli 1.0.0",
+      "meta": "Apple Silicon · macOS 14 ou mais recente · DMG",
+      "button": "Baixar para Mac",
+      "noteTitle": "Primeira abertura:",
+      "noteText": "o app ainda não passou pela notarização da Apple. Clique nele com o botão direito e escolha Abrir. Se o macOS insistir, vá em Ajustes › Privacidade e Segurança e clique em Abrir Mesmo Assim."
+    },
+    "win": {
+      "name": "loadcli para Windows",
+      "meta": "Virtual Desktops e WinUI 3, lendo exatamente os mesmos arquivos LOADCLI.md.",
+      "button": "Ver o roadmap"
+    },
+    "oss": {
+      "title": "Open source, licença MIT.",
+      "text": "O código inteiro está no GitHub. Issues e pull requests são bem-vindos.",
+      "button": "Ver no GitHub"
+    }
+  },
+  "footer": {
+    "credit": "Feito com café e Mission Control por <b>HISAYOSHI, N. KAMEDA</b> · <a href=\"https://kameda.app\" rel=\"noopener\">kameda.app</a>",
+    "license": "Licença MIT"
+  }
+}

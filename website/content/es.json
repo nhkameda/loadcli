@@ -1,0 +1,180 @@
+{
+  "lang": "es",
+  "meta": {
+    "title": "loadcli — todo tu entorno de desarrollo, en un clic",
+    "description": "Un clic crea un escritorio nuevo en el monitor correcto, abre la Terminal con tu CLI ya en la carpeta del proyecto y coloca el navegador al lado. App nativa para macOS, código abierto, sin desactivar el SIP.",
+    "ogLocale": "es_ES"
+  },
+  "nav": {
+    "skip": "Ir al contenido",
+    "aria": "Secciones",
+    "langAria": "Idioma",
+    "download": "Descargar",
+    "links": [
+      { "href": "#one-click", "label": "Un clic" },
+      { "href": "#card", "label": "La tarjeta" },
+      { "href": "#ai", "label": "IA" },
+      { "href": "#spaces", "label": "Escritorios" }
+    ]
+  },
+  "hero": {
+    "title": "Todo tu entorno de desarrollo.<br>En <span class=\"grad-text\">un clic</span>.",
+    "lead": "Elige un proyecto. loadcli crea un escritorio nuevo en el monitor que quieras, abre la Terminal con tu CLI ya en la carpeta del proyecto y coloca el navegador al lado. Todo en su sitio, con el foco en la terminal.",
+    "ctaPrimary": "Descargar para Mac",
+    "ctaSecondary": "Ver en GitHub",
+    "meta": ["macOS 14+ · Apple Silicon", "Código abierto, licencia MIT", "SIP intacto"]
+  },
+  "stage": {
+    "deskLabel": "acme — escritorio 3",
+    "browserUrl": "app.acme.com",
+    "command": "claude --model opus --effort ultracode",
+    "output": [
+      { "mark": "✓", "text": "escritorio creado en la pantalla Studio" },
+      { "mark": "✓", "text": "navegador colocado a la izquierda" },
+      { "mark": "✓", "text": "foco en la terminal" }
+    ],
+    "labels": [
+      "Tus escritorios, uno por proyecto",
+      "Un escritorio nuevo, en el monitor elegido",
+      "Terminal y navegador, uno al lado del otro"
+    ]
+  },
+  "ritual": {
+    "eyebrow": "El tedio",
+    "title": "Ocho pasos, diez veces al día.",
+    "lead": "Cada vez que te sientas a trabajar en un proyecto es el mismo ritual. Multiplicado por decenas de proyectos, todos los días, siempre.",
+    "punch": "loadcli hace los ocho. Tú haces uno.",
+    "steps": [
+      "abrir la Terminal",
+      "cd a la carpeta correcta",
+      "arrancar el CLI",
+      "elegir el modelo y el effort",
+      "abrir el navegador",
+      "buscar la URL del deploy",
+      "crear un escritorio nuevo para no ensuciar los demás",
+      "arrastrar y redimensionar las ventanas"
+    ],
+    "kept": "hacer doble clic en la tarjeta"
+  },
+  "flow": {
+    "eyebrow": "Un clic",
+    "title": "Qué pasa cuando haces doble clic.",
+    "lead": "Cada ventana se verifica. Si alguna no cayó donde debía, loadcli lo corrige antes de devolverte el control.",
+    "cards": [
+      {
+        "title": "Haces doble clic",
+        "text": "En la tarjeta del proyecto. O desde la barra de menús, sin abrir siquiera la ventana principal."
+      },
+      {
+        "title": "Nace el escritorio",
+        "text": "Un Space nuevo, en el monitor que elegiste. Tus otros escritorios quedan igual que estaban."
+      },
+      {
+        "title": "La terminal abre lista",
+        "text": "Ya en la carpeta del proyecto, con tu CLI en marcha, en el modelo y el effort que ese proyecto pide."
+      },
+      {
+        "title": "Todo ocupa su lugar",
+        "text": "Navegador en el deploy, una carpeta en Finder, o solo la terminal a pantalla completa. El foco termina donde vas a escribir."
+      }
+    ]
+  },
+  "card": {
+    "eyebrow": "La diferencia",
+    "title": "La tarjeta vive dentro de la carpeta del proyecto.",
+    "lead": "No hay base de datos de proyectos. Cada carpeta lleva un LOADCLI.md, y ese archivo es la tarjeta. loadcli recorre las carpetas que registraste, encuentra los documentos y arma la cuadrícula con lo que dicen.",
+    "fileLabel": "acme/LOADCLI.md",
+    "groupValue": "Clientes",
+    "bodyText": "La tienda de Acme. Desplegada en Vercel.",
+    "start": "Iniciar",
+    "points": [
+      {
+        "title": "Ninguna ruta absoluta",
+        "text": "La carpeta del proyecto es donde está el archivo. El mismo documento funciona en cualquier Mac, con cualquier usuario."
+      },
+      {
+        "title": "Sincroniza y listo",
+        "text": "Pon tu carpeta de proyectos en Google Drive o en ownCloud. Todos tus Mac muestran las mismas tarjetas, siempre al día."
+      },
+      {
+        "title": "El archivo es tuyo",
+        "text": "Edítalo en tu editor, guárdalo en git. Las claves que añadas y el texto en markdown sobreviven a cualquier reescritura."
+      },
+      {
+        "title": "Abre al instante",
+        "text": "El último escaneo queda en caché. La ventana aparece de inmediato y las tarjetas nuevas llegan un momento después."
+      }
+    ]
+  },
+  "ai": {
+    "eyebrow": "Hecho para quien programa con IA",
+    "title": "Cada proyecto con su propio cerebro.",
+    "lead": "Claude Code en uno, Codex en otro, un script tuyo en el tercero. El modelo y el effort viven en el archivo del proyecto, así que abre exactamente como debe. Sin recordar ninguna flag.",
+    "cards": [
+      {
+        "title": "Claude Code",
+        "text": "Modelo y effort por proyecto. El comando sale montado tal como lo configuraste.",
+        "chips": ["fable", "opus", "sonnet", "haiku", "xhigh", "ultracode"]
+      },
+      {
+        "title": "Codex",
+        "text": "La misma idea, con las flags propias de Codex. Cámbialas al iniciar si quieres.",
+        "chips": ["gpt-5.6-sol", "gpt-5.5", "minimal", "high"]
+      },
+      {
+        "title": "Comando personalizado",
+        "text": "Cualquier cosa que corra en un shell. loadcli hace el cd y lo ejecuta.",
+        "chips": ["npm run dev", "docker compose up", "make watch"]
+      }
+    ],
+    "swatchLead": "Cada tarjeta con su icono y su color. Diez segundos para recorrer la cuadrícula y encontrar el proyecto correcto."
+  },
+  "spaces": {
+    "eyebrow": "La parte difícil",
+    "title": "Crea escritorios sin que desactives el SIP.",
+    "p1": "Crear un Space por API privada no funciona en una app moderna de macOS. Por eso las herramientas de tiling te piden desactivar la protección de integridad del sistema.",
+    "p2": "loadcli hace lo que haría una persona: maneja el botón + de Mission Control por la API de Accesibilidad, apunta al monitor por su identificador de pantalla y hace clic en la miniatura del escritorio nuevo. Verificando siempre el resultado antes de seguir.",
+    "pull": "SIP intacto. Ningún demonio. Ningún hack de kernel.",
+    "link": "Leer la arquitectura"
+  },
+  "features": {
+    "eyebrow": "Detalles",
+    "title": "El resto de lo que vas a usar todos los días.",
+    "items": [
+      { "title": "Búsqueda rápida", "text": "Escribe y las carpetas con resultados se abren solas. Borra y todas se cierran otra vez." },
+      { "title": "Recientes", "text": "Los proyectos que abriste por último, del más nuevo al más antiguo." },
+      { "title": "Carpetas", "text": "Agrupa por la clave grupo del documento. Empiezan cerradas, para verlo todo de un vistazo." },
+      { "title": "Multi-monitor", "text": "Fija el monitor por proyecto, o deja que loadcli pregunte cada vez." },
+      { "title": "Fuente de la terminal", "text": "Aumenta la fuente por ti, tantas veces como definas." },
+      { "title": "Barra de menús", "text": "Lanza cualquier proyecto sin abrir la ventana principal." },
+      { "title": "Autotest", "text": "loadcli --doctor comprueba el mecanismo de escritorios en cada monitor." },
+      { "title": "100% nativa", "text": "SwiftUI, sin Electron. Abre al instante y casi no ocupa memoria." }
+    ]
+  },
+  "download": {
+    "eyebrow": "Descargar",
+    "title": "Empieza ahora.",
+    "soon": "Próximamente",
+    "mac": {
+      "name": "loadcli 1.0.0",
+      "meta": "Apple Silicon · macOS 14 o posterior · DMG",
+      "button": "Descargar para Mac",
+      "noteTitle": "Primera apertura:",
+      "noteText": "la app todavía no pasó por la notarización de Apple. Haz clic derecho sobre ella y elige Abrir. Si macOS insiste, ve a Ajustes › Privacidad y seguridad y pulsa Abrir igualmente."
+    },
+    "win": {
+      "name": "loadcli para Windows",
+      "meta": "Virtual Desktops y WinUI 3, leyendo exactamente los mismos archivos LOADCLI.md.",
+      "button": "Ver el roadmap"
+    },
+    "oss": {
+      "title": "Código abierto, licencia MIT.",
+      "text": "Todo el código está en GitHub. Issues y pull requests son bienvenidos.",
+      "button": "Ver en GitHub"
+    }
+  },
+  "footer": {
+    "credit": "Hecho con café y Mission Control por <b>HISAYOSHI, N. KAMEDA</b> · <a href=\"https://kameda.app\" rel=\"noopener\">kameda.app</a>",
+    "license": "Licencia MIT"
+  }
+}

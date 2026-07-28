@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>loadcli — your entire dev environment, in one click</title>
+  <meta name="description" content="One click creates a fresh desktop on the right monitor, opens the Terminal with your CLI already in the project folder and tiles the browser beside it. Native macOS app, open source, and SIP stays on.">
+  <link rel="canonical" href="https://www.loadcli.com/">
+  <link rel="alternate" hreflang="en" href="https://www.loadcli.com/">
+  <link rel="alternate" hreflang="es" href="https://www.loadcli.com/es.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://www.loadcli.com/zh.html">
+  <link rel="alternate" hreflang="pt-BR" href="https://www.loadcli.com/pt.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.loadcli.com/">
+  <meta name="theme-color" content="#fbfbfd">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="/assets/img/icon-128.png" sizes="128x128" type="image/png">
+  <link rel="apple-touch-icon" href="/assets/img/icon-256.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="loadcli">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://www.loadcli.com/">
+  <meta property="og:title" content="loadcli — your entire dev environment, in one click">
+  <meta property="og:description" content="One click creates a fresh desktop on the right monitor, opens the Terminal with your CLI already in the project folder and tiles the browser beside it. Native macOS app, open source, and SIP stays on.">
+  <meta property="og:image" content="https://www.loadcli.com/assets/img/og-en.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/site.css?v=4">
+  <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}.pane--browser,.pane--terminal{opacity:1!important;transform:none!important}.desk__seam{opacity:1!important}</style></noscript>
+</head>
+<body data-lang="en">
+  <a class="skip-link" href="#one-click">Skip to content</a>
+
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <a class="brand" href="/">
+        <img src="/assets/img/icon-128.png" alt="" width="24" height="24">
+        <span>loadcli</span>
+      </a>
+      <nav class="nav__links" aria-label="Sections">
+            <a href="#one-click">One click</a>
+            <a href="#card">The card</a>
+            <a href="#ai">AI</a>
+            <a href="#spaces">Desktops</a>
+      </nav>
+      <div class="nav__right">
+        <nav class="langbar" aria-label="Language"><a href="/" hreflang="en" aria-current="true">EN</a><a href="/es.html" hreflang="es">ES</a><a href="/zh.html" hreflang="zh-CN">中文</a><a href="/pt.html" hreflang="pt-BR">PT</a></nav>
+        <a class="icon-link" href="https://github.com/nhkameda/loadcli" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></a>
+        <a class="btn btn--primary btn--sm" href="#download">Download</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ------------------------------------------------------- hero -->
+    <section class="hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="wrap hero__inner">
+        <h1 data-reveal>Your entire dev environment.<br>In <span class="grad-text">one click</span>.</h1>
+        <p class="lead" data-reveal style="--delay:90ms">Pick a project. loadcli spins up a fresh desktop on the monitor you want, opens the Terminal with your CLI already in the project folder, and tiles the browser beside it. Everything placed, focus on the terminal.</p>
+        <div class="hero__cta" data-reveal style="--delay:170ms">
+          <a class="btn btn--primary" href="#download"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10m0 0 4-4m-4 4-4-4M3.5 15.5h13"/></svg>Download for Mac</a>
+          <a class="btn btn--ghost" href="https://github.com/nhkameda/loadcli" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>View on GitHub</a>
+        </div>
+        <p class="hero__meta" data-reveal style="--delay:230ms"><span>macOS 14+ · Apple Silicon</span><span aria-hidden="true">·</span><span>Open source, MIT licensed</span><span aria-hidden="true">·</span><span>SIP stays intact</span></p>
+
+        <div class="stage" data-reveal style="--delay:300ms">
+          <div class="stage__scene">
+            <div class="desk desk--back-1" aria-hidden="true"></div>
+            <div class="desk desk--back-2" aria-hidden="true"></div>
+            <div class="desk desk--front">
+              <div class="desk__bar">
+                <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
+                <span class="desk__label">acme — desktop 3</span>
+              </div>
+              <div class="desk__panes">
+                <div class="pane pane--browser">
+                  <div class="browser__chrome">
+                    <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
+                    <span class="browser__url">app.acme.com</span>
+                  </div>
+                  <div class="browser__body">
+                    <div class="skeleton skeleton--title"></div>
+                    <div class="skeleton skeleton--w80"></div>
+                    <div class="skeleton skeleton--w60"></div>
+                    <div class="browser__cards">
+                      <div class="browser__card"></div><div class="browser__card"></div>
+                      <div class="browser__card"></div><div class="browser__card"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="pane pane--terminal">
+                  <div class="term">
+                    <div><span class="dim">~/DEV/acme</span></div>
+                    <div><span class="p">$</span> <span data-typed="claude --model opus --effort ultracode"></span><span class="caret"></span></div>
+                    <div data-term-line style="opacity:0;transition:opacity .4s ease"><span class="ok">✓</span> <span class="dim">desktop created on the Studio display</span></div>
+                    <div data-term-line style="opacity:0;transition:opacity .4s ease"><span class="ok">✓</span> <span class="dim">browser tiled on the left</span></div>
+                    <div data-term-line style="opacity:0;transition:opacity .4s ease"><span class="ok">✓</span> <span class="dim">focus on the terminal</span></div>
+                  </div>
+                </div>
+              </div>
+              <span class="desk__seam" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="stage__tag" aria-hidden="true">
+            <span class="dotlive"></span>
+            <span data-labels='["Your desktops, one per project","A fresh desktop, on the monitor you picked","Terminal and browser, side by side"]'>Your desktops, one per project</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------- ritual -->
+    <section class="section section--alt">
+      <div class="wrap ritual">
+        <div>
+          <p class="eyebrow" data-reveal>The chore</p>
+          <h2 data-reveal>Eight steps, ten times a day.</h2>
+          <p class="lead" data-reveal style="--delay:80ms;margin-top:20px">Every time you sit down with a project it is the same ritual. Times dozens of projects, every day, forever.</p>
+          <p class="ritual__punch grad-text" data-reveal style="--delay:140ms">loadcli does the eight. You do one.</p>
+        </div>
+        <ul class="steps" data-reveal>
+          <li class="step">open the Terminal</li>
+          <li class="step">cd into the right folder</li>
+          <li class="step">start the CLI</li>
+          <li class="step">pick the model and the effort</li>
+          <li class="step">open the browser</li>
+          <li class="step">dig up the deploy URL</li>
+          <li class="step">spin up a desktop so you don't clutter the others</li>
+          <li class="step">drag and resize the windows</li>
+          <li class="step step--kept">double-click a card</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- um clique -->
+    <section class="section" id="one-click">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>One click</p>
+        <h2 class="narrow" data-reveal>What happens when you double-click.</h2>
+        <p class="lead narrow" data-reveal style="--delay:80ms;margin-top:20px">Every window is verified. If one didn't land where it should, loadcli fixes it before handing control back to you.</p>
+        <div class="flow">
+          <article class="flowcard" data-reveal style="--delay:0ms" data-parallax="0.11">
+            <span class="flowcard__n">01</span>
+            <h3>You double-click</h3>
+            <p>On the project's card. Or from the menu bar, without even opening the main window.</p>
+          </article>
+          <article class="flowcard" data-reveal style="--delay:80ms" data-parallax="0.06">
+            <span class="flowcard__n">02</span>
+            <h3>The desktop is born</h3>
+            <p>A brand-new Space, on the monitor you chose. Your other desktops stay exactly as they were.</p>
+          </article>
+          <article class="flowcard" data-reveal style="--delay:160ms" data-parallax="0.11">
+            <span class="flowcard__n">03</span>
+            <h3>The terminal opens ready</h3>
+            <p>Already in the project folder, running your CLI, on the model and effort that project asks for.</p>
+          </article>
+          <article class="flowcard" data-reveal style="--delay:240ms" data-parallax="0.06">
+            <span class="flowcard__n">04</span>
+            <h3>Everything takes its place</h3>
+            <p>Browser at the deploy, a Finder folder, or just the terminal full screen. Focus ends where you are about to type.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- o card -->
+    <section class="section section--alt" id="card">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>What makes it different</p>
+        <h2 class="narrow" data-reveal>The card lives inside the project folder.</h2>
+        <p class="lead narrow" data-reveal style="--delay:80ms;margin-top:20px">There is no project database. Each folder carries a LOADCLI.md, and that file is the card. loadcli walks the folders you registered, finds those documents, and builds the grid from what they say.</p>
+
+        <div class="morph">
+          <div class="codeblock" data-reveal data-parallax="0.09">
+            <div class="codeblock__head"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h3.2l1.4 1.7H16a1.5 1.5 0 0 1 1.5 1.5v7.3A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z"/></svg>&nbsp;acme/LOADCLI.md</div>
+            <pre><code><span class="c">---</span>
+<span class="k">loadcli</span>: <span class="v">1</span>
+<span class="k">nome</span>: <span class="v">Acme Site</span>
+<span class="k">grupo</span>: <span class="v">Clients</span>
+<span class="k">icone</span>: <span class="v">cart.fill</span>
+<span class="k">cor</span>: <span class="v">"#3B82F6"</span>
+<span class="k">repositorio</span>: <span class="v">github.com/acme/site</span>
+<span class="k">url</span>: <span class="v">app.acme.com</span>
+<span class="k">cli</span>: <span class="v">claude</span>
+<span class="k">modelo</span>: <span class="v">opus</span>
+<span class="k">esforco</span>: <span class="v">xhigh</span>
+<span class="c">---</span>
+
+<span class="d">The Acme store. Deployed on Vercel.</span></code></pre>
+          </div>
+
+          <div class="morph__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg></div>
+
+          <div class="appcard" data-reveal style="--delay:120ms" data-parallax="0.14">
+            <div class="appcard__top">
+              <span class="appcard__icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M2.8 10h14.4M10 2.8c1.9 2 2.9 4.5 2.9 7.2s-1 5.2-2.9 7.2c-1.9-2-2.9-4.5-2.9-7.2s1-5.2 2.9-7.2Z"/></svg></span>
+              <span class="appcard__tag">claude</span>
+            </div>
+            <h4>Acme Site</h4>
+            <p class="appcard__path"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h3.2l1.4 1.7H16a1.5 1.5 0 0 1 1.5 1.5v7.3A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z"/></svg> acme</p>
+            <p class="appcard__desc">The Acme store. Deployed on Vercel.</p>
+            <p class="appcard__repo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 6-4 4 4 4m6-8 4 4-4 4"/></svg> acme/site</p>
+            <div class="appcard__actions">
+              <span class="appcard__play"><svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 1.8v8.4l7-4.2z"/></svg> Start</span>
+              <span class="appcard__spacer"></span>
+              <span class="appcard__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h3.2l1.4 1.7H16a1.5 1.5 0 0 1 1.5 1.5v7.3A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z"/></svg></span>
+              <span class="appcard__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M2.8 10h14.4M10 2.8c1.9 2 2.9 4.5 2.9 7.2s-1 5.2-2.9 7.2c-1.9-2-2.9-4.5-2.9-7.2s1-5.2 2.9-7.2Z"/></svg></span>
+              <span class="appcard__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 6-4 4 4 4m6-8 4 4-4 4"/></svg></span>
+              <span class="appcard__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.6 3.9a1.7 1.7 0 0 1 2.4 2.4L7.4 15 4 16l1-3.4 8.6-8.7Z"/></svg></span>
+            </div>
+          </div>
+        </div>
+
+        <ul class="sync">
+          <li data-reveal style="--delay:0ms"><b>No absolute paths</b>The project folder is wherever the file sits. The same document works on any Mac, under any username.</li>
+          <li data-reveal style="--delay:70ms"><b>Sync and you're done</b>Put your projects folder on Google Drive or ownCloud. Every Mac shows the same cards, always current.</li>
+          <li data-reveal style="--delay:140ms"><b>The file is yours</b>Edit it in your editor, commit it to git. Keys you add and the markdown body survive every rewrite.</li>
+          <li data-reveal style="--delay:210ms"><b>Opens instantly</b>The last scan is cached. The window paints right away and new cards appear a moment later.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------- IA -->
+    <section class="section section--dark" id="ai">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Built for coding with AI</p>
+        <h2 class="narrow" data-reveal>Every project with its own brain.</h2>
+        <p class="lead narrow" data-reveal style="--delay:80ms;margin-top:20px">Claude Code in one, Codex in another, your own script in the third. Model and effort live in the project's file, so it opens exactly right. No flags to remember.</p>
+        <div class="cli-grid">
+          <article class="clicard" data-reveal style="--delay:0ms">
+            <h3>Claude Code</h3>
+            <p>Model and effort per project. The command comes out assembled the way you configured it.</p>
+            <div class="chips"><span class="chip">fable</span><span class="chip">opus</span><span class="chip">sonnet</span><span class="chip">haiku</span><span class="chip">xhigh</span><span class="chip">ultracode</span></div>
+          </article>
+          <article class="clicard" data-reveal style="--delay:90ms">
+            <h3>Codex</h3>
+            <p>Same idea, with Codex's own flags. Change them at launch time if you feel like it.</p>
+            <div class="chips"><span class="chip">gpt-5.6-sol</span><span class="chip">gpt-5.5</span><span class="chip">minimal</span><span class="chip">high</span></div>
+          </article>
+          <article class="clicard" data-reveal style="--delay:180ms">
+            <h3>Custom command</h3>
+            <p>Anything that runs in a shell. loadcli does the cd and runs it.</p>
+            <div class="chips"><span class="chip">npm run dev</span><span class="chip">docker compose up</span><span class="chip">make watch</span></div>
+          </article>
+        </div>
+        <p class="lead" data-reveal style="margin-top:44px">Every card with its own icon and colour. Ten seconds to glance across the grid and find the right project.</p>
+        <div class="swatches" data-reveal>
+          <span class="swatch" style="background:#7C5CFF"></span><span class="swatch" style="background:#3B82F6"></span><span class="swatch" style="background:#06B6D4"></span><span class="swatch" style="background:#10B981"></span><span class="swatch" style="background:#F59E0B"></span><span class="swatch" style="background:#EF4444"></span><span class="swatch" style="background:#EC4899"></span><span class="swatch" style="background:#8B5CF6"></span><span class="swatch" style="background:#64748B"></span><span class="swatch" style="background:#0EA5E9"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- spaces -->
+    <section class="section" id="spaces">
+      <div class="wrap narrow">
+        <p class="eyebrow" data-reveal>The hard part</p>
+        <h2 data-reveal>It creates desktops without you disabling SIP.</h2>
+        <p class="lead" data-reveal style="--delay:80ms;margin-top:22px">Creating a Space through a private API does not work in a modern macOS app. That is why tiling tools ask you to turn System Integrity Protection off.</p>
+        <p class="lead" data-reveal style="--delay:120ms;margin-top:16px">loadcli does what a person would do: it drives Mission Control's + button through the Accessibility API, targets the monitor by its display id, and clicks the new desktop's thumbnail. Always verifying the result before moving on.</p>
+        <p class="ritual__punch grad-text" data-reveal style="--delay:170ms">SIP stays intact. No daemon. No kernel hack.</p>
+        <p data-reveal style="--delay:210ms;margin-top:22px">
+          <a class="btn btn--ghost btn--sm" href="https://github.com/nhkameda/loadcli/blob/main/docs/ARCHITECTURE.md" rel="noopener">Read the architecture<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg></a>
+        </p>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------- recursos -->
+    <section class="section section--alt">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Details</p>
+        <h2 class="narrow" data-reveal>The rest of what you'll use every day.</h2>
+        <div class="features">
+          <article class="feature" data-reveal style="--delay:0ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.4"/><path d="m13.2 13.2 3.3 3.3"/></svg></span>
+            <h3>Quick search</h3>
+            <p>Type and the folders holding matches open themselves. Clear it and they all close again.</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:60ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/><path d="M10 5.8V10l3 1.8"/></svg></span>
+            <h3>Recents</h3>
+            <p>The projects you opened last, newest first.</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:120ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5A1.5 1.5 0 0 1 4 4h3.2l1.4 1.7H16a1.5 1.5 0 0 1 1.5 1.5v7.3A1.5 1.5 0 0 1 16 16H4a1.5 1.5 0 0 1-1.5-1.5v-9Z"/></svg></span>
+            <h3>Folders</h3>
+            <p>Group by the document's group key. They start collapsed, so you can scan fast.</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:180ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.4" y="3.6" width="15.2" height="10" rx="1.6"/><path d="M7 16.6h6"/></svg></span>
+            <h3>Multi-monitor</h3>
+            <p>Pin the monitor per project, or let loadcli ask you every time.</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:0ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.2h12M10 5.2V15m-3 0h6"/></svg></span>
+            <h3>Terminal font</h3>
+            <p>It bumps the font up for you, as many times as you set.</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:60ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.4" y="3.4" width="15.2" height="13.2" rx="2"/><path d="M2.4 7.4h15.2"/></svg></span>
+            <h3>Menu bar</h3>
+            <p>Launch any project without opening the main window.</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:120ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 3v4.2a3.3 3.3 0 0 0 6.6 0V3"/><path d="M8.8 10.5v2.2a3.6 3.6 0 0 0 7.2 0v-1"/><circle cx="16" cy="10.6" r="1.5"/></svg></span>
+            <h3>Self-test</h3>
+            <p>loadcli --doctor checks the desktop mechanism on every monitor.</p>
+          </article>
+          <article class="feature" data-reveal style="--delay:180ms">
+            <span class="feature__ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 4.2c3.8 4.6 7.6 7.7 12.6 9.4-1 1.6-2.6 2.6-4.9 2.6-3.6 0-6.7-2.6-7.9-6"/><path d="M12.4 3.6c1.6 3.1 3 5.6 4.1 7.4"/></svg></span>
+            <h3>100% native</h3>
+            <p>SwiftUI, no Electron. Opens instantly and barely touches memory.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------- download -->
+    <section class="section" id="download">
+      <div class="wrap">
+        <p class="eyebrow" data-reveal>Download</p>
+        <h2 class="narrow" data-reveal>Start now.</h2>
+        <div class="dl">
+          <article class="dlcard" data-reveal>
+            <p class="dlcard__os"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.36 12.72c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.83-.81-3-.79-1.55.02-2.97.9-3.77 2.28-1.61 2.79-.41 6.92 1.15 9.19.77 1.11 1.68 2.35 2.88 2.31 1.16-.05 1.6-.75 3-.75s1.79.75 3.01.72c1.24-.02 2.03-1.13 2.79-2.24.88-1.29 1.24-2.54 1.26-2.6-.03-.01-2.42-.93-2.44-3.69ZM14.1 5.9c.64-.77 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.11 1.77-.97 2.82 1.02.08 2.07-.52 2.71-1.28Z"/></svg> macOS</p>
+            <h3>loadcli 1.0.0</h3>
+            <p class="dlcard__meta">Apple Silicon · macOS 14 or newer · DMG</p>
+            <a class="btn btn--primary" href="/download/loadcli-1.0.0.dmg" download><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10m0 0 4-4m-4 4-4-4M3.5 15.5h13"/></svg>Download for Mac</a>
+            <p class="dlcard__note"><b>First launch:</b> the app has not been through Apple notarization yet. Right-click it and choose Open. If macOS still refuses, go to Settings › Privacy &amp; Security and click Open Anyway.</p>
+          </article>
+          <article class="dlcard dlcard--soon" data-reveal style="--delay:100ms">
+            <span class="badge-soon">Coming soon</span>
+            <p class="dlcard__os"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.7 10.2 4.7v6.9H3V5.7Zm0 12.6 7.2 1v-6.8H3v5.8Zm8 1.1L21 21V12.8h-10v6.6Zm0-14.7v6.9h10V3l-10 1.7Z"/></svg> Windows</p>
+            <h3>loadcli for Windows</h3>
+            <p class="dlcard__meta">Virtual Desktops and WinUI 3, reading the very same LOADCLI.md files.</p>
+            <a class="btn btn--ghost" href="https://github.com/nhkameda/loadcli/blob/main/windows/ROADMAP.md" rel="noopener">See the roadmap<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0-5.5-5.5M19 12l-5.5 5.5"/></svg></a>
+          </article>
+        </div>
+        <div class="oss" data-reveal style="--delay:140ms">
+          <span><b>Open source, MIT licensed.</b> The whole codebase is on GitHub. Issues and pull requests welcome.</span>
+          <a class="btn btn--ghost btn--sm" href="https://github.com/nhkameda/loadcli" rel="noopener"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>View on GitHub</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__grid">
+      <p class="footer__credit">Made with coffee and Mission Control by <b>HISAYOSHI, N. KAMEDA</b> · <a href="https://kameda.app" rel="noopener">kameda.app</a></p>
+      <div class="footer__right">
+        <span class="tiny">MIT licence</span>
+        <nav class="langbar" aria-label="Language"><a href="/" hreflang="en" aria-current="true">EN</a><a href="/es.html" hreflang="es">ES</a><a href="/zh.html" hreflang="zh-CN">中文</a><a href="/pt.html" hreflang="pt-BR">PT</a></nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/vendor/lenis.min.js?v=4"></script>
+  <script type="module" src="/assets/js/site.js?v=4"></script>
+</body>
+</html>

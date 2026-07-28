@@ -1,0 +1,180 @@
+{
+  "lang": "en",
+  "meta": {
+    "title": "loadcli — your entire dev environment, in one click",
+    "description": "One click creates a fresh desktop on the right monitor, opens the Terminal with your CLI already in the project folder and tiles the browser beside it. Native macOS app, open source, and SIP stays on.",
+    "ogLocale": "en_US"
+  },
+  "nav": {
+    "skip": "Skip to content",
+    "aria": "Sections",
+    "langAria": "Language",
+    "download": "Download",
+    "links": [
+      { "href": "#one-click", "label": "One click" },
+      { "href": "#card", "label": "The card" },
+      { "href": "#ai", "label": "AI" },
+      { "href": "#spaces", "label": "Desktops" }
+    ]
+  },
+  "hero": {
+    "title": "Your entire dev environment.<br>In <span class=\"grad-text\">one click</span>.",
+    "lead": "Pick a project. loadcli spins up a fresh desktop on the monitor you want, opens the Terminal with your CLI already in the project folder, and tiles the browser beside it. Everything placed, focus on the terminal.",
+    "ctaPrimary": "Download for Mac",
+    "ctaSecondary": "View on GitHub",
+    "meta": ["macOS 14+ · Apple Silicon", "Open source, MIT licensed", "SIP stays intact"]
+  },
+  "stage": {
+    "deskLabel": "acme — desktop 3",
+    "browserUrl": "app.acme.com",
+    "command": "claude --model opus --effort ultracode",
+    "output": [
+      { "mark": "✓", "text": "desktop created on the Studio display" },
+      { "mark": "✓", "text": "browser tiled on the left" },
+      { "mark": "✓", "text": "focus on the terminal" }
+    ],
+    "labels": [
+      "Your desktops, one per project",
+      "A fresh desktop, on the monitor you picked",
+      "Terminal and browser, side by side"
+    ]
+  },
+  "ritual": {
+    "eyebrow": "The chore",
+    "title": "Eight steps, ten times a day.",
+    "lead": "Every time you sit down with a project it is the same ritual. Times dozens of projects, every day, forever.",
+    "punch": "loadcli does the eight. You do one.",
+    "steps": [
+      "open the Terminal",
+      "cd into the right folder",
+      "start the CLI",
+      "pick the model and the effort",
+      "open the browser",
+      "dig up the deploy URL",
+      "spin up a desktop so you don't clutter the others",
+      "drag and resize the windows"
+    ],
+    "kept": "double-click a card"
+  },
+  "flow": {
+    "eyebrow": "One click",
+    "title": "What happens when you double-click.",
+    "lead": "Every window is verified. If one didn't land where it should, loadcli fixes it before handing control back to you.",
+    "cards": [
+      {
+        "title": "You double-click",
+        "text": "On the project's card. Or from the menu bar, without even opening the main window."
+      },
+      {
+        "title": "The desktop is born",
+        "text": "A brand-new Space, on the monitor you chose. Your other desktops stay exactly as they were."
+      },
+      {
+        "title": "The terminal opens ready",
+        "text": "Already in the project folder, running your CLI, on the model and effort that project asks for."
+      },
+      {
+        "title": "Everything takes its place",
+        "text": "Browser at the deploy, a Finder folder, or just the terminal full screen. Focus ends where you are about to type."
+      }
+    ]
+  },
+  "card": {
+    "eyebrow": "What makes it different",
+    "title": "The card lives inside the project folder.",
+    "lead": "There is no project database. Each folder carries a LOADCLI.md, and that file is the card. loadcli walks the folders you registered, finds those documents, and builds the grid from what they say.",
+    "fileLabel": "acme/LOADCLI.md",
+    "groupValue": "Clients",
+    "bodyText": "The Acme store. Deployed on Vercel.",
+    "start": "Start",
+    "points": [
+      {
+        "title": "No absolute paths",
+        "text": "The project folder is wherever the file sits. The same document works on any Mac, under any username."
+      },
+      {
+        "title": "Sync and you're done",
+        "text": "Put your projects folder on Google Drive or ownCloud. Every Mac shows the same cards, always current."
+      },
+      {
+        "title": "The file is yours",
+        "text": "Edit it in your editor, commit it to git. Keys you add and the markdown body survive every rewrite."
+      },
+      {
+        "title": "Opens instantly",
+        "text": "The last scan is cached. The window paints right away and new cards appear a moment later."
+      }
+    ]
+  },
+  "ai": {
+    "eyebrow": "Built for coding with AI",
+    "title": "Every project with its own brain.",
+    "lead": "Claude Code in one, Codex in another, your own script in the third. Model and effort live in the project's file, so it opens exactly right. No flags to remember.",
+    "cards": [
+      {
+        "title": "Claude Code",
+        "text": "Model and effort per project. The command comes out assembled the way you configured it.",
+        "chips": ["fable", "opus", "sonnet", "haiku", "xhigh", "ultracode"]
+      },
+      {
+        "title": "Codex",
+        "text": "Same idea, with Codex's own flags. Change them at launch time if you feel like it.",
+        "chips": ["gpt-5.6-sol", "gpt-5.5", "minimal", "high"]
+      },
+      {
+        "title": "Custom command",
+        "text": "Anything that runs in a shell. loadcli does the cd and runs it.",
+        "chips": ["npm run dev", "docker compose up", "make watch"]
+      }
+    ],
+    "swatchLead": "Every card with its own icon and colour. Ten seconds to glance across the grid and find the right project."
+  },
+  "spaces": {
+    "eyebrow": "The hard part",
+    "title": "It creates desktops without you disabling SIP.",
+    "p1": "Creating a Space through a private API does not work in a modern macOS app. That is why tiling tools ask you to turn System Integrity Protection off.",
+    "p2": "loadcli does what a person would do: it drives Mission Control's + button through the Accessibility API, targets the monitor by its display id, and clicks the new desktop's thumbnail. Always verifying the result before moving on.",
+    "pull": "SIP stays intact. No daemon. No kernel hack.",
+    "link": "Read the architecture"
+  },
+  "features": {
+    "eyebrow": "Details",
+    "title": "The rest of what you'll use every day.",
+    "items": [
+      { "title": "Quick search", "text": "Type and the folders holding matches open themselves. Clear it and they all close again." },
+      { "title": "Recents", "text": "The projects you opened last, newest first." },
+      { "title": "Folders", "text": "Group by the document's group key. They start collapsed, so you can scan fast." },
+      { "title": "Multi-monitor", "text": "Pin the monitor per project, or let loadcli ask you every time." },
+      { "title": "Terminal font", "text": "It bumps the font up for you, as many times as you set." },
+      { "title": "Menu bar", "text": "Launch any project without opening the main window." },
+      { "title": "Self-test", "text": "loadcli --doctor checks the desktop mechanism on every monitor." },
+      { "title": "100% native", "text": "SwiftUI, no Electron. Opens instantly and barely touches memory." }
+    ]
+  },
+  "download": {
+    "eyebrow": "Download",
+    "title": "Start now.",
+    "soon": "Coming soon",
+    "mac": {
+      "name": "loadcli 1.0.0",
+      "meta": "Apple Silicon · macOS 14 or newer · DMG",
+      "button": "Download for Mac",
+      "noteTitle": "First launch:",
+      "noteText": "the app has not been through Apple notarization yet. Right-click it and choose Open. If macOS still refuses, go to Settings › Privacy & Security and click Open Anyway."
+    },
+    "win": {
+      "name": "loadcli for Windows",
+      "meta": "Virtual Desktops and WinUI 3, reading the very same LOADCLI.md files.",
+      "button": "See the roadmap"
+    },
+    "oss": {
+      "title": "Open source, MIT licensed.",
+      "text": "The whole codebase is on GitHub. Issues and pull requests welcome.",
+      "button": "View on GitHub"
+    }
+  },
+  "footer": {
+    "credit": "Made with coffee and Mission Control by <b>HISAYOSHI, N. KAMEDA</b> · <a href=\"https://kameda.app\" rel=\"noopener\">kameda.app</a>",
+    "license": "MIT licence"
+  }
+}

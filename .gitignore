@@ -23,3 +23,9 @@ xcuserdata/
 
 # Misc
 *.swp
+
+# Instalador publicado no site — vem do `make dmg`, não versionamos binário
+website/download/
+
+# O .env do site guarda só referências op://, então é versionável de propósito
+!website/.env
