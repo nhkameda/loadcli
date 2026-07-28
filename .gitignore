@@ -32,7 +32,4 @@ website/download/
 
 # Originais 2K do Nano Banana Pro (~2 MB cada). O site serve os .webp;
 # para refazer: make site-images && python3 website/tools/optimize-images.py
-website/assets/img/ritual.png
-website/assets/img/spaces.png
-website/assets/img/card.png
-website/assets/img/footer.png
+website/assets/img/scene-*.png
