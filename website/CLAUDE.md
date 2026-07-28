@@ -62,9 +62,34 @@ verdade**:
 ```bash
 cd website && op run --env-file=.env -- node tools/gen-images.mjs
 # ou, da raiz: make site-images
+python3 tools/optimize-images.py     # obrigatório: 2K PNG de ~1,8 MB → WebP de ~15 KB
 ```
 
 Só gera o que falta. Para refazer uma peça, passe o nome dela.
+
+**Se o `op run` estourar o tempo de autorização** (acontece quando a chamada não
+vem de um terminal), injete a chave direto no processo — ela continua sem tocar
+o disco:
+
+```bash
+GEMINI_KEY="$(op read 'op://Personal/Hackton-Gemini-NanoBananaPro/credential')" \
+  node tools/gen-images.mjs
+```
+
+Detalhe que engana: `op whoami` responde *"account is not signed in"* mesmo com
+tudo funcionando, porque aquele subcomando exige uma conta adicionada pelo CLI.
+O que vale como teste é o `op read`.
+
+**Como as peças entram no layout.** Sempre por `background-image` em elemento
+decorativo, nunca `<img>`: assim um arquivo que falte simplesmente não aparece.
+Todas usam `mix-blend-mode: multiply` — elas vêm com fundo quase-branco, que em
+`multiply` desaparece contra a página em vez de deixar uma moldura retangular. A
+figura da seção "mesas" ainda leva uma máscara radial nas bordas, porque o
+quase-branco dela é um pouco mais escuro que o da página.
+
+Os PNG de 2K originais ficam fora do git (ver `.gitignore`); o site serve os
+`.webp`, e as imagens de Open Graph viram `.jpg` (nem todo raspador lê WebP, e
+em PNG cada card sairia com 700 KB).
 
 ## Deploy
 

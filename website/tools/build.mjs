@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /** Suba isto sempre que editar assets/css/site.css ou assets/js/site.js. */
-const ASSET_VERSION = 5;
+const ASSET_VERSION = 8;
 
 const SITE = 'https://www.loadcli.com';
 const REPO = 'https://github.com/nhkameda/loadcli';
@@ -111,7 +111,7 @@ ${alternates}
   <meta property="og:url" content="${canonical}">
   <meta property="og:title" content="${esc(c.meta.title)}">
   <meta property="og:description" content="${esc(c.meta.description)}">
-  <meta property="og:image" content="${SITE}/assets/img/og-${c.lang}.png">
+  <meta property="og:image" content="${SITE}/assets/img/og-${c.lang}.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/assets/css/site.css?v=${ASSET_VERSION}">
   <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}.pane--browser,.pane--terminal{opacity:1!important;transform:none!important}.desk__seam{opacity:1!important}</style></noscript>
@@ -204,6 +204,7 @@ ${alternates}
 
     <!-- ----------------------------------------------------- ritual -->
     <section class="section section--alt">
+      <div class="art art--back art--ritual" data-parallax="0.07" aria-hidden="true"></div>
       <div class="wrap ritual">
         <div>
           <p class="eyebrow" data-reveal>${esc(c.ritual.eyebrow)}</p>
@@ -242,6 +243,7 @@ ${alternates}
 
     <!-- ---------------------------------------------------- o card -->
     <section class="section section--alt" id="card">
+      <div class="art art--back art--card" data-parallax="0.05" aria-hidden="true"></div>
       <div class="wrap">
         <p class="eyebrow" data-reveal>${esc(c.card.eyebrow)}</p>
         <h2 class="narrow" data-reveal>${c.card.title}</h2>
@@ -326,6 +328,7 @@ ${alternates}
     <!-- ---------------------------------------------------- spaces -->
     <section class="section" id="spaces">
       <div class="wrap narrow">
+        <div class="art art--spaces" data-reveal data-parallax="0.09" aria-hidden="true"></div>
         <p class="eyebrow" data-reveal>${esc(c.spaces.eyebrow)}</p>
         <h2 data-reveal>${c.spaces.title}</h2>
         <p class="lead" data-reveal style="--delay:80ms;margin-top:22px">${esc(c.spaces.p1)}</p>

@@ -585,6 +585,47 @@ h3, .h3 {
   box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.2);
 }
 
+/* ------------------------------------------------------- ilustrações */
+
+/* Sempre por background-image e sempre decorativas: um arquivo que faltar
+   simplesmente não aparece, em vez de deixar um ícone quebrado no meio da
+   página. As peças vêm de tools/gen-images.mjs (Nano Banana Pro). */
+.art {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+  /* As peças vêm com fundo quase-branco. Em `multiply` esse fundo desaparece
+     contra a página e sobra só o desenho — sem a moldura retangular que
+     apareceria com o modo normal. */
+  mix-blend-mode: multiply;
+}
+
+.art--back {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.2;
+  mask-image: radial-gradient(70% 70% at 50% 50%, #000 30%, transparent 78%);
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000 30%, transparent 78%);
+}
+.art--ritual { background-image: url("/assets/img/ritual.webp"); background-size: 46% auto; background-position: 30% 88%; }
+.art--card   { background-image: url("/assets/img/card.webp"); background-size: 46% auto; background-position: 50% 66%; opacity: 0.12; }
+
+/* A seção "mesas" ganha a peça como figura de verdade, não como textura. */
+.art--spaces {
+  width: min(100%, 660px);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto clamp(20px, 4vh, 40px);
+  background-image: url("/assets/img/spaces.webp");
+  /* O quase-branco da peça é um pouco mais escuro que o da página, então
+     mesmo em multiply sobra um retângulo. A máscara dissolve as bordas. */
+  mask-image: radial-gradient(74% 74% at 50% 50%, #000 44%, transparent 84%);
+  -webkit-mask-image: radial-gradient(74% 74% at 50% 50%, #000 44%, transparent 84%);
+}
+
+.section > .wrap { position: relative; z-index: 1; }
+
 /* ------------------------------------------------------------ o ritual */
 
 .ritual {
@@ -958,10 +999,24 @@ h3, .h3 {
 /* ---------------------------------------------------------------- footer */
 
 .footer {
+  position: relative;
   border-top: 1px solid var(--line);
   padding-block: 46px 52px;
   background: var(--bg-alt);
+  overflow: hidden;
 }
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/assets/img/footer.webp") center / cover no-repeat;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  mask-image: linear-gradient(to bottom, transparent, #000 70%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 70%);
+  pointer-events: none;
+}
+.footer > .wrap { position: relative; z-index: 1; }
 .footer__grid {
   display: flex;
   flex-wrap: wrap;
