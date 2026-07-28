@@ -119,7 +119,7 @@ To **enter** the new desktop (the Accessibility click on the thumbnail is ignore
 
 > **SIP stays intact. No daemon. No kernel hack.** Just Accessibility and Apple Events — the same permissions you grant any automation app.
 
-Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+Details in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). The document format is specified in [`docs/FORMATO-LOADCLI-MD.md`](docs/FORMATO-LOADCLI-MD.md).
 
 ---
 

@@ -119,7 +119,7 @@ Pra **entrar** na mesa nova (o clique de Acessibilidade no thumbnail é ignorado
 
 > **SIP fica intacto. Nenhum daemon. Nenhum hack de kernel.** Só Acessibilidade e Apple Events — as mesmas permissões que você concede a qualquer app de automação.
 
-Detalhes em [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+Detalhes em [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). O formato do documento está especificado em [`docs/FORMATO-LOADCLI-MD.md`](docs/FORMATO-LOADCLI-MD.md).
 
 ---
 

@@ -117,7 +117,7 @@ Acme 的商店。部署在 Vercel，数据库在 Neon。
 
 > **SIP 保持开启。没有守护进程。没有内核 hack。** 只用辅助功能和 Apple Events —— 就是你给任何自动化 App 的那几项权限。
 
-细节见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。
+细节见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。文档格式的完整说明见 [`docs/FORMATO-LOADCLI-MD.md`](docs/FORMATO-LOADCLI-MD.md)。
 
 ---
 
