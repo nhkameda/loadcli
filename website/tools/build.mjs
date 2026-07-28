@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /** Suba isto sempre que editar assets/css/site.css ou assets/js/site.js. */
-const ASSET_VERSION = 4;
+const ASSET_VERSION = 5;
 
 const SITE = 'https://www.loadcli.com';
 const REPO = 'https://github.com/nhkameda/loadcli';

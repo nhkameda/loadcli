@@ -196,9 +196,10 @@ async function mountShader() {
         import('./vendor/paper-shaders/get-shader-color-from-string.js'),
       ]);
 
-    // As cores do ícone do app, mais dois quase-brancos para o degradê respirar
-    // sem escurecer a página.
-    const colors = ['#8b5cf6', '#7c5cff', '#563bd4', '#c9bcff', '#f6f4ff'].map(
+    // Paleta deliberadamente clara: o shader é atmosfera, não fundo. Só um
+    // violeta saturado no meio de quatro quase-brancos — em GPU de verdade as
+    // cores da marca puras cobrem o hero e derrubam a legibilidade do título.
+    const colors = ['#ffffff', '#f4f0ff', '#ddd3ff', '#a78bfa', '#faf8ff'].map(
       getShaderColorFromString
     );
 

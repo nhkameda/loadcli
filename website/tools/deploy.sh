@@ -15,7 +15,7 @@ echo "→ regerando as páginas a partir de content/"
 node tools/build.mjs
 
 echo "→ site (4 idiomas) + assets"
-rsync -az --delete --info=stats1 \
+rsync -az --delete \
   -e "ssh -i $KEY -o StrictHostKeyChecking=accept-new" \
   --exclude '.DS_Store' --exclude 'content/' --exclude 'tools/' \
   --exclude 'deploy/' --exclude '.env' --exclude 'CLAUDE.md' --exclude 'download/' \
@@ -23,7 +23,7 @@ rsync -az --delete --info=stats1 \
 
 if compgen -G "download/*.dmg" > /dev/null; then
   echo "→ instalador"
-  rsync -az --info=stats1 \
+  rsync -az \
     -e "ssh -i $KEY -o StrictHostKeyChecking=accept-new" \
     download/ "$HOST:$ROOT/download/"
 else
