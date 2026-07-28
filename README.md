@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="Sources/loadcli/Resources/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="loadcli">
+<img src="mac/Sources/loadcli/Resources/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="loadcli">
 
 # loadcli
 
@@ -212,7 +212,7 @@ make sign-notarize     # -> dist/loadcli-<version>.dmg (signed, notarized, stapl
 
 ## 🛣️ Roadmap
 
-- 🪟 **Windows** — native .NET/WinUI 3 app (Virtual Desktops + Win32), reading the very same `LOADCLI.md` files: [`docs/WINDOWS_ROADMAP.md`](docs/WINDOWS_ROADMAP.md).
+- 🪟 **Windows** — native .NET/WinUI 3 app (Virtual Desktops + Win32), reading the very same `LOADCLI.md` files: [`windows/ROADMAP.md`](windows/ROADMAP.md).
 - 🔁 Layout profiles, per-project global shortcuts, optional auto-login.
 
 ---
@@ -220,17 +220,21 @@ make sign-notarize     # -> dist/loadcli-<version>.dmg (signed, notarized, stapl
 ## 🏗️ Layout
 
 ```
-project.yml                 # project definition (XcodeGen)
-Makefile                    # gen / build / run / release / sign-notarize
-scripts/                    # bootstrap, icon generator, signing/notarization
-Sources/loadcli/
-  Models/                   # Project, ProjectDoc (LOADCLI.md), ProjectFolder, LocalPrefs,
+mac/                        # the macOS app — run make from in here (or from the root)
+  project.yml               # project definition (XcodeGen)
+  Makefile                  # gen / build / run / release / sign-notarize
+  scripts/                  # bootstrap, icon generator, signing/notarization
+  Sources/loadcli/
+    Models/                 # Project, ProjectDoc (LOADCLI.md), ProjectFolder, LocalPrefs,
                             # AppSettings, LegacyMigration, Store, AppModel
-  Services/                 # ProjectScanner, SpaceManager, AppLauncher, WindowPositioner,
+    Services/               # ProjectScanner, SpaceManager, AppLauncher, WindowPositioner,
                             # DisplayManager, SkyLight, AX
-  Views/                    # SwiftUI — search + tabs, grid + folders, editors, settings
-  Resources/                # Info.plist, entitlements, Assets (icon)
-docs/                       # architecture + Windows roadmap
+    Views/                  # SwiftUI — search + tabs, grid + folders, editors, settings
+    Resources/              # Info.plist, entitlements, Assets (icon)
+windows/                    # the Windows port — roadmap only, for now
+website/                    # loadcli.com — static, four languages
+docs/                       # architecture + the LOADCLI.md format
+Makefile                    # shortcuts that delegate to mac/ and website/
 ```
 
 ---

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="Sources/loadcli/Resources/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="loadcli">
+<img src="mac/Sources/loadcli/Resources/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="128" alt="loadcli">
 
 # loadcli
 
@@ -210,7 +210,7 @@ make sign-notarize     # -> dist/loadcli-<版本>.dmg（已签名、已公证、
 
 ## 🛣️ 路线图
 
-- 🪟 **Windows** —— 原生 .NET/WinUI 3 应用（虚拟桌面 + Win32），读取完全相同的 `LOADCLI.md` 文件：[`docs/WINDOWS_ROADMAP.md`](docs/WINDOWS_ROADMAP.md)。
+- 🪟 **Windows** —— 原生 .NET/WinUI 3 应用（虚拟桌面 + Win32），读取完全相同的 `LOADCLI.md` 文件：[`windows/ROADMAP.md`](windows/ROADMAP.md)。
 - 🔁 布局预设、每个项目的全局快捷键、可选的自动登录。
 
 ---
@@ -218,17 +218,21 @@ make sign-notarize     # -> dist/loadcli-<版本>.dmg（已签名、已公证、
 ## 🏗️ 结构
 
 ```
-project.yml                 # 工程定义（XcodeGen）
-Makefile                    # gen / build / run / release / sign-notarize
-scripts/                    # 引导脚本、图标生成、签名/公证
-Sources/loadcli/
-  Models/                   # Project、ProjectDoc（LOADCLI.md）、ProjectFolder、LocalPrefs、
+mac/                        # macOS App —— 在这里面（或在仓库根目录）执行 make
+  project.yml               # 工程定义（XcodeGen）
+  Makefile                  # gen / build / run / release / sign-notarize
+  scripts/                  # 引导脚本、图标生成、签名/公证
+  Sources/loadcli/
+    Models/                 # Project、ProjectDoc（LOADCLI.md）、ProjectFolder、LocalPrefs、
                             # AppSettings、LegacyMigration、Store、AppModel
-  Services/                 # ProjectScanner、SpaceManager、AppLauncher、WindowPositioner、
+    Services/               # ProjectScanner、SpaceManager、AppLauncher、WindowPositioner、
                             # DisplayManager、SkyLight、AX
-  Views/                    # SwiftUI —— 搜索 + 标签页、网格 + 文件夹、编辑器、设置
-  Resources/                # Info.plist、entitlements、Assets（图标）
-docs/                       # 架构 + Windows 路线图
+    Views/                  # SwiftUI —— 搜索 + 标签页、网格 + 文件夹、编辑器、设置
+    Resources/              # Info.plist、entitlements、Assets（图标）
+windows/                    # Windows 移植 —— 目前只有路线图
+website/                    # loadcli.com —— 静态站点，四种语言
+docs/                       # 架构 + LOADCLI.md 格式说明
+Makefile                    # 转发到 mac/ 和 website/ 的快捷方式
 ```
 
 ---
