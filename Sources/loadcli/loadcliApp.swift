@@ -34,8 +34,13 @@ struct LoadCLIApp: App {
                 Button("Sobre o loadcli") { Self.showAbout() }
             }
             CommandGroup(replacing: .newItem) {
-                Button("Adicionar Projeto…") { model.newProject() }
+                Button("Novo Projeto…") { model.newProjectQuick() }
                     .keyboardShortcut("n", modifiers: .command)
+                Button("Adicionar Projeto…") { model.newProject() }
+                    .keyboardShortcut("n", modifiers: [.command, .shift])
+                Divider()
+                Button("Reescanear projetos") { model.refresh() }
+                    .keyboardShortcut("r", modifiers: [.command, .shift])
             }
         }
 

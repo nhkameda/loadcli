@@ -8,6 +8,8 @@
 
 Escolha um projeto e o `loadcli` monta a cena: uma **mesa nova** no monitor certo, o **Terminal** já rodando seu **CLI** na pasta do projeto e, ao lado, **o que aquele projeto precisar** — o navegador no deploy, uma pasta no Finder, ou nada. Tudo posicionado, sem você tocar em nada.
 
+Cada card é um `LOADCLI.md` que mora **dentro da pasta do projeto**, então seus cards viajam junto com suas pastas — sincronize `~/DEV` e todos os seus Macs mostram a mesma grade.
+
 [English](README.md) · **Português** · [中文](README.zh-CN.md)
 
 ![macOS 14+](https://img.shields.io/badge/macOS-14%2B-000000?style=flat-square&logo=apple&logoColor=white)
@@ -54,6 +56,7 @@ Cada janela é **verificada** — o `loadcli` confere que ela realmente caiu na 
 
 ## ✨ Destaques
 
+- 📄 **Os cards vêm das pastas** — um `LOADCLI.md` dentro de cada pasta de projeto *é* o card. Cadastre suas pastas de projetos uma vez e a grade se monta sozinha, em qualquer máquina.
 - 🖥️ **Uma mesa por projeto** no monitor que você escolher (seletor de monitor quando há 2+ telas).
 - ⌨️ **Terminal + CLI** já na pasta certa — Terminal.app ou iTerm.
 - 🔤 **Aumento de fonte automático** — depois de focar o terminal, pressiona ⌘+ um número de vezes configurável (**1 a 20, padrão 7**) pra fonte não vir minúscula (ajuste em Ajustes).
@@ -61,12 +64,48 @@ Cada janela é **verificada** — o `loadcli` confere que ela realmente caiu na 
   - 🌐 **Navegador** na URL de deploy (Chrome, Brave, Edge, Arc, Safari)
   - 🗂️ **Pasta no Finder** — posicionada no split igual ao navegador
   - ▫️ **Nenhum** — só o terminal, **maximizado ou em tela cheia nativa** (mesa própria)
-- 📁 **Organização em pastas** — agrupe os cards em pastas que **abrem sempre fechadas** a cada abertura, pra achar rápido; mova com um menu.
+- 🖱️ **Clique seleciona, clique duplo inicia** — e cada card tem botões diretos pra **pasta** do projeto, **site**, **repositório** e editor.
+- 🔎 **Busca rápida** — digite e as pastas com resultado se abrem sozinhas; apague e todas fecham de novo.
+- 🕘 **Aba Recentes** — os projetos que você abriu por último, do mais novo pro mais antigo.
+- 📁 **Organização em pastas** — os grupos vêm da chave `grupo:` do documento; as pastas **abrem sempre fechadas** a cada abertura, pra achar rápido.
 - 🤖 **CLI por projeto** — Claude Code, Codex ou comando personalizado, com **modelo e _effort_** próprios (ex.: `opus` + `ultracode`).
 - ↔️ **Split automático** com proporção ajustável.
-- 🧭 **Menu na barra de status** — lance qualquer projeto (agrupado por pasta) sem abrir a janela principal.
+- 🧭 **Menu na barra de status** — lance qualquer projeto (agrupado por pasta, mais um submenu de Recentes) sem abrir a janela principal.
 - 🩺 `loadcli --doctor` — autoteste do mecanismo de mesas em cada monitor.
 - 🍎 **100% nativo** — SwiftUI, ícone próprio, tela Sobre, Ajustes.
+
+---
+
+## 📄 O card mora dentro da pasta do projeto
+
+Não existe um banco central de projetos. Cada projeto carrega um **`LOADCLI.md`** na própria pasta, e esse arquivo *é* o card. Em **Ajustes › Pastas de projetos** você cadastra as raízes onde guarda código (`~/DEV`, uma pasta do Drive, o que for); o `loadcli` percorre essas pastas, encontra os documentos e monta a grade a partir do que está escrito neles.
+
+```markdown
+---
+loadcli: 1
+id: 6C0F2A18-3D4B-4E71-9A02-1F5C8B3E77D9
+nome: Acme Site
+grupo: Clientes
+icone: cart.fill
+cor: "#3B82F6"
+repositorio: https://github.com/voce/acme
+url: https://app.acme.com
+cli: claude
+modelo: opus
+esforco: xhigh
+painel: browser
+---
+
+Loja da Acme. Deploy pela Vercel, banco no Neon.
+```
+
+- **Nenhum caminho absoluto é gravado.** A pasta do projeto é simplesmente onde o documento está — então o mesmo arquivo funciona em qualquer Mac, com qualquer nome de usuário.
+- **Feito pra sincronizar.** Coloque `~/DEV` no Google Drive ou ownCloud e todas as máquinas mostram os mesmos cards, sempre atualizados. Nada pra cadastrar duas vezes.
+- **O arquivo é seu.** Chaves que você acrescentar à mão e o corpo em markdown (que vira a descrição do card) sobrevivem a qualquer regravação. Os nomes das chaves são aceitos em português e em inglês.
+- **Rápido em toda abertura, menos na primeira.** A última varredura fica em cache, então a janela aparece na hora e a busca no disco roda em segundo plano — os cards novos surgem um instante depois.
+- **Nada some.** Uma raiz que não puder ser lida (um Drive que ainda não sincronizou) mantém os cards do cache em vez de esvaziar a grade.
+
+Excluir um card manda o `LOADCLI.md` dele para o Lixo — a pasta do projeto e tudo dentro dela nunca são tocados.
 
 ---
 
@@ -97,7 +136,9 @@ make bootstrap     # instala xcodegen, xcbeautify, create-dmg
 make run           # gera o projeto, compila e abre o app
 ```
 
-Na primeira execução o macOS vai pedir **duas permissões** (veja abaixo). Depois, é só clicar em **Adicionar Projeto** e apontar a pasta.
+Na primeira execução o macOS vai pedir **duas permissões** (veja abaixo). Depois, abra **Ajustes › Pastas de projetos**, adicione a pasta onde seu código mora (`~/DEV`, por exemplo) e os cards aparecem sozinhos — ou clique em **Novo Projeto** pra criar a pasta, gravar o `LOADCLI.md` e abrir o terminal nela, tudo de uma vez.
+
+> Vindo de uma versão anterior? A primeira abertura migra sozinha: um `LOADCLI.md` é gravado em cada pasta de projeto cadastrada, as raízes de varredura são deduzidas delas, e os antigos `projects.json` / `folders.json` ficam guardados como `.bak`.
 
 <details>
 <summary>Outros alvos do <code>make</code></summary>
@@ -117,18 +158,28 @@ make sign-notarize # assina (Developer ID) + notariza + gera o DMG
 
 Cada card guarda tudo o que aquele projeto precisa:
 
-| Campo | O que faz |
-|------|-----------|
-| **Pasta do projeto** | onde o Terminal dá `cd` |
-| **CLI** | Claude Code / Codex / comando personalizado — com **modelo** e **_effort_** |
-| **Painel ao lado** | Navegador (URL) · Finder (pasta) · Nenhum |
-| **Mesa** | criar nova mesa ou usar a atual |
-| **Layout** | terminal à direita/esquerda + proporção do split |
-| **Monitor** | fixo ou “perguntar a cada vez” |
-| **Pasta (grupo)** | organiza o card numa pasta recolhível |
-| **Ícone e cor** | identidade visual do card |
+| Campo | Chave no documento | O que faz |
+|------|------|-----------|
+| **Pasta do projeto** | — (onde o arquivo está) | onde o Terminal dá `cd` |
+| **Descrição** | corpo em markdown | aparece no card, em duas linhas |
+| **Repositório** | `repositorio` | abre o repo; lido do `.git/config` quando deixado em branco |
+| **Site** | `url` | abre a URL de deploy |
+| **CLI** | `cli`, `modelo`, `esforco` | Claude Code / Codex / comando personalizado — com **modelo** e **_effort_** |
+| **Painel ao lado** | `painel` | Navegador (URL) · Finder (pasta) · Nenhum |
+| **Mesa** | `mesa` | criar nova mesa ou usar a atual |
+| **Layout** | `lado`, `divisao` | terminal à direita/esquerda + proporção do split |
+| **Pasta (grupo)** | `grupo` | organiza o card numa pasta recolhível |
+| **Ícone e cor** | `icone`, `cor` | identidade visual do card |
+| **Monitor** | *local da máquina* | fixo ou “perguntar a cada vez” — nunca vai para o documento |
 
-As configs ficam em `~/Library/Application Support/loadcli/` (`projects.json`, `folders.json`, `settings.json`) — versione, faça backup, edite à mão se quiser.
+Tudo que descreve o projeto viaja no `LOADCLI.md` dele. O que fica só neste Mac mora em `~/Library/Application Support/loadcli/`:
+
+| Arquivo | O que guarda |
+|------|------|
+| `settings.json` | preferências e a lista de pastas de projetos a varrer |
+| `index.json` | cache da última varredura — é o que faz a janela abrir na hora |
+| `folders.json` | ícone/cor/ordem de cada grupo, por nome |
+| `local.json` | monitor escolhido por projeto e o histórico de Recentes |
 
 ---
 
@@ -161,7 +212,7 @@ make sign-notarize     # -> dist/loadcli-<versão>.dmg (assinado, notarizado, st
 
 ## 🛣️ Roadmap
 
-- 🪟 **Windows** — app nativo .NET/WinUI 3 (Virtual Desktops + Win32), compartilhando o schema `projects.json`: [`docs/WINDOWS_ROADMAP.md`](docs/WINDOWS_ROADMAP.md).
+- 🪟 **Windows** — app nativo .NET/WinUI 3 (Virtual Desktops + Win32), lendo exatamente os mesmos arquivos `LOADCLI.md`: [`docs/WINDOWS_ROADMAP.md`](docs/WINDOWS_ROADMAP.md).
 - 🔁 Perfis de layout, atalhos globais por projeto, login automático opcional.
 
 ---
@@ -173,9 +224,11 @@ project.yml                 # definição do projeto (XcodeGen)
 Makefile                    # gen / build / run / release / sign-notarize
 scripts/                    # bootstrap, gerador de ícone, assinatura/notarização
 Sources/loadcli/
-  Models/                   # Project, ProjectFolder, AppSettings, Store, AppModel
-  Services/                 # SpaceManager, AppLauncher, WindowPositioner, DisplayManager, SkyLight, AX
-  Views/                    # SwiftUI — grid + pastas, editores, seletor de monitor, ajustes
+  Models/                   # Project, ProjectDoc (LOADCLI.md), ProjectFolder, LocalPrefs,
+                            # AppSettings, LegacyMigration, Store, AppModel
+  Services/                 # ProjectScanner, SpaceManager, AppLauncher, WindowPositioner,
+                            # DisplayManager, SkyLight, AX
+  Views/                    # SwiftUI — busca + abas, grid + pastas, editores, ajustes
   Resources/                # Info.plist, entitlements, Assets (ícone)
 docs/                       # arquitetura + roadmap Windows
 ```

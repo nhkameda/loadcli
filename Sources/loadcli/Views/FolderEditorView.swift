@@ -1,17 +1,22 @@
 import SwiftUI
 
-/// Create or rename a folder (name, icon, colour). Deleting keeps its projects,
-/// just un-grouping them.
+/// Create or rename a group (name, icon, colour).
+///
+/// Renaming rewrites the `grupo:` key inside every member project's LOADCLI.md,
+/// so the change follows the folders to the other machines. Deleting keeps the
+/// projects, just un-grouping them.
 struct FolderEditorView: View {
     @EnvironmentObject var store: Store
     @Environment(\.dismiss) private var dismiss
 
     @State private var draft: ProjectFolder
     private let isNew: Bool
+    private let previousName: String?
 
     init(folder: ProjectFolder?) {
         _draft = State(initialValue: folder ?? ProjectFolder())
         isNew = (folder == nil)
+        previousName = folder?.name
     }
 
     private var accent: Color { Color(hex: draft.colorHex) }
@@ -30,6 +35,10 @@ struct FolderEditorView: View {
                     iconRow
                     colorRow
                 }
+                if !isNew {
+                    Text("Renomear reescreve o campo `grupo:` no LOADCLI.md de cada projeto desta pasta.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
             }
             .formStyle(.grouped)
 
@@ -45,7 +54,7 @@ struct FolderEditorView: View {
                 Button("Cancelar", role: .cancel) { dismiss() }
                     .keyboardShortcut(.cancelAction)
                 Button(isNew ? "Criar" : "Salvar") {
-                    store.upsertFolder(draft); dismiss()
+                    store.upsertFolder(draft, previousName: previousName); dismiss()
                 }
                 .keyboardShortcut(.defaultAction)
                 .buttonStyle(.borderedProminent)

@@ -1,18 +1,24 @@
 import SwiftUI
 import AppKit
 
+/// Create or edit a card. Saving writes the project's `LOADCLI.md` into its own
+/// folder — that file is the card, so everything typed here travels with the
+/// folder to every machine that syncs it.
 struct ProjectEditorView: View {
     @EnvironmentObject var store: Store
     @Environment(\.dismiss) private var dismiss
 
     @State private var draft: Project
+    @State private var newGroupName = ""
+    @State private var notice: String?
     private let isNew: Bool
 
-    init(project: Project?, presetFolderID: UUID? = nil) {
-        var p = project ?? Project()
-        if project == nil, let fid = presetFolderID { p.folderID = fid }
-        _draft = State(initialValue: p)
-        isNew = (project == nil)
+    /// Marker option in the group picker that reveals the "new group" field.
+    private static let newGroupSentinel = "\u{1}novo-grupo"
+
+    init(seed: Project?, isNew: Bool) {
+        _draft = State(initialValue: seed ?? Project())
+        self.isNew = isNew
     }
 
     private var displays: [DisplayInfo] { DisplayManager.displays() }
@@ -28,21 +34,47 @@ struct ProjectEditorView: View {
             Form {
                 Section("Identificação") {
                     TextField("Nome", text: $draft.name, prompt: Text("meu-projeto"))
-                    Picker("Pasta (grupo)", selection: folderIDBinding) {
-                        Text("Sem pasta").tag(UUID?.none)
-                        ForEach(store.folders) { f in
-                            Text(f.name.isEmpty ? "Pasta" : f.name).tag(Optional(f.id))
-                        }
-                    }
+                    groupPicker
                     iconAndColorRow
                 }
 
-                Section("Pasta e CLI") {
+                Section("Pasta do projeto") {
                     HStack {
                         TextField("Pasta do projeto", text: $draft.folderPath,
                                   prompt: Text("/Users/você/DEV/meu-projeto"))
+                            .font(.system(.body, design: .monospaced))
                         Button("Escolher…") { chooseFolder() }
                     }
+                    Text("O LOADCLI.md é gravado aqui dentro — é ele que vira o card em qualquer Mac que abra esta pasta.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    if let notice {
+                        Label(notice, systemImage: "info.circle")
+                            .font(.caption).foregroundStyle(.blue)
+                    }
+                }
+
+                Section("Descrição") {
+                    TextEditor(text: $draft.details)
+                        .font(.body)
+                        .frame(minHeight: 70)
+                        .scrollContentBackground(.hidden)
+                    Text("Aparece no card, em até duas linhas. Aceita markdown livre.")
+                        .font(.caption).foregroundStyle(.secondary)
+                }
+
+                Section("Links") {
+                    HStack {
+                        TextField("Repositório", text: $draft.repoURL,
+                                  prompt: Text("https://github.com/você/projeto"))
+                        Button("Detectar") { detectRepository() }
+                            .help("Ler a URL do remote origin em .git/config")
+                            .disabled(draft.folderPath.trimmingCharacters(in: .whitespaces).isEmpty)
+                    }
+                    TextField("Site do projeto", text: $draft.url,
+                              prompt: Text("https://app.exemplo.com"))
+                }
+
+                Section("CLI e terminal") {
                     CLIConfigSection(project: $draft)
                     Picker("Terminal", selection: $draft.terminalApp) {
                         ForEach(AppCatalog.terminals) { Text($0.name).tag($0.name) }
@@ -66,13 +98,14 @@ struct ProjectEditorView: View {
                              : "O terminal preenche o monitor escolhido.")
                             .font(.caption).foregroundStyle(.secondary)
                     case .browser:
-                        TextField("URL", text: $draft.url, prompt: Text("https://app.exemplo.com"))
                         Picker("Navegador", selection: $draft.browserBundleID) {
                             ForEach(AppCatalog.browsers) { Text($0.name).tag($0.id) }
                         }
                         .onChange(of: draft.browserBundleID) { _, new in
                             draft.browserName = AppCatalog.browsers.first { $0.id == new }?.name ?? "Google Chrome"
                         }
+                        Text("Abre o “Site do projeto” configurado acima.")
+                            .font(.caption).foregroundStyle(.secondary)
                     case .finder:
                         HStack {
                             TextField("Pasta no Finder", text: $draft.finderPath,
@@ -109,6 +142,8 @@ struct ProjectEditorView: View {
                             Text(d.name + (d.isMain ? " (Principal)" : "")).tag(Optional(d.id))
                         }
                     }
+                    Text("O monitor fica salvo só neste Mac — não vai para o LOADCLI.md.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
             }
             .formStyle(.grouped)
@@ -116,23 +151,75 @@ struct ProjectEditorView: View {
             Divider()
             HStack {
                 if !isNew {
-                    Button("Excluir", role: .destructive) {
+                    Button("Excluir card", role: .destructive) {
                         store.delete(draft); dismiss()
                     }
+                    .help("Manda o LOADCLI.md para o Lixo; a pasta do projeto continua intacta.")
                 }
                 Spacer()
                 Button("Cancelar", role: .cancel) { dismiss() }
                     .keyboardShortcut(.cancelAction)
-                Button(isNew ? "Adicionar" : "Salvar") {
-                    store.upsert(draft); dismiss()
-                }
-                .keyboardShortcut(.defaultAction)
-                .buttonStyle(.borderedProminent)
-                .disabled(!draft.isValid)
+                Button(isNew ? "Adicionar" : "Salvar") { save() }
+                    .keyboardShortcut(.defaultAction)
+                    .buttonStyle(.borderedProminent)
+                    .disabled(!draft.isValid)
             }
             .padding(16)
         }
-        .frame(width: 540, height: 640)
+        .frame(width: 560, height: 700)
+    }
+
+    // MARK: Group
+
+    private var groupPicker: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Picker("Pasta (grupo)", selection: groupBinding) {
+                Text("Sem pasta").tag(String?.none)
+                ForEach(store.groupNames, id: \.self) { name in
+                    Text(name).tag(Optional(name))
+                }
+                Divider()
+                Text("Nova pasta…").tag(Optional(Self.newGroupSentinel))
+            }
+            if draft.group == Self.newGroupSentinel {
+                TextField("Nome da nova pasta", text: $newGroupName, prompt: Text("Clientes"))
+            }
+        }
+    }
+
+    private var groupBinding: Binding<String?> {
+        Binding(get: { draft.group }, set: { draft.group = $0 })
+    }
+
+    /// The group actually saved — resolving the "nova pasta" placeholder.
+    private var resolvedGroup: String? {
+        if draft.group == Self.newGroupSentinel {
+            let trimmed = newGroupName.trimmingCharacters(in: .whitespacesAndNewlines)
+            return trimmed.isEmpty ? nil : trimmed
+        }
+        return draft.groupName
+    }
+
+    // MARK: Actions
+
+    private func save() {
+        var project = draft
+        project.group = resolvedGroup
+        if let failure = store.upsert(project) {
+            store.lastError = failure
+            return
+        }
+        dismiss()
+    }
+
+    private func detectRepository() {
+        let folder = (draft.folderPath.trimmingCharacters(in: .whitespaces) as NSString).expandingTildeInPath
+        if let remote = ProjectScanner.gitRemote(inFolder: folder) {
+            draft.repoURL = remote
+            notice = "Repositório lido de .git/config."
+        } else {
+            notice = "Nenhum remote git encontrado nessa pasta."
+        }
     }
 
     private var iconAndColorRow: some View {
@@ -165,10 +252,6 @@ struct ProjectEditorView: View {
         Binding(get: { draft.monitorPreference }, set: { draft.monitorPreference = $0 })
     }
 
-    private var folderIDBinding: Binding<UUID?> {
-        Binding(get: { draft.folderID }, set: { draft.folderID = $0 })
-    }
-
     private var secondaryPaneBinding: Binding<SecondaryPane> {
         Binding(get: { draft.secondaryPane }, set: { draft.secondaryPane = $0 })
     }
@@ -187,7 +270,26 @@ struct ProjectEditorView: View {
         pickFolder(startingAt: draft.folderPath) { url in
             draft.folderPath = url.path
             if draft.name.isEmpty { draft.name = url.lastPathComponent }
+            adoptExistingDocument(at: url.path)
         }
+    }
+
+    /// A folder that already carries a LOADCLI.md wins: load it instead of
+    /// creating a second, conflicting card for the same project.
+    private func adoptExistingDocument(at folder: String) {
+        guard ProjectDoc.exists(inFolder: folder),
+              let doc = ProjectDoc.read(inFolder: folder) else {
+            if draft.repoURL.trimmingCharacters(in: .whitespaces).isEmpty,
+               let remote = ProjectScanner.gitRemote(inFolder: folder) {
+                draft.repoURL = remote
+            }
+            return
+        }
+        var loaded = doc.project
+        // Keep the identity we are already editing when it is an existing card.
+        if !isNew { loaded.id = draft.id }
+        draft = loaded
+        notice = "Esta pasta já tem um LOADCLI.md — os dados foram carregados dele."
     }
 
     private func chooseFinderFolder() {

@@ -77,11 +77,30 @@ voltar → remover em cada monitor e imprime PASS/FALHA por etapa — útil apó
 - **Automação (Apple Events)**: controlar Terminal e navegador. Pedida no 1º uso.
 
 ## Camadas
-- **Models**: `Project`, `AppSettings`, `Store` (JSON em Application Support), `AppModel` (estado/UI).
-- **Services**: `SpaceManager`, `AppLauncher`, `WindowPositioner`, `DisplayManager`,
+- **Models**: `Project`, `ProjectDoc` (parser/serializador do `LOADCLI.md`), `ProjectFolder`
+  (estilo do grupo, por nome), `LocalPrefs` (monitor + recentes, por máquina), `AppSettings`,
+  `LegacyMigration`, `Store` (índice + cache), `AppModel` (estado/UI).
+- **Services**: `ProjectScanner`, `SpaceManager`, `AppLauncher`, `WindowPositioner`, `DisplayManager`,
   `SkyLight` (leitura + troca de mesa), `AX` (wrappers), `Permissions`, `LaunchFlow`, `Doctor`.
-- **Views**: grid de cards, editor, seletor de monitor, ajustes, overlay de progresso, menu de status.
+- **Views**: busca + abas (Projetos/Recentes), grid de cards, editores, ajustes,
+  overlay de progresso, menu de status.
+
+## Origem dos projetos
+A fonte da verdade de um projeto é o **`LOADCLI.md` dentro da própria pasta dele** — nunca um banco
+central. O `Store` varre as raízes configuradas (`ProjectScanner`, fora do MainActor), podando em
+qualquer pasta que já tenha um documento e reaproveitando entradas cujo `mtime` não mudou.
+
+Três invariantes sustentam a portabilidade entre máquinas sincronizadas:
+1. **Nenhum caminho absoluto é gravado.** A pasta do projeto é onde o documento está.
+2. **O que é da máquina fica na máquina** (`local.json`): monitor escolhido e histórico de recentes —
+   assim o documento não é reescrito a cada lançamento, o que geraria cópias de conflito no Drive.
+3. **Todo caminho indexado passa por `AppSettings.canonical(_:)`.** O `FileManager` devolve caminhos
+   resolvidos ao enumerar (`/var` → `/private/var`) enquanto `URL.resolvingSymlinksInPath()` remove o
+   `/private`; sem uma forma canônica única o cache por `mtime` nunca acerta.
+
+Em `Application Support` ficam só derivados: `index.json` (cache da varredura), `folders.json`
+(estilo dos grupos), `settings.json` e `local.json`.
 
 ## Portabilidade
-A lógica de janelas/mesas é específica de SO. O que é portável é o **schema `projects.json`** —
-reaproveitado pelo port Windows (ver `WINDOWS_ROADMAP.md`).
+A lógica de janelas/mesas é específica de SO. O que é portável é o **formato `LOADCLI.md`** —
+lido tal e qual pelo port Windows (ver `WINDOWS_ROADMAP.md`).

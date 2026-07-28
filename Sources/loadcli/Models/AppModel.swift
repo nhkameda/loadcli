@@ -1,6 +1,25 @@
 import AppKit
 import Combine
 
+/// Which list the main window is showing.
+enum MainTab: String, CaseIterable, Identifiable {
+    case projects, recents
+
+    var id: String { rawValue }
+    var label: String {
+        switch self {
+        case .projects: return "Projetos"
+        case .recents:  return "Recentes"
+        }
+    }
+    var systemImage: String {
+        switch self {
+        case .projects: return "square.grid.2x2"
+        case .recents:  return "clock.arrow.circlepath"
+        }
+    }
+}
+
 /// App-wide controller: owns transient UI state and drives the launch flow.
 @MainActor
 final class AppModel: ObservableObject {
@@ -14,45 +33,220 @@ final class AppModel: ObservableObject {
     @Published var pendingProject: Project?
     @Published var showLaunchConfirm = false
     @Published var showEditor = false
-    @Published var editingProject: Project?   // nil = new
-    @Published var newProjectFolderID: UUID?  // folder a new card should land in
+    /// Values the project editor starts from (nil while it is closed).
+    @Published var editorSeed: Project?
+    @Published var editorIsNew = true
     @Published var showFolderEditor = false
     @Published var editingFolder: ProjectFolder?  // nil = new
 
+    // Quick "Novo Projeto": scaffold a fresh folder + launch in one step.
+    @Published var showNewProjectQuick = false
+    @Published var quickProjectGroup: String?   // group the new card lands in
+
+    // Main list state.
+    @Published var tab: MainTab = .projects
+    @Published var searchText = ""
+    @Published var selectedProjectID: UUID?
+    /// Bumped whenever the keyboard focus should move to the card grid, so the
+    /// arrow keys work right after a card is clicked.
+    @Published private(set) var focusGridTick = 0
+
     /// Folders currently expanded — session-only, so every launch starts with
-    /// all folders collapsed (easier to scan the list).
-    @Published var expandedFolders: Set<UUID> = []
+    /// all folders collapsed (easier to scan the list). Keyed by group match key.
+    @Published var expandedFolders: Set<String> = []
 
     unowned let store: Store
     init(store: Store) { self.store = store }
 
     var hasAccessibility: Bool { Permissions.hasAccessibility() }
 
-    // MARK: Editor
-    func newProject(in folderID: UUID? = nil) {
-        editingProject = nil
-        newProjectFolderID = folderID
-        // Expand the target folder so the new card is visible once saved.
-        if let id = folderID { expandedFolders.insert(id) }
+    // MARK: - Search
+
+    var isSearching: Bool {
+        !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    /// Terms are ANDed, so "acme site" matches a card containing both words.
+    private var searchTerms: [String] {
+        searchText.lowercased()
+            .split(whereSeparator: { $0 == " " || $0 == "\n" || $0 == "\t" })
+            .map(String.init)
+    }
+
+    func matches(_ project: Project) -> Bool {
+        let terms = searchTerms
+        guard !terms.isEmpty else { return true }
+        let haystack = project.searchHaystack
+        return terms.allSatisfy { haystack.contains($0) }
+    }
+
+    func filter(_ projects: [Project]) -> [Project] {
+        isSearching ? projects.filter(matches) : projects
+    }
+
+    /// Clearing the search collapses every folder again, as asked.
+    func searchTextChanged() {
+        if !isSearching {
+            expandedFolders.removeAll()
+        }
+    }
+
+    // MARK: - Editor
+
+    func newProject(in group: String? = nil) {
+        var seed = Project()
+        seed.group = group
+        seed.folderPath = ""
+        editorSeed = seed
+        editorIsNew = true
+        if let group { expandedFolders.insert(ProjectFolder.matchKey(for: group)) }
         showEditor = true
     }
-    func edit(_ p: Project) { editingProject = p; newProjectFolderID = nil; showEditor = true }
+
+    func edit(_ p: Project) {
+        editorSeed = p
+        editorIsNew = false
+        showEditor = true
+    }
+
+    /// "Duplicar" can no longer copy in place (one document per folder), so it
+    /// opens the editor pre-filled with a copy that still needs a folder.
+    func duplicate(_ p: Project) {
+        editorSeed = store.duplicateDraft(of: p)
+        editorIsNew = true
+        showEditor = true
+    }
+
+    // MARK: - Quick "Novo Projeto"
+
+    /// Open the quick-create sheet (name + CLI/model/effort only). The new card
+    /// lands in `group` (the section the action was invoked from).
+    func newProjectQuick(in group: String? = nil) {
+        guard !isRunning else { return }
+        quickProjectGroup = group
+        if let group { expandedFolders.insert(ProjectFolder.matchKey(for: group)) }
+        showNewProjectQuick = true
+    }
+
+    /// Create `folderPath` on disk (composed as `<defaultProjectsFolder>/<name>`
+    /// in the dialog, but editable), write its LOADCLI.md, and launch it
+    /// (terminal-only, maximized or full screen) on `display` — all from the
+    /// single "Criar" click.
+    func createQuickProject(name: String, folderPath: String, config: Project,
+                            layout: SoloTerminalLayout,
+                            group: String?, on display: DisplayInfo) {
+        showNewProjectQuick = false
+        errorText = nil
+
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let rawPath = folderPath.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else { return }
+        guard !rawPath.isEmpty else {
+            errorText = "Defina a pasta do projeto."
+            return
+        }
+
+        let dir = URL(fileURLWithPath: (rawPath as NSString).expandingTildeInPath, isDirectory: true)
+        do {
+            // `withIntermediateDirectories: true` is a no-op if it already exists
+            // (reuse the folder); it only throws on a real filesystem error.
+            try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        } catch {
+            errorText = "Não consegui criar a pasta \(dir.path): \(error.localizedDescription)"
+            return
+        }
+
+        var project = config
+        project.name = trimmedName
+        project.folderPath = dir.path
+        project.group = group
+        project.secondaryPane = .none
+        project.soloTerminalLayout = layout
+        project.monitorPreference = display.id
+        if project.repoURL.isEmpty, let remote = ProjectScanner.gitRemote(inFolder: dir.path) {
+            project.repoURL = remote
+        }
+        if let failure = store.upsert(project) {
+            errorText = failure
+            return
+        }
+
+        // Launch straight away — CLI, layout and monitor are already decided, so
+        // skip the confirmation dialog.
+        launch(project, on: display)
+    }
 
     func newFolder() { editingFolder = nil; showFolderEditor = true }
     func editFolder(_ f: ProjectFolder) { editingFolder = f; showFolderEditor = true }
 
-    // MARK: Folder expansion (session-only)
-    func isFolderExpanded(_ id: UUID) -> Bool { expandedFolders.contains(id) }
-    func toggleFolder(_ id: UUID) {
-        if expandedFolders.contains(id) { expandedFolders.remove(id) }
-        else { expandedFolders.insert(id) }
+    // MARK: - Folder expansion (session-only)
+
+    func isFolderExpanded(_ groupName: String) -> Bool {
+        // While searching, every section that still has results stays open.
+        if isSearching { return true }
+        return expandedFolders.contains(ProjectFolder.matchKey(for: groupName))
     }
 
-    // MARK: Launch
+    func toggleFolder(_ groupName: String) {
+        let key = ProjectFolder.matchKey(for: groupName)
+        if expandedFolders.contains(key) { expandedFolders.remove(key) }
+        else { expandedFolders.insert(key) }
+    }
+
+    // MARK: - Scanning
+
+    /// Re-walk the configured roots. Fire-and-forget: the UI keeps showing the
+    /// cached cards while it runs.
+    func refresh() {
+        Task { await store.refresh() }
+    }
+
+    // MARK: - Card shortcuts
+
+    func revealFolder(_ project: Project) {
+        let path = project.folderPath
+        guard !path.isEmpty else { return }
+        NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: path)])
+    }
+
+    func openWebsite(_ project: Project) {
+        let raw = project.trimmedURL
+        guard !raw.isEmpty else { return }
+        open(urlString: raw, in: project.browserBundleID)
+    }
+
+    func openRepository(_ project: Project) {
+        guard let web = project.repoWebURL else {
+            // A local path — reveal it instead.
+            let raw = project.trimmedRepo
+            if !raw.isEmpty {
+                NSWorkspace.shared.activateFileViewerSelecting([
+                    URL(fileURLWithPath: (raw as NSString).expandingTildeInPath),
+                ])
+            }
+            return
+        }
+        open(urlString: web, in: project.browserBundleID)
+    }
+
+    private func open(urlString: String, in browserBundleID: String) {
+        let normalized = urlString.contains("://") ? urlString : "https://" + urlString
+        guard let url = URL(string: normalized) else { return }
+        if let browser = NSWorkspace.shared.urlForApplication(withBundleIdentifier: browserBundleID) {
+            NSWorkspace.shared.open([url], withApplicationAt: browser,
+                                    configuration: NSWorkspace.OpenConfiguration())
+        } else {
+            NSWorkspace.shared.open(url)
+        }
+    }
+
+    // MARK: - Launch
+
     /// Show the pre-launch confirmation (monitor + CLI/model/effort), or launch
     /// straight away with the saved preferences when the user turned it off.
     func requestLaunch(_ project: Project) {
         guard !isRunning else { return }
+        selectedProjectID = project.id
         if store.settings.alwaysAskMonitor {
             pendingProject = project
             showLaunchConfirm = true
@@ -63,18 +257,42 @@ final class AppModel: ObservableObject {
         if let display { launch(project, on: display) }
     }
 
-    /// Launch `project` on `display`, persisting whatever was changed in the
-    /// confirmation dialog (including the chosen monitor) so the next launch
-    /// opens pre-configured the same way.
+    /// Select a card and give the grid keyboard focus.
+    func select(_ project: Project) {
+        selectedProjectID = project.id
+        focusGridTick &+= 1
+    }
+
+    /// Launch the currently selected card (⏎ in the main list).
+    func launchSelection() {
+        guard let id = selectedProjectID, let project = store.project(withID: id) else { return }
+        requestLaunch(project)
+    }
+
+    /// ⏎ from the search field: launch what is selected, or the first result.
+    func launchSelectionOrFirst(in visible: [Project]) {
+        if let id = selectedProjectID, let project = visible.first(where: { $0.id == id }) {
+            requestLaunch(project)
+        } else if let first = visible.first {
+            requestLaunch(first)
+        }
+    }
+
+    /// Launch `project` on `display`. The monitor is remembered per machine
+    /// (`LocalPrefs`), while any CLI/model/effort change made in the dialog is
+    /// written back into the project's LOADCLI.md.
     func launch(_ project: Project, on display: DisplayInfo) {
         showLaunchConfirm = false
         pendingProject = nil
 
         var updated = project
         updated.monitorPreference = display.id
-        if store.projects.first(where: { $0.id == updated.id }) != updated {
+        store.setMonitor(display.id, for: updated)
+        if let stored = store.project(withID: updated.id), stored != updated {
             store.upsert(updated)
         }
+        store.noteLaunch(of: updated)
+        selectedProjectID = updated.id
 
         Task {
             let outcome = await run(updated, on: display)
