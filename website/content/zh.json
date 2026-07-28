@@ -11,39 +11,66 @@
     "langAria": "语言",
     "download": "下载",
     "links": [
-      { "href": "#one-click", "label": "一键" },
-      { "href": "#card", "label": "卡片" },
-      { "href": "#ai", "label": "AI" },
-      { "href": "#spaces", "label": "桌面" }
+      {
+        "href": "#one-click",
+        "label": "一键"
+      },
+      {
+        "href": "#card",
+        "label": "卡片"
+      },
+      {
+        "href": "#ai",
+        "label": "AI"
+      },
+      {
+        "href": "#spaces",
+        "label": "桌面"
+      }
     ]
   },
   "hero": {
-    "title": "你的整个开发环境。<br><span class=\"grad-text\">一键</span>就位。",
+    "title": "你的整个开发环境，<br><em>一键</em>就位。",
     "lead": "选中一个项目。loadcli 会在你指定的显示器上新建一个桌面，让终端带着你的 CLI 直接进入项目目录，并把浏览器并排摆在旁边。全部就位，焦点落在终端上。",
     "ctaPrimary": "下载 Mac 版",
     "ctaSecondary": "在 GitHub 查看",
-    "meta": ["macOS 14+ · Apple Silicon", "开源，MIT 许可证", "SIP 保持开启"]
+    "meta": [
+      "macOS 14+ · Apple Silicon",
+      "开源，MIT 许可证",
+      "SIP 保持开启"
+    ],
+    "aside": [
+      "原生。SwiftUI，没有 Electron。",
+      "每个项目的卡片就是它自己文件夹里的一个 LOADCLI.md。同步这个文件夹，你所有的 Mac 都会显示同一份网格。",
+      "SIP 保持开启。没有守护进程，没有内核 hack。"
+    ]
   },
   "stage": {
     "deskLabel": "acme —— 桌面 3",
     "browserUrl": "app.acme.com",
     "command": "claude --model opus --effort ultracode",
     "output": [
-      { "mark": "✓", "text": "已在 Studio 显示器上新建桌面" },
-      { "mark": "✓", "text": "浏览器已摆在左侧" },
-      { "mark": "✓", "text": "焦点已落在终端" }
+      {
+        "mark": "✓",
+        "text": "已在 Studio 显示器上新建桌面"
+      },
+      {
+        "mark": "✓",
+        "text": "浏览器已摆在左侧"
+      },
+      {
+        "mark": "✓",
+        "text": "焦点已落在终端"
+      }
     ],
-    "labels": [
-      "你的桌面，一个项目一个",
-      "在所选显示器上新建的桌面",
-      "终端与浏览器，左右并排"
-    ]
+    "capTag": "01 → 04",
+    "capText": "双击 · 新建桌面 · 终端进入目录 · 面板并排"
   },
   "ritual": {
     "eyebrow": "那些琐事",
     "title": "八个步骤，一天十遍。",
     "lead": "每次坐下来动一个项目，都是同一套流程。再乘以几十个项目，每天如此，年复一年。",
-    "punch": "八步交给 loadcli。你只做一步。",
+    "punch": "八步交给 loadcli。<em>你只做一步。</em>",
     "steps": [
       "打开终端",
       "cd 到正确的目录",
@@ -54,7 +81,8 @@
       "新建一个桌面，免得弄乱其他的",
       "拖动并调整窗口大小"
     ],
-    "kept": "双击卡片"
+    "kept": "双击卡片",
+    "count": "8 + 1"
   },
   "flow": {
     "eyebrow": "一键",
@@ -114,17 +142,33 @@
       {
         "title": "Claude Code",
         "text": "按项目设定模型和 effort。命令会照你配置的样子拼好。",
-        "chips": ["fable", "opus", "sonnet", "haiku", "xhigh", "ultracode"]
+        "chips": [
+          "fable",
+          "opus",
+          "sonnet",
+          "haiku",
+          "xhigh",
+          "ultracode"
+        ]
       },
       {
         "title": "Codex",
         "text": "同样的思路，用 Codex 自己的参数。想改的话，启动时改也行。",
-        "chips": ["gpt-5.6-sol", "gpt-5.5", "minimal", "high"]
+        "chips": [
+          "gpt-5.6-sol",
+          "gpt-5.5",
+          "minimal",
+          "high"
+        ]
       },
       {
         "title": "自定义命令",
         "text": "任何能在 shell 里跑的东西。loadcli 负责 cd，然后执行。",
-        "chips": ["npm run dev", "docker compose up", "make watch"]
+        "chips": [
+          "npm run dev",
+          "docker compose up",
+          "make watch"
+        ]
       }
     ],
     "swatchLead": "每张卡片都有自己的图标和颜色。扫一眼十秒，就能找到要的那个项目。"
@@ -141,14 +185,38 @@
     "eyebrow": "细节",
     "title": "其余那些你每天都会用到的东西。",
     "items": [
-      { "title": "快速搜索", "text": "边输入，含匹配结果的文件夹会自动展开。清空后，它们又全部折叠。" },
-      { "title": "最近", "text": "你最近打开过的项目，从新到旧。" },
-      { "title": "文件夹", "text": "按文档里的 grupo 键分组。默认折叠，方便一眼扫过。" },
-      { "title": "多显示器", "text": "按项目固定显示器，或者让 loadcli 每次都问你。" },
-      { "title": "终端字号", "text": "它替你把字号调大，次数由你设定。" },
-      { "title": "菜单栏", "text": "不用打开主窗口，也能启动任意项目。" },
-      { "title": "自检", "text": "loadcli --doctor 会在每块显示器上检查桌面机制。" },
-      { "title": "100% 原生", "text": "SwiftUI，没有 Electron。秒开，几乎不占内存。" }
+      {
+        "title": "快速搜索",
+        "text": "边输入，含匹配结果的文件夹会自动展开。清空后，它们又全部折叠。"
+      },
+      {
+        "title": "最近",
+        "text": "你最近打开过的项目，从新到旧。"
+      },
+      {
+        "title": "文件夹",
+        "text": "按文档里的 grupo 键分组。默认折叠，方便一眼扫过。"
+      },
+      {
+        "title": "多显示器",
+        "text": "按项目固定显示器，或者让 loadcli 每次都问你。"
+      },
+      {
+        "title": "终端字号",
+        "text": "它替你把字号调大，次数由你设定。"
+      },
+      {
+        "title": "菜单栏",
+        "text": "不用打开主窗口，也能启动任意项目。"
+      },
+      {
+        "title": "自检",
+        "text": "loadcli --doctor 会在每块显示器上检查桌面机制。"
+      },
+      {
+        "title": "100% 原生",
+        "text": "SwiftUI，没有 Electron。秒开，几乎不占内存。"
+      }
     ]
   },
   "download": {
@@ -176,5 +244,17 @@
   "footer": {
     "credit": "由 <b>HISAYOSHI, N. KAMEDA</b> 用咖啡和 Mission Control 打造 · <a href=\"https://kameda.app\" rel=\"noopener\">kameda.app</a>",
     "license": "MIT 许可证"
+  },
+  "figures": {
+    "beforeTag": "之前",
+    "before": "十二个窗口，没有一个在该在的位置。",
+    "afterTag": "之后",
+    "after": "两个窗口，焦点落在终端。",
+    "clickTag": "触发",
+    "click": "在卡片上双击一下。你要做的只有这些。",
+    "syncTag": "同步",
+    "sync": "同一个文件夹，两台 Mac，同样的卡片。",
+    "desktopsTag": "桌面",
+    "desktops": "新桌面诞生，而你不必关闭 SIP。"
   }
 }

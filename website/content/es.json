@@ -11,39 +11,66 @@
     "langAria": "Idioma",
     "download": "Descargar",
     "links": [
-      { "href": "#one-click", "label": "Un clic" },
-      { "href": "#card", "label": "La tarjeta" },
-      { "href": "#ai", "label": "IA" },
-      { "href": "#spaces", "label": "Escritorios" }
+      {
+        "href": "#one-click",
+        "label": "Un clic"
+      },
+      {
+        "href": "#card",
+        "label": "La tarjeta"
+      },
+      {
+        "href": "#ai",
+        "label": "IA"
+      },
+      {
+        "href": "#spaces",
+        "label": "Escritorios"
+      }
     ]
   },
   "hero": {
-    "title": "Todo tu entorno de desarrollo.<br>En <span class=\"grad-text\">un clic</span>.",
+    "title": "Todo tu entorno de<br>desarrollo, en<br><em>un clic</em>.",
     "lead": "Elige un proyecto. loadcli crea un escritorio nuevo en el monitor que quieras, abre la Terminal con tu CLI ya en la carpeta del proyecto y coloca el navegador al lado. Todo en su sitio, con el foco en la terminal.",
     "ctaPrimary": "Descargar para Mac",
     "ctaSecondary": "Ver en GitHub",
-    "meta": ["macOS 14+ · Apple Silicon", "Código abierto, licencia MIT", "SIP intacto"]
+    "meta": [
+      "macOS 14+ · Apple Silicon",
+      "Código abierto, licencia MIT",
+      "SIP intacto"
+    ],
+    "aside": [
+      "Nativa. SwiftUI, sin Electron.",
+      "La tarjeta de cada proyecto es un LOADCLI.md dentro de su carpeta. Sincroniza la carpeta y todos tus Mac muestran la misma cuadrícula.",
+      "SIP intacto. Ningún demonio, ningún hack de kernel."
+    ]
   },
   "stage": {
     "deskLabel": "acme — escritorio 3",
     "browserUrl": "app.acme.com",
     "command": "claude --model opus --effort ultracode",
     "output": [
-      { "mark": "✓", "text": "escritorio creado en la pantalla Studio" },
-      { "mark": "✓", "text": "navegador colocado a la izquierda" },
-      { "mark": "✓", "text": "foco en la terminal" }
+      {
+        "mark": "✓",
+        "text": "escritorio creado en la pantalla Studio"
+      },
+      {
+        "mark": "✓",
+        "text": "navegador colocado a la izquierda"
+      },
+      {
+        "mark": "✓",
+        "text": "foco en la terminal"
+      }
     ],
-    "labels": [
-      "Tus escritorios, uno por proyecto",
-      "Un escritorio nuevo, en el monitor elegido",
-      "Terminal y navegador, uno al lado del otro"
-    ]
+    "capTag": "01 → 04",
+    "capText": "doble clic · escritorio nuevo · terminal en la carpeta · panel al lado"
   },
   "ritual": {
     "eyebrow": "El tedio",
     "title": "Ocho pasos, diez veces al día.",
     "lead": "Cada vez que te sientas a trabajar en un proyecto es el mismo ritual. Multiplicado por decenas de proyectos, todos los días, siempre.",
-    "punch": "loadcli hace los ocho. Tú haces uno.",
+    "punch": "loadcli hace los ocho. <em>Tú haces uno.</em>",
     "steps": [
       "abrir la Terminal",
       "cd a la carpeta correcta",
@@ -54,7 +81,8 @@
       "crear un escritorio nuevo para no ensuciar los demás",
       "arrastrar y redimensionar las ventanas"
     ],
-    "kept": "hacer doble clic en la tarjeta"
+    "kept": "hacer doble clic en la tarjeta",
+    "count": "8 + 1"
   },
   "flow": {
     "eyebrow": "Un clic",
@@ -114,17 +142,33 @@
       {
         "title": "Claude Code",
         "text": "Modelo y effort por proyecto. El comando sale montado tal como lo configuraste.",
-        "chips": ["fable", "opus", "sonnet", "haiku", "xhigh", "ultracode"]
+        "chips": [
+          "fable",
+          "opus",
+          "sonnet",
+          "haiku",
+          "xhigh",
+          "ultracode"
+        ]
       },
       {
         "title": "Codex",
         "text": "La misma idea, con las flags propias de Codex. Cámbialas al iniciar si quieres.",
-        "chips": ["gpt-5.6-sol", "gpt-5.5", "minimal", "high"]
+        "chips": [
+          "gpt-5.6-sol",
+          "gpt-5.5",
+          "minimal",
+          "high"
+        ]
       },
       {
         "title": "Comando personalizado",
         "text": "Cualquier cosa que corra en un shell. loadcli hace el cd y lo ejecuta.",
-        "chips": ["npm run dev", "docker compose up", "make watch"]
+        "chips": [
+          "npm run dev",
+          "docker compose up",
+          "make watch"
+        ]
       }
     ],
     "swatchLead": "Cada tarjeta con su icono y su color. Diez segundos para recorrer la cuadrícula y encontrar el proyecto correcto."
@@ -141,14 +185,38 @@
     "eyebrow": "Detalles",
     "title": "El resto de lo que vas a usar todos los días.",
     "items": [
-      { "title": "Búsqueda rápida", "text": "Escribe y las carpetas con resultados se abren solas. Borra y todas se cierran otra vez." },
-      { "title": "Recientes", "text": "Los proyectos que abriste por último, del más nuevo al más antiguo." },
-      { "title": "Carpetas", "text": "Agrupa por la clave grupo del documento. Empiezan cerradas, para verlo todo de un vistazo." },
-      { "title": "Multi-monitor", "text": "Fija el monitor por proyecto, o deja que loadcli pregunte cada vez." },
-      { "title": "Fuente de la terminal", "text": "Aumenta la fuente por ti, tantas veces como definas." },
-      { "title": "Barra de menús", "text": "Lanza cualquier proyecto sin abrir la ventana principal." },
-      { "title": "Autotest", "text": "loadcli --doctor comprueba el mecanismo de escritorios en cada monitor." },
-      { "title": "100% nativa", "text": "SwiftUI, sin Electron. Abre al instante y casi no ocupa memoria." }
+      {
+        "title": "Búsqueda rápida",
+        "text": "Escribe y las carpetas con resultados se abren solas. Borra y todas se cierran otra vez."
+      },
+      {
+        "title": "Recientes",
+        "text": "Los proyectos que abriste por último, del más nuevo al más antiguo."
+      },
+      {
+        "title": "Carpetas",
+        "text": "Agrupa por la clave grupo del documento. Empiezan cerradas, para verlo todo de un vistazo."
+      },
+      {
+        "title": "Multi-monitor",
+        "text": "Fija el monitor por proyecto, o deja que loadcli pregunte cada vez."
+      },
+      {
+        "title": "Fuente de la terminal",
+        "text": "Aumenta la fuente por ti, tantas veces como definas."
+      },
+      {
+        "title": "Barra de menús",
+        "text": "Lanza cualquier proyecto sin abrir la ventana principal."
+      },
+      {
+        "title": "Autotest",
+        "text": "loadcli --doctor comprueba el mecanismo de escritorios en cada monitor."
+      },
+      {
+        "title": "100% nativa",
+        "text": "SwiftUI, sin Electron. Abre al instante y casi no ocupa memoria."
+      }
     ]
   },
   "download": {
@@ -176,5 +244,17 @@
   "footer": {
     "credit": "Hecho con café y Mission Control por <b>HISAYOSHI, N. KAMEDA</b> · <a href=\"https://kameda.app\" rel=\"noopener\">kameda.app</a>",
     "license": "Licencia MIT"
+  },
+  "figures": {
+    "beforeTag": "Antes",
+    "before": "Doce ventanas, ninguna en su sitio.",
+    "afterTag": "Después",
+    "after": "Dos ventanas, el foco en la terminal.",
+    "clickTag": "El gatillo",
+    "click": "Un doble clic en la tarjeta. Es todo lo que haces.",
+    "syncTag": "Sincronía",
+    "sync": "La misma carpeta, dos Mac, las mismas tarjetas.",
+    "desktopsTag": "Escritorios",
+    "desktops": "El escritorio nace sin que desactives el SIP."
   }
 }

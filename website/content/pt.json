@@ -11,39 +11,66 @@
     "langAria": "Idioma",
     "download": "Baixar",
     "links": [
-      { "href": "#one-click", "label": "Um clique" },
-      { "href": "#card", "label": "O card" },
-      { "href": "#ai", "label": "IA" },
-      { "href": "#spaces", "label": "Mesas" }
+      {
+        "href": "#one-click",
+        "label": "Um clique"
+      },
+      {
+        "href": "#card",
+        "label": "O card"
+      },
+      {
+        "href": "#ai",
+        "label": "IA"
+      },
+      {
+        "href": "#spaces",
+        "label": "Mesas"
+      }
     ]
   },
   "hero": {
-    "title": "Seu ambiente de desenvolvimento inteiro.<br>Em <span class=\"grad-text\">um clique</span>.",
+    "title": "Seu ambiente de<br>desenvolvimento<br>inteiro, em <em>um clique</em>.",
     "lead": "Escolha um projeto. O loadcli cria uma mesa nova no monitor certo, abre o Terminal com o seu CLI já na pasta e coloca o navegador do lado. Tudo posicionado, com o foco no terminal.",
     "ctaPrimary": "Baixar para Mac",
     "ctaSecondary": "Ver no GitHub",
-    "meta": ["macOS 14+ · Apple Silicon", "Open source, licença MIT", "SIP intacto"]
+    "meta": [
+      "macOS 14+ · Apple Silicon",
+      "Open source, licença MIT",
+      "SIP intacto"
+    ],
+    "aside": [
+      "Nativo. SwiftUI, sem Electron.",
+      "O card de cada projeto é um arquivo LOADCLI.md dentro da pasta dele. Sincronize a pasta e todos os seus Macs mostram a mesma grade.",
+      "SIP intacto. Nenhum daemon, nenhum hack de kernel."
+    ]
   },
   "stage": {
     "deskLabel": "acme — mesa 3",
     "browserUrl": "app.acme.com",
     "command": "claude --model opus --effort ultracode",
     "output": [
-      { "mark": "✓", "text": "mesa criada no monitor Studio" },
-      { "mark": "✓", "text": "navegador posicionado à esquerda" },
-      { "mark": "✓", "text": "foco no terminal" }
+      {
+        "mark": "✓",
+        "text": "mesa criada no monitor Studio"
+      },
+      {
+        "mark": "✓",
+        "text": "navegador posicionado à esquerda"
+      },
+      {
+        "mark": "✓",
+        "text": "foco no terminal"
+      }
     ],
-    "labels": [
-      "Suas mesas, uma por projeto",
-      "Uma mesa nova, no monitor escolhido",
-      "Terminal e navegador, lado a lado"
-    ]
+    "capTag": "01 → 04",
+    "capText": "clique duplo · mesa nova · terminal na pasta · painel ao lado"
   },
   "ritual": {
     "eyebrow": "O tédio",
     "title": "Oito passos, dez vezes por dia.",
     "lead": "Toda vez que você senta para mexer num projeto é o mesmo ritual. Multiplicado por dezenas de projetos, todo dia, a vida inteira.",
-    "punch": "O loadcli faz os oito. Você faz um.",
+    "punch": "O loadcli faz os oito. <em>Você faz um.</em>",
     "steps": [
       "abrir o Terminal",
       "cd na pasta certa",
@@ -54,7 +81,8 @@
       "criar uma mesa nova pra não bagunçar as outras",
       "arrastar e redimensionar as janelas"
     ],
-    "kept": "clicar duas vezes no card"
+    "kept": "clicar duas vezes no card",
+    "count": "8 + 1"
   },
   "flow": {
     "eyebrow": "Um clique",
@@ -114,17 +142,33 @@
       {
         "title": "Claude Code",
         "text": "Modelo e effort por projeto. O comando sai montado do jeito que você configurou.",
-        "chips": ["fable", "opus", "sonnet", "haiku", "xhigh", "ultracode"]
+        "chips": [
+          "fable",
+          "opus",
+          "sonnet",
+          "haiku",
+          "xhigh",
+          "ultracode"
+        ]
       },
       {
         "title": "Codex",
         "text": "Mesma ideia, com as flags do Codex. Troque na hora de iniciar, se quiser.",
-        "chips": ["gpt-5.6-sol", "gpt-5.5", "minimal", "high"]
+        "chips": [
+          "gpt-5.6-sol",
+          "gpt-5.5",
+          "minimal",
+          "high"
+        ]
       },
       {
         "title": "Comando personalizado",
         "text": "Qualquer coisa que rode no shell. O loadcli faz o cd e executa.",
-        "chips": ["npm run dev", "docker compose up", "make watch"]
+        "chips": [
+          "npm run dev",
+          "docker compose up",
+          "make watch"
+        ]
       }
     ],
     "swatchLead": "Cada card com o seu ícone e a sua cor. Dez segundos para bater o olho e achar o projeto certo."
@@ -141,14 +185,38 @@
     "eyebrow": "Detalhes",
     "title": "O resto das coisas que você vai usar todo dia.",
     "items": [
-      { "title": "Busca rápida", "text": "Digite e as pastas com resultado se abrem sozinhas. Apague e todas fecham de novo." },
-      { "title": "Recentes", "text": "Os projetos que você abriu por último, do mais novo para o mais antigo." },
-      { "title": "Pastas", "text": "Agrupe pelo campo grupo do documento. Começam fechadas, para você bater o olho." },
-      { "title": "Multi-monitor", "text": "Fixe o monitor por projeto, ou deixe o loadcli perguntar a cada vez." },
-      { "title": "Fonte do terminal", "text": "Ele aumenta a fonte para você, o número de vezes que você definir." },
-      { "title": "Menu na barra", "text": "Lance qualquer projeto sem abrir a janela principal." },
-      { "title": "Autoteste", "text": "loadcli --doctor confere o mecanismo de mesas em cada monitor." },
-      { "title": "100% nativo", "text": "SwiftUI, sem Electron. Abre instantâneo e quase não ocupa memória." }
+      {
+        "title": "Busca rápida",
+        "text": "Digite e as pastas com resultado se abrem sozinhas. Apague e todas fecham de novo."
+      },
+      {
+        "title": "Recentes",
+        "text": "Os projetos que você abriu por último, do mais novo para o mais antigo."
+      },
+      {
+        "title": "Pastas",
+        "text": "Agrupe pelo campo grupo do documento. Começam fechadas, para você bater o olho."
+      },
+      {
+        "title": "Multi-monitor",
+        "text": "Fixe o monitor por projeto, ou deixe o loadcli perguntar a cada vez."
+      },
+      {
+        "title": "Fonte do terminal",
+        "text": "Ele aumenta a fonte para você, o número de vezes que você definir."
+      },
+      {
+        "title": "Menu na barra",
+        "text": "Lance qualquer projeto sem abrir a janela principal."
+      },
+      {
+        "title": "Autoteste",
+        "text": "loadcli --doctor confere o mecanismo de mesas em cada monitor."
+      },
+      {
+        "title": "100% nativo",
+        "text": "SwiftUI, sem Electron. Abre instantâneo e quase não ocupa memória."
+      }
     ]
   },
   "download": {
@@ -176,5 +244,17 @@
   "footer": {
     "credit": "Feito com café e Mission Control por <b>HISAYOSHI, N. KAMEDA</b> · <a href=\"https://kameda.app\" rel=\"noopener\">kameda.app</a>",
     "license": "Licença MIT"
+  },
+  "figures": {
+    "beforeTag": "Antes",
+    "before": "Doze janelas, nenhuma no lugar.",
+    "afterTag": "Depois",
+    "after": "Duas janelas, o foco no terminal.",
+    "clickTag": "O gatilho",
+    "click": "Um clique duplo no card. É tudo o que você faz.",
+    "syncTag": "Sincronia",
+    "sync": "A mesma pasta, dois Macs, os mesmos cards.",
+    "desktopsTag": "Mesas",
+    "desktops": "A mesa nova nasce sem você desligar o SIP."
   }
 }

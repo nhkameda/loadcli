@@ -1,18 +1,20 @@
 #!/usr/bin/env node
-/* Gera as ilustrações de apoio do site com o Nano Banana Pro (Gemini 3 Pro
- * Image), no mesmo molde de ~/DEV/arteneural/scripts/gen-landing-v4.mjs.
+/* Gera as ilustrações do site com o Nano Banana Pro (Gemini 3 Pro Image).
  *
- * A chave NUNCA fica em disco: o .env ao lado carrega só a referência op://,
- * e o 1Password resolve na hora. Como o `op` trava quando chamado de forma não
- * interativa, rode isto num terminal de verdade, para o Touch ID poder aparecer:
+ * A chave NUNCA fica em disco: o .env ao lado carrega só a referência op://.
  *
  *   cd website && op run --env-file=.env -- node tools/gen-images.mjs
- *   (ou, da raiz do repo, `make site-images`)
+ *   # se o `op run` estourar a autorização:
+ *   GEMINI_KEY="$(op read 'op://Personal/Hackton-Gemini-NanoBananaPro/credential')" \
+ *     node tools/gen-images.mjs
  *
- * Só gera o que está faltando. Para refazer uma peça, apague o arquivo dela em
- * assets/img/ e rode de novo — ou passe o nome:
+ * Só gera o que falta. Para refazer uma peça, passe o nome dela.
+ * Depois: python3 tools/optimize-images.py
  *
- *   op run --env-file=.env -- node tools/gen-images.mjs ritual og-pt
+ * DIREÇÃO DE ARTE — o que importa aqui é ilustrar SITUAÇÕES, não formas
+ * abstratas. A primeira versão deste site pediu "retângulos convergindo" e o
+ * resultado não dizia nada. Cada peça agora é uma cena com contexto: uma mesa,
+ * mãos, monitores, o antes e o depois.
  */
 
 import { writeFileSync, existsSync, mkdirSync } from 'node:fs';
@@ -24,72 +26,90 @@ const outDir = join(root, 'assets', 'img');
 
 const KEY = process.env.GEMINI_KEY || process.env.GEMINI_API_KEY;
 const PRO = 'gemini-3-pro-image-preview';
-/* O Pro costuma congestionar e estourar o tempo; o flash é o plano B da casa
-   (ver arteneural/docs/LANDING-PAGE-RECIPE.md). O flash não aceita imageConfig. */
 const FLASH = 'gemini-3.1-flash-image';
 
-/* Linguagem visual comum, tirada do ícone do app: squircle violeta com
-   degradê para índigo, brilho branco no canto superior esquerdo, moldura de
-   painel dividido em branco 16% e um >_ geométrico. */
+/* Ilustração editorial de revista técnica: traço fino, papel quente, tinta
+   preta e UMA cor de destaque. Nada de degradê 3D — é justamente o visual
+   "gerado por IA" que queremos evitar. */
 const STYLE = [
-  'Apple-style product illustration, extremely minimal and premium.',
-  'Near-white background (#FBFBFD), abundant negative space, soft long shadows.',
-  'Brand palette only: violet #8B5CF6 to deep indigo #563BD4 gradients,',
-  'accent #7C5CFF, neutral slate #64748B. No other hues.',
-  'Clean geometry, generous rounded corners, hairline strokes, subtle grain.',
-  'No text, no words, no letters, no logos, no UI chrome, no people.',
-  'Flat vector-like rendering with soft depth. Centered composition.',
+  'Editorial spot illustration for a technical magazine, in the tradition of',
+  'New Yorker and MIT Technology Review illustration.',
+  'Strictly limited palette: warm bone paper background (#EFEBE3), deep warm',
+  'black ink (#16130F), and exactly ONE accent colour, an electric violet',
+  '(#6C4DF6), used sparingly for a single focal element.',
+  'Confident fine line work, flat fills, no photorealism, no 3D rendering,',
+  'no glossy gradients, no drop shadows, no glow effects.',
+  'Subtle paper grain. Slightly imperfect hand-drawn line quality.',
+  'Isometric or three-quarter view. No text, no words, no letters, no logos,',
+  'no readable UI. Faces are never shown in detail.',
 ].join(' ');
 
 const MANIFEST = [
   {
-    name: 'ritual',
-    aspect: '16:9',
-    size: '2K',
-    prompt:
-      'Eight small translucent rounded rectangles scattered in loose disorder, ' +
-      'gradually converging and collapsing into a single bright violet rounded ' +
-      'square at the centre right. A visual metaphor for many manual steps ' +
-      'becoming one action.',
-  },
-  {
-    name: 'spaces',
-    aspect: '16:9',
-    size: '2K',
-    prompt:
-      'Three floating rounded rectangular planes in gentle 3D perspective, ' +
-      'stacked in depth like macOS desktops in Mission Control, the front one ' +
-      'crisp and split down the middle by a thin luminous violet seam, the ones ' +
-      'behind softly blurred.',
-  },
-  {
-    name: 'card',
+    name: 'scene-before',
     aspect: '4:3',
     size: '2K',
     prompt:
-      'A single sheet of paper with subtle horizontal grey lines, folding and ' +
-      'morphing mid-air into a solid rounded card with a violet gradient tile in ' +
-      'its corner. Left half paper, right half card, a smooth transformation.',
+      'A developer seen from behind, sitting at a desk late at night, shoulders ' +
+      'tense. On the single monitor in front of them, about a dozen small ' +
+      'windows overlap each other in complete disorder, spilling over one ' +
+      'another. Coffee cup, tangled cable, notebook. The chaos of windows is ' +
+      'drawn in black ink; nothing is violet. A scene about mess.',
   },
   {
-    name: 'footer',
-    aspect: '21:9',
+    name: 'scene-after',
+    aspect: '4:3',
     size: '2K',
     prompt:
-      'An extremely subtle abstract band: a soft violet-to-indigo mesh gradient ' +
-      'fading into near-white, with a faint grid of hairlines. Barely-there ' +
-      'texture meant to sit behind a page footer.',
+      'The exact same developer, same desk, same angle and same drawing style ' +
+      'as a companion piece. Now the monitor shows just two clean panels side ' +
+      'by side, separated by a single crisp vertical line: a terminal on the ' +
+      'right, a browser on the left. The shoulders are relaxed. The vertical ' +
+      'divider line is the only violet element in the whole image.',
+  },
+  {
+    name: 'scene-click',
+    aspect: '16:9',
+    size: '2K',
+    prompt:
+      'Close crop of two hands resting on a low-profile mechanical keyboard, ' +
+      'seen from a three-quarter angle above. One index finger is mid-tap, ' +
+      'caught at the instant of a double click on a trackpad beside the ' +
+      'keyboard. A desk lamp pools light from the upper left. A small violet ' +
+      'ripple radiates from the point of contact, the only colour in the image.',
+  },
+  {
+    name: 'scene-sync',
+    aspect: '16:9',
+    size: '2K',
+    prompt:
+      'Two laptops of different sizes standing open side by side on a shared ' +
+      'wooden desk, drawn in three-quarter view. Both screens display the same ' +
+      'neat grid of small rounded cards. Between and above them, a thin violet ' +
+      'arc connects one screen to the other, suggesting the same folder living ' +
+      'in two places. Everything else is black ink on bone paper.',
+  },
+  {
+    name: 'scene-desktops',
+    aspect: '16:9',
+    size: '2K',
+    prompt:
+      'An over-the-shoulder view of a person facing a wide monitor that shows ' +
+      'Mission Control: five rectangular desktop thumbnails arranged in a row ' +
+      'along the top, slightly overlapping in perspective. A sixth thumbnail is ' +
+      'being drawn into existence at the right end of the row, outlined in ' +
+      'violet, the only colour. The person sits still, hands off the keyboard.',
   },
   ...['en', 'es', 'zh', 'pt'].map((lang) => ({
     name: `og-${lang}`,
     aspect: '16:9',
     size: '2K',
     prompt:
-      'A violet-to-indigo rounded squircle app icon floating centre-left with a ' +
-      'soft white glow in its upper-left, casting a long soft shadow onto a ' +
-      'near-white surface. To its right, two abstract rounded panels side by ' +
-      'side separated by a thin luminous seam. Social-share hero composition ' +
-      'with wide empty margins.',
+      'A wide editorial composition: a desk seen from directly above, with a ' +
+      'laptop whose screen shows two clean panels split by a single vertical ' +
+      'violet line. Around the laptop, a notebook, a pen and a coffee cup are ' +
+      'arranged with generous empty space. Black ink on bone paper, one violet ' +
+      'accent. Large empty margins on the left third for a title to sit.',
   })),
 ];
 
@@ -101,10 +121,7 @@ async function generate(item, model) {
     generationConfig: { responseModalities: ['TEXT', 'IMAGE'] },
   };
   if (model === PRO) {
-    body.generationConfig.imageConfig = {
-      aspectRatio: item.aspect,
-      imageSize: item.size,
-    };
+    body.generationConfig.imageConfig = { aspectRatio: item.aspect, imageSize: item.size };
   }
 
   const response = await fetch(
@@ -115,27 +132,20 @@ async function generate(item, model) {
       body: JSON.stringify(body),
     }
   );
-
   if (!response.ok) {
-    throw new Error(`${model} → HTTP ${response.status}: ${(await response.text()).slice(0, 300)}`);
+    throw new Error(`${model} → HTTP ${response.status}: ${(await response.text()).slice(0, 240)}`);
   }
-
   const json = await response.json();
-  const parts = json?.candidates?.[0]?.content?.parts ?? [];
-  const image = parts.find((p) => p.inlineData?.data);
+  const image = (json?.candidates?.[0]?.content?.parts ?? []).find((p) => p.inlineData?.data);
   if (!image) throw new Error(`${model} não devolveu imagem`);
   return Buffer.from(image.inlineData.data, 'base64');
 }
 
 async function main() {
   if (!KEY) {
-    console.error(
-      'Falta a chave. Rode com o 1Password resolvendo o .env:\n' +
-        '  op run --env-file=.env -- node tools/gen-images.mjs'
-    );
+    console.error('Falta a chave. Veja o cabeçalho deste arquivo.');
     process.exit(1);
   }
-
   mkdirSync(outDir, { recursive: true });
   const only = process.argv.slice(2);
   const wanted = only.length ? MANIFEST.filter((i) => only.includes(i.name)) : MANIFEST;
@@ -146,13 +156,13 @@ async function main() {
       console.log(`· ${item.name} já existe, pulando`);
       continue;
     }
-    process.stdout.write(`→ ${item.name} (${item.aspect}, ${item.size}) `);
+    process.stdout.write(`→ ${item.name} (${item.aspect}) `);
     try {
       let bytes;
       try {
         bytes = await generate(item, PRO);
       } catch (proError) {
-        process.stdout.write(`[pro falhou: ${proError.message.slice(0, 60)}] `);
+        process.stdout.write(`[pro falhou: ${proError.message.slice(0, 50)}] `);
         bytes = await generate(item, FLASH);
       }
       writeFileSync(out, bytes);
@@ -161,11 +171,7 @@ async function main() {
       console.log(`FALHOU · ${error.message}`);
     }
   }
-
-  console.log(
-    '\nDepois: otimize para a web (sips -Z 1600 e conversão para WebP) e\n' +
-      'lembre de subir o ASSET_VERSION em tools/build.mjs se trocar algo já publicado.'
-  );
+  console.log('\nAgora rode: python3 tools/optimize-images.py');
 }
 
 main();

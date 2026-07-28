@@ -24,10 +24,11 @@ IMG = ROOT / "assets" / "img"
 
 # nome -> largura máxima servida
 TARGETS = {
-    "ritual": 1600,
-    "spaces": 1600,
-    "card": 1400,
-    "footer": 1920,
+    "scene-before": 1400,
+    "scene-after": 1400,
+    "scene-click": 1600,
+    "scene-sync": 1600,
+    "scene-desktops": 1600,
     "og-en": 1200,
     "og-es": 1200,
     "og-zh": 1200,

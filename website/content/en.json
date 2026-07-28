@@ -11,39 +11,66 @@
     "langAria": "Language",
     "download": "Download",
     "links": [
-      { "href": "#one-click", "label": "One click" },
-      { "href": "#card", "label": "The card" },
-      { "href": "#ai", "label": "AI" },
-      { "href": "#spaces", "label": "Desktops" }
+      {
+        "href": "#one-click",
+        "label": "One click"
+      },
+      {
+        "href": "#card",
+        "label": "The card"
+      },
+      {
+        "href": "#ai",
+        "label": "AI"
+      },
+      {
+        "href": "#spaces",
+        "label": "Desktops"
+      }
     ]
   },
   "hero": {
-    "title": "Your entire dev environment.<br>In <span class=\"grad-text\">one click</span>.",
+    "title": "Your entire dev<br>environment, in<br><em>one click</em>.",
     "lead": "Pick a project. loadcli spins up a fresh desktop on the monitor you want, opens the Terminal with your CLI already in the project folder, and tiles the browser beside it. Everything placed, focus on the terminal.",
     "ctaPrimary": "Download for Mac",
     "ctaSecondary": "View on GitHub",
-    "meta": ["macOS 14+ · Apple Silicon", "Open source, MIT licensed", "SIP stays intact"]
+    "meta": [
+      "macOS 14+ · Apple Silicon",
+      "Open source, MIT licensed",
+      "SIP stays intact"
+    ],
+    "aside": [
+      "Native. SwiftUI, no Electron.",
+      "Each project's card is a LOADCLI.md inside its own folder. Sync the folder and every Mac shows the same grid.",
+      "SIP stays intact. No daemon, no kernel hack."
+    ]
   },
   "stage": {
     "deskLabel": "acme — desktop 3",
     "browserUrl": "app.acme.com",
     "command": "claude --model opus --effort ultracode",
     "output": [
-      { "mark": "✓", "text": "desktop created on the Studio display" },
-      { "mark": "✓", "text": "browser tiled on the left" },
-      { "mark": "✓", "text": "focus on the terminal" }
+      {
+        "mark": "✓",
+        "text": "desktop created on the Studio display"
+      },
+      {
+        "mark": "✓",
+        "text": "browser tiled on the left"
+      },
+      {
+        "mark": "✓",
+        "text": "focus on the terminal"
+      }
     ],
-    "labels": [
-      "Your desktops, one per project",
-      "A fresh desktop, on the monitor you picked",
-      "Terminal and browser, side by side"
-    ]
+    "capTag": "01 → 04",
+    "capText": "double-click · fresh desktop · terminal in the folder · pane beside it"
   },
   "ritual": {
     "eyebrow": "The chore",
     "title": "Eight steps, ten times a day.",
     "lead": "Every time you sit down with a project it is the same ritual. Times dozens of projects, every day, forever.",
-    "punch": "loadcli does the eight. You do one.",
+    "punch": "loadcli does the eight. <em>You do one.</em>",
     "steps": [
       "open the Terminal",
       "cd into the right folder",
@@ -54,7 +81,8 @@
       "spin up a desktop so you don't clutter the others",
       "drag and resize the windows"
     ],
-    "kept": "double-click a card"
+    "kept": "double-click a card",
+    "count": "8 + 1"
   },
   "flow": {
     "eyebrow": "One click",
@@ -114,17 +142,33 @@
       {
         "title": "Claude Code",
         "text": "Model and effort per project. The command comes out assembled the way you configured it.",
-        "chips": ["fable", "opus", "sonnet", "haiku", "xhigh", "ultracode"]
+        "chips": [
+          "fable",
+          "opus",
+          "sonnet",
+          "haiku",
+          "xhigh",
+          "ultracode"
+        ]
       },
       {
         "title": "Codex",
         "text": "Same idea, with Codex's own flags. Change them at launch time if you feel like it.",
-        "chips": ["gpt-5.6-sol", "gpt-5.5", "minimal", "high"]
+        "chips": [
+          "gpt-5.6-sol",
+          "gpt-5.5",
+          "minimal",
+          "high"
+        ]
       },
       {
         "title": "Custom command",
         "text": "Anything that runs in a shell. loadcli does the cd and runs it.",
-        "chips": ["npm run dev", "docker compose up", "make watch"]
+        "chips": [
+          "npm run dev",
+          "docker compose up",
+          "make watch"
+        ]
       }
     ],
     "swatchLead": "Every card with its own icon and colour. Ten seconds to glance across the grid and find the right project."
@@ -141,14 +185,38 @@
     "eyebrow": "Details",
     "title": "The rest of what you'll use every day.",
     "items": [
-      { "title": "Quick search", "text": "Type and the folders holding matches open themselves. Clear it and they all close again." },
-      { "title": "Recents", "text": "The projects you opened last, newest first." },
-      { "title": "Folders", "text": "Group by the document's group key. They start collapsed, so you can scan fast." },
-      { "title": "Multi-monitor", "text": "Pin the monitor per project, or let loadcli ask you every time." },
-      { "title": "Terminal font", "text": "It bumps the font up for you, as many times as you set." },
-      { "title": "Menu bar", "text": "Launch any project without opening the main window." },
-      { "title": "Self-test", "text": "loadcli --doctor checks the desktop mechanism on every monitor." },
-      { "title": "100% native", "text": "SwiftUI, no Electron. Opens instantly and barely touches memory." }
+      {
+        "title": "Quick search",
+        "text": "Type and the folders holding matches open themselves. Clear it and they all close again."
+      },
+      {
+        "title": "Recents",
+        "text": "The projects you opened last, newest first."
+      },
+      {
+        "title": "Folders",
+        "text": "Group by the document's group key. They start collapsed, so you can scan fast."
+      },
+      {
+        "title": "Multi-monitor",
+        "text": "Pin the monitor per project, or let loadcli ask you every time."
+      },
+      {
+        "title": "Terminal font",
+        "text": "It bumps the font up for you, as many times as you set."
+      },
+      {
+        "title": "Menu bar",
+        "text": "Launch any project without opening the main window."
+      },
+      {
+        "title": "Self-test",
+        "text": "loadcli --doctor checks the desktop mechanism on every monitor."
+      },
+      {
+        "title": "100% native",
+        "text": "SwiftUI, no Electron. Opens instantly and barely touches memory."
+      }
     ]
   },
   "download": {
@@ -176,5 +244,17 @@
   "footer": {
     "credit": "Made with coffee and Mission Control by <b>HISAYOSHI, N. KAMEDA</b> · <a href=\"https://kameda.app\" rel=\"noopener\">kameda.app</a>",
     "license": "MIT licence"
+  },
+  "figures": {
+    "beforeTag": "Before",
+    "before": "Twelve windows, none of them in place.",
+    "afterTag": "After",
+    "after": "Two windows, focus on the terminal.",
+    "clickTag": "The trigger",
+    "click": "One double-click on a card. That is all you do.",
+    "syncTag": "Sync",
+    "sync": "One folder, two Macs, the same cards.",
+    "desktopsTag": "Desktops",
+    "desktops": "The new desktop is born without you disabling SIP."
   }
 }

@@ -24,13 +24,12 @@ Para mudar estrutura ou ícone: edite `tools/build.mjs` e rode de novo.
 
 ## Regras que não podem ser quebradas
 
-1. **`?v=N` obrigatório.** O Cloudflare guarda `assets/` por 7 dias e o token do
-   servidor **não tem permissão de purge**. Mexeu em `assets/css/site.css` ou
-   `assets/js/site.js` → suba `ASSET_VERSION` em `tools/build.mjs` e regere.
+1. **`?v=N` obrigatório em TUDO que vem de `assets/`** — CSS, JS, fontes **e
+   imagens**. O Cloudflare guarda `assets/` por 7 dias e o token do servidor
+   **não tem permissão de purge**. Trocar uma imagem mantendo o nome sem subir o
+   `ASSET_VERSION` serve a versão velha para sempre; já aconteceu.
 2. **Nada de CDN externo.** Fontes, JS e imagens são todos do próprio domínio —
    o site precisa funcionar atrás do Great Firewall e a CSP é `default-src 'self'`.
-   A tipografia usa a pilha do sistema de propósito: no Mac isso renderiza a SF
-   Pro de verdade, com zero bytes baixados.
 3. **Âncoras em inglês nos quatro idiomas** (`#one-click`, `#card`, `#ai`,
    `#spaces`, `#download`). É o que permite trocar de idioma sem perder o lugar.
 4. **Ordem da barra de idiomas: EN · ES · 中文 · PT.**
@@ -39,18 +38,33 @@ Para mudar estrutura ou ícone: edite `tools/build.mjs` e rode de novo.
    de segurança que mostra tudo depois de 2,6 s, e há um `<noscript>` que
    desliga a animação. Conteúdo invisível por causa de JS é bug.
 
+## Direção de arte
+
+**Manual técnico impresso.** Papel quente (`#EFEBE3`), tinta preta, UMA cor de
+sinal (`#6C4DF6`) em doses pequenas. Serifa editorial de display
+(**Instrument Serif**) contra mono de terminal (**JetBrains Mono**) — o
+contraste diz "ofício técnico" em vez de "landing page de startup". Grade
+visível com fios de 1px, seções numeradas (`01`…`07`), assimetria deliberada.
+
+Ambas as fontes são **auto-hospedadas** em `assets/fonts/` (subsets latin e
+latin-ext, geradas a partir do Google Fonts). Nada de fonte de sistema.
+
+**O que não se faz aqui**, porque foi exatamente o que a 1ª versão fez e o
+resultado tinha cara de gerado por IA: pilha de fonte do sistema, degradê
+violeta sobre branco frio, cartão com sombra flutuante, grade de features em
+caixas iguais, ilustração abstrata de formas geométricas.
+
 ## Efeitos
 
-- **Hero**: as três mesas se montando em `transform3d`, dirigidas pela variável
-  CSS `--p` (0→1) que o `site.js` escreve a cada quadro conforme o palco rola.
-- **Fundo**: mesh gradient WebGL do [Paper Shaders](https://github.com/paper-design/shaders)
-  (Apache 2.0), vendorizado em `assets/js/vendor/paper-shaders/` — só os arquivos
-  do fecho de dependências do mesh gradient. `LICENSE` e `NOTICE` vão junto,
-  como a licença exige.
+- **Hero**: sequência **orquestrada na carga** (CSS, `animation-delay`
+  escalonado por `--i`), não amarrada à rolagem. A 1ª versão dirigia a entrada
+  pelo scroll e a primeira coisa que a pessoa via era uma caixa vazia.
 - **Rolagem**: [Lenis](https://github.com/darkroomengineering/lenis) (MIT),
-  `assets/js/vendor/lenis.min.js`, exposto como `globalThis.Lenis`.
-- `prefers-reduced-motion: reduce` desliga shader, parallax e a montagem do
-  hero. Sem WebGL, o gradiente CSS por baixo assume.
+  `assets/js/vendor/lenis.min.js`, exposto como `globalThis.Lenis`; parallax
+  por camadas com `data-parallax`.
+- Sem WebGL e sem sombra flutuante: a janela do terminal tem um fio de contato
+  no chão, não uma sombra de objeto reto sob um objeto rotacionado.
+- `prefers-reduced-motion: reduce` desliga tudo.
 
 ## Ilustrações
 
@@ -80,12 +94,21 @@ Detalhe que engana: `op whoami` responde *"account is not signed in"* mesmo com
 tudo funcionando, porque aquele subcomando exige uma conta adicionada pelo CLI.
 O que vale como teste é o `op read`.
 
-**Como as peças entram no layout.** Sempre por `background-image` em elemento
-decorativo, nunca `<img>`: assim um arquivo que falte simplesmente não aparece.
-Todas usam `mix-blend-mode: multiply` — elas vêm com fundo quase-branco, que em
-`multiply` desaparece contra a página em vez de deixar uma moldura retangular. A
-figura da seção "mesas" ainda leva uma máscara radial nas bordas, porque o
-quase-branco dela é um pouco mais escuro que o da página.
+**As peças ilustram SITUAÇÕES, não formas.** Uma pessoa curvada diante de doze
+janelas sobrepostas; a mesma pessoa relaxada diante de duas; mãos no teclado no
+instante do clique duplo; dois Macs com a mesma grade; o Mission Control criando
+a mesa. Foi a correção do erro da 1ª versão, que pediu "retângulos convergindo"
+e devolveu arte que não dizia nada.
+
+Estilo fixo no `STYLE` do gerador: ilustração editorial de revista técnica,
+traço fino, papel `#EFEBE3`, tinta `#16130F` e **um** violeta `#6C4DF6` num único
+elemento focal. Nada de 3D, degradê ou brilho.
+
+**Como entram no layout.** Como `<img>` com `width`/`height` (para o layout não
+pular), dentro de um `<figure class="figure">` com fio de 1px e legenda. Elas são
+geradas sobre exatamente o papel do site, então em seção clara a borda some; em
+seção mais escura o fio assume a diferença e a peça vira uma **prancha**, o que
+combina com a metáfora do manual.
 
 Os PNG de 2K originais ficam fora do git (ver `.gitignore`); o site serve os
 `.webp`, e as imagens de Open Graph viram `.jpg` (nem todo raspador lê WebP, e
